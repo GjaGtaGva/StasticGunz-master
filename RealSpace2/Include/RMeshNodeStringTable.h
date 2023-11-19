@@ -65,6 +65,7 @@ enum RMeshNodeNameType
 	RMeshNodeNameType_eq_wd_smg,
 	RMeshNodeNameType_eq_wd_sword,
 	RMeshNodeNameType_eq_wd_blade,
+	RMeshNodeNameType_eq_wd_scissor,
 	RMeshNodeNameType_eq_wd_dagger,
 
 	RMeshNodeNameType_End

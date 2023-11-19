@@ -11,6 +11,8 @@
 #include "ZCharacterView.h"
 #include "ZShop.h"
 
+#include "shlwapi.h"
+
 ZMyItemList::ZMyItemList() : m_bCreated(false)
 {
 	m_ListFilter = zshop_item_filter_all;
@@ -302,6 +304,67 @@ void ZMyItemList::Serialize()
 	pCharacterView->InitCharParts(pmi->GetSex(), pmi->GetHair(), pmi->GetFace(), nEquipedItemID);
 	END_WIDGETLIST();
 }
+
+
+/// Gva item search
+void ZMyItemList::SerializeSearch() {
+
+	ZIDLResource* pResource = ZApplication::GetGameInterface()->GetIDLResource();
+	MListBox* pListBox = (MListBox*)pResource->FindWidget("MyAllEquipmentList");
+
+	if (!pListBox) {
+		pListBox = (MListBox*)pResource->FindWidget("EquipmentList");
+	}
+
+
+	if (pListBox)
+	{
+		pListBox->RemoveAll();
+
+		for (int i = 0; i < (int)m_ItemIndexVector.size(); i++)
+		{
+			MMatchItemDesc* pItemDesc = NULL;
+
+			MITEMNODEMAP::iterator itor = m_ItemMap.find(m_ItemIndexVector[i]);
+			if (itor != m_ItemMap.end())
+			{
+				ZMyItemNode* pItemNode = (*itor).second;
+				pItemDesc = MGetMatchItemDescMgr()->GetItemDesc(pItemNode->GetItemID());
+
+				if (pItemDesc != NULL) {
+
+					//if (CheckTypeWithListFilter(pDesc->m_nSlot, pDesc->IsEnchantItem()) == false) continue;
+					if (pItemDesc->m_nResSex != -1 && pItemDesc->m_nResSex != int(ZGetMyInfo()->GetSex())) continue;
+
+					MEdit* pWidget = (MEdit*)pResource->FindWidget("Item_SearchInv");
+
+					if ((strlen(pWidget->GetText()) > 0) && (strlen(pWidget->GetText()) <= 128))
+					{
+						if (StrStrIA(pItemDesc->m_szName, pWidget->GetText()) == NULL) continue;
+					}
+
+
+					if (pItemDesc->m_nResSex != -1) {
+						if (pItemDesc->m_nResSex != int(ZGetMyInfo()->GetSex())) continue;
+					}
+
+					MUID uidItem = MUID(0, i + 1);
+
+					if (CheckAddType(pItemDesc->m_nSlot))
+					{
+						((ZEquipmentListBox*)(pListBox))->Add(uidItem, pItemDesc->m_nID,
+							GetItemIconBitmap(pItemDesc, true),
+							pItemDesc->m_szName,
+							pItemDesc->m_nResLevel,
+							pItemDesc->m_nBountyPrice);
+					}
+				}
+
+			}
+		}
+	}
+}
+
 
 void ZMyItemList::SerializeAccountItem()
 {

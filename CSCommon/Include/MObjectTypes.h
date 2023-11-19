@@ -221,6 +221,7 @@ struct MCHARACTERDATA
 	int			iIVLightning;		// flag
 	int			iIVPoison;			// flag
 	int			iIVFire;			// flag
+	int			iIVStarfire;		// new flag
 	int			iIVStun;			// flag
 	int			iIVSleep;			// flag
 	int			iIVCrit;			// flag

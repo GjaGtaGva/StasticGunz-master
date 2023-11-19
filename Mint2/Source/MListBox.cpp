@@ -607,19 +607,21 @@ int MListBoxLook::OnItemDraw(MDrawContext* pDC, MRECT& r, const char* szText, MC
 		pDC->FillRectangle(r);
 	}
 
-	if(bSelected==true) pDC->SetColor(MCOLOR(m_SelectedTextColor));
+	//if(bSelected==true) pDC->SetColor(MCOLOR(m_SelectedTextColor));
+	if(bSelected==true) pDC->SetColor(MCOLOR(0, 255, 223, 255));
 	else pDC->SetColor(color);
 
 	if( m_pItemSlotBitmap != NULL )
 	{
 		pDC->SetBitmap( m_pItemSlotBitmap );
-		pDC->Draw(r.x, r.y, r.w, r.h );
+	    pDC->Draw(r.x, r.y, r.w, r.h );
 	}
 
 	MRECT rtemp, rtemp2;
 	rtemp2 = rtemp = pDC->GetClipRect();
 	rtemp2.w -= nAdjustWidth;
 	pDC->SetClipRect(rtemp2);
+
 #ifdef COLORTEXT_SUPPORT
 	if( m_ItemTextAlignmentMode == MAM_NOTALIGN )
 	{
@@ -658,7 +660,9 @@ int MListBoxLook::OnItemDraw(MDrawContext* pDC, MRECT& r, MBitmap* pBitmap, bool
 	pDC->SetClipRect(rtemp2);
 
 	pDC->SetBitmap(pBitmap);
-	pDC->Draw(r.x, r.y, nAdjustWidth, nAdjustWidth);
+	/// Gva cia galima adjustint item saraso ikonu dydi
+	pDC->Draw(r.x, r.y, r.h, r.h);
+	//pDC->Draw(r.x, r.y, nAdjustWidth, nAdjustWidth);
 
 	pDC->SetClipRect(rtemp);
 

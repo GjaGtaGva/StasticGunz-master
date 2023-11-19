@@ -97,6 +97,13 @@ bool ZGameInput::OnDebugEvent(MEvent* pEvent)
 						ZModule_PoisonDamage *pModule = (ZModule_PoisonDamage*)g_pGame->m_pMyCharacter->GetModule(ZMID_POISONDAMAGE);
 						pModule->BeginDamage(g_pGame->m_pMyCharacter->GetUID(),5,10);
 					}
+					else if(zctype==ZC_ENCHANT_STARFIRE) {
+						ZModule_LightningDamage *pModuleLightning = (ZModule_LightningDamage*)g_pGame->m_pMyCharacter->GetModule(ZMID_LIGHTNINGDAMAGE);
+						pModuleLightning->BeginDamage(g_pGame->m_pMyCharacter->GetUID(), 4, 7);
+
+						ZModule_ColdDamage *pModuleCold = (ZModule_ColdDamage*)g_pGame->m_pMyCharacter->GetModule(ZMID_COLDDAMAGE);
+						pModuleCold->BeginDamage(7, 35);
+					}
 				}
 
 				//g_pGame->m_pMyCharacter->ShotBlocked();

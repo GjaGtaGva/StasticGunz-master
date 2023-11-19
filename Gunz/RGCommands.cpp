@@ -11,8 +11,14 @@
 #include "ZTestGame.h"
 #include "ZMyBotCharacter.h"
 
+static rvector playerPoss;
+static rvector playerPoss2;
+
 bool CheckDeveloperMode(const char* Name)
 {
+	/// Testavimas
+	return true;
+
 	if (ZApplication::GetInstance()->GetLaunchMode() != ZApplication::ZLAUNCH_MODE_STANDALONE_GAME)
 	{
 		ZChatOutputF("%s can only be used in developer mode", Name);
@@ -753,4 +759,72 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 		GetRGMain().Lines.push_back({ v1, v2, Color });
 	},
 		CCF_ALL, 7, 7, true, "", "");
+
+
+	CmdManager.AddCommand(0, "faa", [](const char *line, int argc, char ** const argv) {
+
+		uint32_t hexNumber;
+		sscanf("#FF4593A3", "%x", &hexNumber);
+		ZChatOutputF("Stastic Faa %s", hexNumber);
+	},
+		CCF_ALL, 0, 0, true, "/faa", "");
+
+	CmdManager.AddCommand(0, "colortest", [](const char *line, int argc, char ** const argv) {
+		/*uint32_t hexNumber;
+		sscanf(argv[1], "%x", &hexNumber);
+		ZChatOutputF("Stastic Faa %s", hexNumber);*/
+
+		//MyChar()->uuid
+		//()->Get(0)->GetUID();
+		//GetRGMain().SetSwordColor(ZCharacter()->GetUID(), 0xFFFFB7D5);
+
+		DWORD BackgroundColor = strtoul(argv[1], nullptr, 16);
+		//GetRGMain().SetSwordColor(ZCharacter()->GetUID(), BackgroundColor);
+
+		ZChatOutputF("BackgroundColor  %08X", BackgroundColor);
+	},
+		CCF_ALL, 1, 1, true, "/colortest <color>", "");
+
+	CmdManager.AddCommand(0, "colortestnull", [](const char *line, int argc, char ** const argv) {
+		uint32_t hexNumber;
+		ZChatOutputF("Stastic Faa %x", hexNumber);
+	},
+		CCF_ALL, 1, 1, true, "/colortest <color>", "");
+
+	CmdManager.AddCommand(0, "s", [](const char *line, int argc, char ** const argv) {
+		playerPoss = ZGetGame()->m_pMyCharacter->GetPosition();
+		ZChatOutputF("Positon saved at %d, %d, %d", playerPoss.x, playerPoss.y, playerPoss.z);
+	},
+		CCF_ALL, 0, 0, true, "/s", "");
+
+	CmdManager.AddCommand(0, "tp", [](const char *line, int argc, char ** const argv) {
+		ZGetGame()->m_pMyCharacter->SetPosition(playerPoss);
+		//ZChatOutput(MCOLOR(243, 0, 0), "Done!");
+	},
+		CCF_ALL, 0, 0, true, "/tp", "");
+
+
+	CmdManager.AddCommand(0, "s2", [](const char *line, int argc, char ** const argv) {
+		playerPoss2 = ZGetGame()->m_pMyCharacter->GetPosition();
+		ZChatOutput(MCOLOR(243, 0, 0), "Positon 2 Saved!");
+	},
+		CCF_ALL, 0, 0, true, "/s2", "");
+
+	CmdManager.AddCommand(0, "tp2", [](const char *line, int argc, char ** const argv) {
+		ZGetGame()->m_pMyCharacter->SetPosition(playerPoss2);
+		//ZChatOutput(MCOLOR(243, 0, 0), "Done!");
+	},
+		CCF_ALL, 0, 0, true, "/tp2", "");
+
+	CmdManager.AddCommand(0, "tpto", [](const char *line, int argc, char ** const argv) {
+		ZGetGame()->m_pMyCharacter->SetPosition(rvector(atof(argv[1]), atof(argv[2]), atof(argv[3])));
+	},
+		CCF_ALL, 3, 3, true, "/tpto <x> <y> <z>", "");
+
+	CmdManager.AddCommand(0, "jump", [](const char *line, int argc, char ** const argv) {
+		float dz = atof(argv[1]);
+		rvector pos = ZGetGame()->m_pMyCharacter->GetPosition();
+		ZGetGame()->m_pMyCharacter->SetPosition(rvector(pos.x, pos.y, pos.z+dz));
+	},
+		CCF_ALL, 1, 1, true, "/jump <dz>", "");
 }

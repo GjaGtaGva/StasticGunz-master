@@ -2309,6 +2309,7 @@ int ZGame::SelectSlashEffectMotion(ZCharacter* pCharacter)
 //	MWT_KATANA
 //	MWT_GREAT_SWORD
 //	MWT_DOUBLE_KATANA
+//	MWT_SCISSOR
 
 	auto lower = pCharacter->GetStateLower();
 
@@ -2328,6 +2329,7 @@ int ZGame::SelectSlashEffectMotion(ZCharacter* pCharacter)
 
 			 if(nType == MWT_KATANA )		return SEM_ManSlash1 + nAdd;
 		else if(nType == MWT_DOUBLE_KATANA)	return SEM_ManDoubleSlash1 + nAdd;
+		else if(nType == MWT_SCISSOR)		return SEM_ManSnip1 + nAdd;
 		else if(nType == MWT_GREAT_SWORD)	return SEM_ManGreatSwordSlash1 + nAdd;
 
 	}
@@ -2342,6 +2344,7 @@ int ZGame::SelectSlashEffectMotion(ZCharacter* pCharacter)
 
 			 if(nType == MWT_KATANA )		return SEM_WomanSlash1 + nAdd;
 		else if(nType == MWT_DOUBLE_KATANA)	return SEM_WomanDoubleSlash1 + nAdd;
+		else if(nType == MWT_SCISSOR)		return SEM_WomanSnip1 + nAdd;
 		else if(nType == MWT_GREAT_SWORD)	return SEM_WomanGreatSwordSlash1 + nAdd;
 	}
 

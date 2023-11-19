@@ -71,6 +71,7 @@ enum MMatchCustomItemType
 	MMCIT_ENCHANT_COLD,
 	MMCIT_ENCHANT_LIGHTNING,
 	MMCIT_ENCHANT_POISON,
+	MMCIT_ENCHANT_STARFIRE,
 
 	MMCIT_END
 };
@@ -82,6 +83,7 @@ enum MMatchMeleeItemType
 	MIT_KATANA			= 2,
 	MIT_GREAT_SWORD		= 3,
 	MIT_DOUBLE_KATANA	= 4,
+	MIT_SCISSOR			= 5,
 
 	MIT_END
 };
@@ -113,6 +115,7 @@ enum MMatchWeaponType
 	MWT_KATANA,
 	MWT_GREAT_SWORD,
 	MWT_DOUBLE_KATANA,
+	MWT_SCISSOR,
 
 	// range
 	MWT_PISTOL,
@@ -143,6 +146,7 @@ enum MMatchWeaponType
 	MWT_ENCHANT_COLD,
 	MWT_ENCHANT_LIGHTNING,
 	MWT_ENCHANT_POISON,
+	MWT_ENCHANT_STARFIRE,
 
 	MWT_END
 };
@@ -230,7 +234,7 @@ struct MMatchItemDesc
 	int					m_nEffectLevel;
 	char				m_szDesc[8192];
 
-	u32	m_nColor;
+	u32					m_nColor;
 	char				m_szMeshName[128];
 	int					m_nImageID;
 	int					m_nBulletImageID;
@@ -239,6 +243,9 @@ struct MMatchItemDesc
 	char				m_szFireSndName[256];
 	char				m_szDryfireSndName[256];
 
+	/// Gva - set sword trail color in zitem.xml
+	uint32_t					m_GvaTrailColor;
+
 	MMatchItemBonus		m_Bonus;
 
 	bool				m_bDuplicate;
@@ -246,7 +253,7 @@ struct MMatchItemDesc
 	MMatchItemDesc();
 	int GetBountyValue() { return (m_nBountyPrice / 4); }
 	bool IsCashItem()	{ if ((m_nID>=500000) || (m_bIsCashItem)) return true; return false; }
-	bool IsEnchantItem() { if (m_nWeaponType>=MWT_ENCHANT_FIRE && m_nWeaponType<=MWT_ENCHANT_POISON) return true; return false; }
+	bool IsEnchantItem() { if (m_nWeaponType>=MWT_ENCHANT_FIRE && m_nWeaponType<= MWT_ENCHANT_STARFIRE) return true; return false; }
 };
 
 bool IsSuitableItemSlot(MMatchItemSlotType nSlotType, MMatchCharItemParts nParts);
@@ -491,6 +498,8 @@ struct MAccountItemNode
 
 #define MICTOK_BONUS_DUPLICATE		"duplicate"
 
+#define MICTOK_GVA_TRAIL_COLOR		"trail_color"
+
 /*
 == XML 기술 설명 ==
 + zitem.xml 설명
@@ -507,7 +516,7 @@ res_level : 레벨 제한사항(int) , 제한이 없을경우 0으로 세팅하도록 한다.
 slot : 슬롯(none, melee, range, head, chest, hands, legs, feet, finger, custom)
 weapon : 무기타입(none, dagger, katana, pistol, smg, shotgun, rifle, machinegun, 
                   rocket, snifer, medkit, flashbang, frag, smoke, 
-				  enchant_fire, enchant_cold, enchant_lightning, enchant_poison)
+				  enchant_fire, enchant_cold, enchant_lightning, enchant_poison, enchant_starfire)
 weight : 무게(int)
 bt_price : 판매가(int)
 iscashitem : 캐쉬아이템인지 여부(true, false)

@@ -64,6 +64,28 @@ public:
 };
 MChatInputListener	g_ChatInputListener;
 
+
+// Gva item search
+class MShopItemSearchInputListener : public MListener {
+public:
+	virtual bool OnCommand(MWidget* pWidget, const char* szMessage) {
+
+		/// cia uzkomentuot nereikia
+		//if (pWidget->IsVisible())
+		//{
+			ZGetShop()->SerializeSearch();
+			ZGetMyInfo()->GetItemList()->SerializeSearch();
+
+		//}
+		return false;
+	}
+};
+MShopItemSearchInputListener    g_ShopItemSearchInputListener;
+MListener* ZGetShopItemSearchInputListener()
+{
+	return &g_ShopItemSearchInputListener;
+}
+
 class MHotBarButton : public MButton{
 protected:
 	char	m_szCommandString[256];
@@ -979,7 +1001,7 @@ BEGIN_IMPLEMENT_LISTENER(ZGetShopSearchCallerButtonListener, MBTN_CLK_MSG)
 END_IMPLEMENT_LISTENER()
 
 
-
+/// Nustato pasirinkta mapa kaip nustatyta
 void PostMapname()
 {
 	ZIDLResource* pResource = ZApplication::GetGameInterface()->GetIDLResource();
@@ -991,6 +1013,11 @@ void PostMapname()
 		sprintf_safe(szMapName, pszSelItemString);
 		ZApplication::GetStageInterface()->SetMapName(szMapName);
 		ZPostStageMap(ZGetGameClient()->GetStageUID(), szMapName);
+
+		/*char szMapName[_MAX_DIR] = "Mappy";
+		//sprintf_safe(szMapName, pszSelItemString);
+		ZApplication::GetStageInterface()->SetMapName(szMapName);
+		ZPostStageMap(ZGetGameClient()->GetStageUID(), szMapName);*/
 	}
 }
 

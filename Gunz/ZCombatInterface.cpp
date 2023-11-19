@@ -507,6 +507,7 @@ void ZCombatInterface::OnDraw(MDrawContext* pDC)
 
 		char buffer[256];
 
+
 		sprintf_safe(buffer, "%d  %s", pCharacter->GetProperty()->nLevel, pCharacter->GetProperty()->szName);
 
 		if ((ZApplication::GetGame()->GetMatch()->GetMatchType() != MMATCH_GAMETYPE_DUEL)
@@ -525,13 +526,26 @@ void ZCombatInterface::OnDraw(MDrawContext* pDC)
 			TextRelative(pDC, 660.f / 800.f, 480.f / 600.f, buffer);
 		}
 
-		TextRelative(pDC, 660.f / 800.f, 510.f / 600.f, m_szItemName);
+		char itemNameAndDesc[256];
+
+		/// Gva bonus: weapon show damage and delay
+		char szWeaponInfo[70];
+		MMatchCharItemParts nParts = pCharacter->GetItems()->GetSelectedWeaponParts();
+		if (nParts < MMCIP_END) {
+			MMatchItemDesc* pItemDesc = MGetMatchItemDescMgr()->GetItemDesc(pCharacter->GetItems()->GetSelectedWeapon()->GetDescID());
+			sprintf(szWeaponInfo, "(Damage %d / Delay %d)", pItemDesc->m_nDamage, pItemDesc->m_nDelay);
+			//TextRelative(pDC, 660.f / 800.f, 530.f / 600.f, szWeaponInfo);
+		}
+
+		sprintf_safe(itemNameAndDesc, "%s %s", m_szItemName, szWeaponInfo);
+		TextRelative(pDC, 660.f / 800.f, 510.f / 600.f, itemNameAndDesc);
 
 		if (pCharacter->GetItems()->GetSelectedWeaponParts() != MMCIP_MELEE)
 		{
 			sprintf_safe(buffer, "%d / %d", m_nBulletAMagazine, m_nBullet);
 			TextRelative(pDC, 720.f / 800.f, 585.f / 600.f, buffer);
 		}
+
 
 #ifdef DRAW_HPAP_NUMBERS
 		sprintf_safe(buffer, "%d", pCharacter->GetHP());
@@ -2881,7 +2895,7 @@ void ZCombatInterface::GameCheckPickCharacter()
 		RWeaponMotionType type = (RWeaponMotionType)pMyChar->m_pVMesh->GetSetectedWeaponMotionID();
 
 		if( (type==eq_wd_katana) || (type==eq_wd_grenade) || (type==eq_ws_dagger) || (type==eq_wd_dagger) 
-			|| (type==eq_wd_item) || (type==eq_wd_sword) || (type==eq_wd_blade) ) {
+			|| (type==eq_wd_item) || (type==eq_wd_sword) || (type==eq_wd_blade) || (type==eq_wd_scissor) ) {
 			bPick = false;
 		}
 

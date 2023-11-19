@@ -50,6 +50,8 @@ MBitmap* GetItemIconBitmap(MMatchItemDesc* pItemDesc, bool bSmallIcon)
 					strcpy_safe(szFileName, "slot_icon_en_lightning"); break;
 				case MWT_ENCHANT_POISON:
 					strcpy_safe(szFileName, "slot_icon_en_poison"); break;
+				case MWT_ENCHANT_STARFIRE:
+					strcpy_safe(szFileName, "slot_icon_en_starfire"); break;
 				default: _ASSERT(0);break;
 			}
 		}
@@ -75,6 +77,7 @@ MBitmap* GetItemIconBitmap(MMatchItemDesc* pItemDesc, bool bSmallIcon)
 				case MWT_KATANA:		strcpy_safe(szFileName, "slot_icon_katana"); break;
 				case MWT_GREAT_SWORD:	strcpy_safe(szFileName, "slot_icon_sword"); break;
 				case MWT_DOUBLE_KATANA:	strcpy_safe(szFileName, "slot_icon_blade"); break;
+				case MWT_SCISSOR:	    strcpy_safe(szFileName, "slot_icon_scissor"); break;
 
 				case MWT_PISTOL:		strcpy_safe(szFileName, "slot_icon_pistol"); break;
 				case MWT_PISTOLx2:		strcpy_safe(szFileName, "slot_icon_D_pistol"); break;
@@ -214,7 +217,8 @@ ZEquipmentListBox::ZEquipmentListBox(const char* szName, MWidget* pParent, MList
 
 	m_bVisibleHeader = true;
 
-	SetItemHeight(32);
+	/// Gva stai cia! itemu auksttis. Still, geriau butu sumazint ikona
+	SetItemHeight(48);
 
 	m_nLastItem=-1;
 	m_dwLastMouseMove=GetGlobalTimeMS();

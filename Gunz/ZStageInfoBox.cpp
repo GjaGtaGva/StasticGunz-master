@@ -10,7 +10,7 @@ ZStageInfoBox::ZStageInfoBox(const char* szName, MWidget* pParent, MListener* pL
 {
 //	LOOK_IN_CONSTRUCTOR()
 
-	SetItemHeight(GetItemHeight()*3);
+	SetItemHeight(GetItemHeight());
 	SetAlwaysVisibleScrollbar(true);
 
 	m_pLook=NULL;

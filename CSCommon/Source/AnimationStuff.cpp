@@ -98,6 +98,8 @@ ZANIMATIONINFO g_AnimationInfoTableLower[ZC_STATE_LOWER_END] = {
 	{ "jump_slash1"		,false	,false 	,false	,false },
 	{ "jump_slash2"		,false	,false 	,false	,false },
 
+
+	/// starfire use lightning
 	{ "lightning"		,false	,false 	,false	,false },
 	{ "stun"			,false	,false 	,false	,false },
 
@@ -751,6 +753,10 @@ int GetSelectWeaponDelay(MMatchItemDesc* pSelectItemDesc)
 
 	case MWT_DOUBLE_KATANA:
 		nReturnDelay -= 299;
+		break;
+
+	case MWT_SCISSOR:
+		nReturnDelay -= 289;
 		break;
 
 	case MWT_GREAT_SWORD:

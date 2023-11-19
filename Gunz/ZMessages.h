@@ -264,6 +264,7 @@
 #define MSG_WORD_ATTRIBUTE_COLD					9306		///< 얼음속성
 #define MSG_WORD_ATTRIBUTE_POISON				9307		///< 독속성
 #define MSG_WORD_ATTRIBUTE_LIGHTNING			9308		///< 번개속성
+#define MSG_WORD_ATTRIBUTE_STARFIRE				9701		///< STARFIRE
 #define MSG_WORD_RUNTIME						9309		///< 지속시간
 #define MSG_WORD_BULLET							9310		///< 탄수/탄창
 #define MSG_WORD_ATTACK							9311		///< 공격력

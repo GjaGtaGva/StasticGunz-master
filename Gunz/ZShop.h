@@ -44,6 +44,9 @@ public:
 	int GetPage() { return m_nPage; }
 	u32 GetItemID(int nIndex);
 	static ZShop* GetInstance();
+
+	// Gva item search
+    void SerializeSearch();
 };
 
 inline ZShop* ZGetShop() { return ZShop::GetInstance(); }

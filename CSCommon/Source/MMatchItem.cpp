@@ -331,6 +331,7 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 			else if (!_stricmp(szAttrValue, "katana"))		pNewDesc->m_nWeaponType = MWT_KATANA;
 			else if (!_stricmp(szAttrValue, "greatsword"))	pNewDesc->m_nWeaponType = MWT_GREAT_SWORD;
 			else if (!_stricmp(szAttrValue, "doublekatana"))	pNewDesc->m_nWeaponType = MWT_DOUBLE_KATANA;
+			else if (!_stricmp(szAttrValue, "scissor"))			pNewDesc->m_nWeaponType = MWT_SCISSOR;
 
 			else if (!_stricmp(szAttrValue, "pistol"))		pNewDesc->m_nWeaponType = MWT_PISTOL;
 			else if (!_stricmp(szAttrValue, "pistolx2"))		pNewDesc->m_nWeaponType = MWT_PISTOLx2;
@@ -359,6 +360,7 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 			else if (!_stricmp(szAttrValue, "enchant_cold"))			pNewDesc->m_nWeaponType = MWT_ENCHANT_COLD;
 			else if (!_stricmp(szAttrValue, "enchant_lightning"))	pNewDesc->m_nWeaponType = MWT_ENCHANT_LIGHTNING;
 			else if (!_stricmp(szAttrValue, "enchant_poison"))		pNewDesc->m_nWeaponType = MWT_ENCHANT_POISON;
+			else if (!_stricmp(szAttrValue, "enchant_starfire"))		pNewDesc->m_nWeaponType = MWT_ENCHANT_STARFIRE;
 
 			else _ASSERT(0);
 		}
@@ -548,6 +550,12 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 				pNewDesc->m_bDuplicate = false;
 			else
 				pNewDesc->m_bDuplicate = true;
+		}
+		else if( !_stricmp(szAttrName, MICTOK_GVA_TRAIL_COLOR) )
+		{
+			uint32_t hexNumber;
+			sscanf(szAttrValue, "%x", &hexNumber);
+			pNewDesc->m_GvaTrailColor = hexNumber;
 		}
 	}
 
@@ -955,6 +963,7 @@ MMatchWeaponType GetWeaponType(MMatchMeleeItemType nMeleeItemType)
 	case MIT_KATANA:		return MWT_KATANA;
 	case MIT_GREAT_SWORD:	return MWT_GREAT_SWORD;
 	case MIT_DOUBLE_KATANA:	return MWT_DOUBLE_KATANA;
+	case MIT_SCISSOR:		return MWT_SCISSOR;
 	default:
 			// 없는 타입
 			_ASSERT(0);
@@ -1006,6 +1015,7 @@ MMatchWeaponType GetWeaponType(MMatchCustomItemType nCustomItemType)
 	case MMCIT_ENCHANT_COLD:		return MWT_ENCHANT_COLD;
 	case MMCIT_ENCHANT_LIGHTNING:	return MWT_ENCHANT_LIGHTNING;
 	case MMCIT_ENCHANT_POISON:		return MWT_ENCHANT_POISON;
+	case MMCIT_ENCHANT_STARFIRE:	return MWT_ENCHANT_STARFIRE;
 	case MMCIT_FOOD:				return MWT_FOOD;
 
 	default:
@@ -1024,7 +1034,8 @@ bool IsEnchantItem(MMatchItemDesc* pItemDesc)
 		if ((pItemDesc->m_nWeaponType == MWT_ENCHANT_FIRE) || 
 			(pItemDesc->m_nWeaponType == MWT_ENCHANT_COLD) || 
 			(pItemDesc->m_nWeaponType == MWT_ENCHANT_LIGHTNING) || 
-			(pItemDesc->m_nWeaponType == MWT_ENCHANT_POISON) )
+			(pItemDesc->m_nWeaponType == MWT_ENCHANT_POISON) ||
+			(pItemDesc->m_nWeaponType == MWT_ENCHANT_STARFIRE) )
 			return true;
 	}
 

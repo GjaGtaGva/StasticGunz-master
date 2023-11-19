@@ -321,6 +321,7 @@ void ZScreenEffectManager::Destroy()
 	SAFE_DELETE(m_pWeaponIcons[MWT_KATANA]);
 	SAFE_DELETE(m_pWeaponIcons[MWT_GREAT_SWORD]);
 	SAFE_DELETE(m_pWeaponIcons[MWT_DOUBLE_KATANA]);
+	SAFE_DELETE(m_pWeaponIcons[MWT_SCISSOR]);
 
 	SAFE_DELETE(m_pWeaponIcons[MWT_PISTOL]);
 	SAFE_DELETE(m_pWeaponIcons[MWT_PISTOLx2]);
@@ -402,6 +403,9 @@ bool ZScreenEffectManager::Create()
 	m_pWeaponIcons[MWT_KATANA]			= new ZScreenEffect(m_pEffectMeshMgr->Get("ef_in_icon_katana.elu"));
 	m_pWeaponIcons[MWT_GREAT_SWORD]		= new ZScreenEffect(m_pEffectMeshMgr->Get("ef_in_icon_sword.elu"));
 	m_pWeaponIcons[MWT_DOUBLE_KATANA]	= new ZScreenEffect(m_pEffectMeshMgr->Get("ef_in_icon_blade.elu"));
+	/// Faa need ef_in_icon_scissor.elu and look at that screeneffects.xml^
+	/// Cia tik ikona apacioj kairej, ez.
+	m_pWeaponIcons[MWT_SCISSOR]			= new ZScreenEffect(m_pEffectMeshMgr->Get("ef_in_icon_d_dagger.elu"));
 
 	m_pWeaponIcons[MWT_PISTOL]			= new ZScreenEffect(m_pEffectMeshMgr->Get("ef_in_icon_pistol.elu"));
 	m_pWeaponIcons[MWT_PISTOLx2]		= new ZScreenEffect(m_pEffectMeshMgr->Get("ef_in_icon_d_pistol.elu"));

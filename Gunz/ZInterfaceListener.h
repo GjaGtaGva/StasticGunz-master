@@ -37,6 +37,10 @@ MListener* ZGetParentCloseListener();
 MListener* ZGetStageCreateFrameCallerListener();
 MListener* ZGetSelectCharacterComboBoxListener();
 
+// Gva item search
+MListener* ZGetShopItemSearchInputListener();
+DECLARE_LISTENER(ZGetItemSearchCallerButtonListener);
+
 DECLARE_LISTENER(ZGetLoginStateButtonListener)
 DECLARE_LISTENER(ZGetGreeterStateButtonListener)
 DECLARE_LISTENER(ZGetOptionFrameButtonListener)

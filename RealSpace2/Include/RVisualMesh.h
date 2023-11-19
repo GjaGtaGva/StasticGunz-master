@@ -330,6 +330,7 @@ public:
 	void DrawEnchantCold(RVisualMesh* pVWMesh, int mode, rmatrix& m);
 	void DrawEnchantLighting(RVisualMesh* pVWMesh, int mode, rmatrix& m);
 	void DrawEnchantPoison(RVisualMesh* pVWMesh, int mode, rmatrix& m);
+	void DrawEnchantStarfire(RVisualMesh* pVWMesh, int mode, rmatrix& m);
 
 	int	 GetLastWeaponTrackPos(rvector* pOutVec);
 
@@ -352,6 +353,9 @@ public:
 	void GetEnChantColor(u32* color);
 	void SetEnChantType(REnchantType EnchantType) {
 		m_EnchantType = EnchantType;
+	}
+	void SetEnChantType2(REnchantType EnchantType) {
+		m_EnchantType_2 = EnchantType;
 	}
 
 	void SetCustomColor(u32 a, u32 b) {
@@ -434,6 +438,7 @@ public:
 	RWeaponTracks*	m_pTracks[2];
 
 	REnchantType	m_EnchantType;
+	REnchantType	m_EnchantType_2;
 
 	int				m_id;
 	float			m_fVis;

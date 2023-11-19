@@ -2234,8 +2234,28 @@
 	<ITEM id="600305" name="STR:ZITEM_NAME_600305" type="custom" weapon="enchant_poison" res_sex="a"
 		res_level="50" slot="custom" bt_price="500" image_id="3" effect_level="3" delay="7000"
 		weight="3" damage="5" desc="STR:ZITEM_DESC_600305" />
+		
+	<!-- STARFIRE ++ -->
+	<ITEM id="39200" name="STARFIRE Eye" type="custom" weapon="enchant_starfire" res_sex="a"
+		res_level="0" slot="custom" bt_price="00" image_id="3" effect_level="0" delay="3000"
+		weight="3" damage="1" desc="An eye empowered by Gva" />
+	<ITEM id="39201" name="STARFIRE COIN" type="custom" weapon="enchant_starfire" res_sex="a"
+		res_level="15" slot="custom" bt_price="00" image_id="3" effect_level="1" delay="3000"
+		weight="3" damage="1" desc="STARFIRE COIN" />
+	<ITEM id="39202" name="STARFIRE STAMP" type="custom" weapon="enchant_starfire" res_sex="a"
+		res_level="25" slot="custom" bt_price="000" image_id="3" effect_level="2" delay="4000"
+		weight="3" damage="2" desc="STARFIRE STAMP" />
+	<ITEM id="39203" name="STARFIRE MEDAL" type="custom" weapon="enchant_starfire" res_sex="a"
+		res_level="35" slot="custom" bt_price="0000" image_id="3" effect_level="2" delay="5000"
+		weight="3" damage="3" desc="STARFIRE MEDAL" />
+	<ITEM id="39204" name="STARFIRE TROPHY" type="custom" weapon="enchant_starfire" res_sex="a"
+		res_level="45" slot="custom" bt_price="0000" image_id="3" effect_level="3" delay="6000"
+		weight="3" damage="4" desc="STARFIRE TROPHY" />
+	<ITEM id="39205" name="STARFIRE WORLD" type="custom" weapon="enchant_starfire" res_sex="a"
+		res_level="50" slot="custom" bt_price="00000" image_id="3" effect_level="3" delay="7000"
+		weight="3" damage="5" desc="STARFIRE WORLD" />
+	<ITEM id="39206" name="STARFIRE GM" type="custom" weapon="enchant_starfire" res_sex="a" 
+		res_level="0" slot="custom" bt_price="0" image_id="3" effect_level="4" delay="70" 
+		weight="0" damage="50" desc="STARFIRE ADMIN" />
 
-	<!-- Premium Ticket -->
-	<ITEM id="700001" name="STR:ZITEM_NAME_700001" slot="none" type="ticket" ticket_type="admission" 
-		weapon="" res_sex="a" res_level="0" iscash="true" weight="0" desc="STR:ZITEM_DESC_700001" />
 </XML>

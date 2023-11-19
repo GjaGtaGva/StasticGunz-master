@@ -298,8 +298,8 @@ void ZInterfaceBackground::SetScene( int nSceneNumber)
 	if ( (nSceneNumber == LOGIN_SCENE_FALLDOWN) || (nSceneNumber == LOGIN_SCENE_SELECTCHAR))
 		m_dwClock = GetGlobalTimeMS();
 
-	if( nSceneNumber == LOGIN_SCENE_FALLDOWN)
-		ZGetScreenEffectManager()->AddScreenEffect( "maiet_logo");
+	//if( nSceneNumber == LOGIN_SCENE_FALLDOWN)
+	//	ZGetScreenEffectManager()->AddScreenEffect( "maiet_logo");
 
 	m_nSceneNumber = nSceneNumber;
 }

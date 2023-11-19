@@ -72,6 +72,7 @@ ZCharacterObject::ZCharacterObject()
 	ADD_MODULE(ColdDamage);
 	ADD_MODULE(PoisonDamage);
 	ADD_MODULE(LightningDamage);
+	ADD_MODULE(StarfireDamage);
 #undef ADD_MODULE
 }
 
@@ -92,17 +93,23 @@ bool ZCharacterObject::GetWeaponTypePos(WeaponDummyType type,rvector* pos,bool b
 
 void ZCharacterObject::UpdateEnchant()
 {
-	ZC_ENCHANT etype = GetEnchantType();
-	REnchantType retype = REnchantType_None;
+	for (int i = MMCIP_CUSTOM1; i <= MMCIP_CUSTOM2; i++) {
+		MMatchCharItemParts part = (MMatchCharItemParts)i;
+		ZC_ENCHANT etype = GetEnchantType(part);
+		REnchantType retype = REnchantType_None;
 
-		 if(etype==ZC_ENCHANT_FIRE)			retype = REnchantType_Fire;
-	else if(etype==ZC_ENCHANT_COLD)			retype = REnchantType_Cold;
-	else if(etype==ZC_ENCHANT_LIGHTNING)	retype = REnchantType_Lightning;
-	else if(etype==ZC_ENCHANT_POISON)		retype = REnchantType_Poison;
-	else									retype = REnchantType_None;
-	
-	if(m_pVMesh) {
-		m_pVMesh->SetEnChantType(retype);
+		if (etype == ZC_ENCHANT_FIRE)			retype = REnchantType_Fire;
+		else if (etype == ZC_ENCHANT_COLD)			retype = REnchantType_Cold;
+		else if (etype == ZC_ENCHANT_LIGHTNING)	retype = REnchantType_Lightning;
+		else if (etype == ZC_ENCHANT_POISON)		retype = REnchantType_Poison;
+		else if (etype == ZC_ENCHANT_STARFIRE)		retype = REnchantType_Starfire;
+		else									retype = REnchantType_None;
+
+		if (part == MMCIP_CUSTOM1) {
+			if (m_pVMesh) m_pVMesh->SetEnChantType(retype);
+		} else if (part == MMCIP_CUSTOM2) {
+			if (m_pVMesh) m_pVMesh->SetEnChantType2(retype);
+		}
 	}
 }
 
@@ -114,6 +121,8 @@ void ZCharacterObject::DrawEnchantSub(ZC_ENCHANT etype,rvector& pos)
 		ZGetEffectManager()->AddTrackCold( pos );
 	else if(etype==ZC_ENCHANT_POISON)
 		ZGetEffectManager()->AddTrackPoison( pos );
+	else if(etype==ZC_ENCHANT_STARFIRE)
+		ZGetEffectManager()->AddTrackStarfire( pos );
 }
 
 void ZCharacterObject::EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon)
@@ -227,31 +236,35 @@ void ZCharacterObject::DrawEnchant(ZC_STATE_LOWER AniState_Lower,bool bCharged)
 			(AniState_Lower == ZC_STATE_JUMP_SLASH2) )
 			bSlash = true;
 
-		ZC_ENCHANT etype = GetEnchantType();
+		for (int i = MMCIP_CUSTOM1; i <= MMCIP_CUSTOM2; i++) {
+			MMatchCharItemParts part = (MMatchCharItemParts)i;
+			MMatchItemDesc* pENDesc = GetEnchantItemDesc(part);
 
-		MMatchItemDesc* pENDesc = GetEnchantItemDesc();
-		if(pENDesc) {
+			if (pENDesc) {
+				ZC_ENCHANT etype = GetEnchantType(part);
 
-			int nEFLevel = pENDesc->m_nEffectLevel;
+				int nEFLevel = pENDesc->m_nEffectLevel;
 
-			if( (nEFLevel > 2) || ((nEFLevel > 1) && bCharged ) )
-			{
-				EnChantMovingEffect(pOutPos,cnt,etype,bDoubleWeapon);
-			}
+				if ( (nEFLevel > 2) || ((nEFLevel > 1) && bCharged) )
+				{
+					EnChantMovingEffect(pOutPos, cnt, etype, bDoubleWeapon);
+				}
 
-			if( bSlash )
-			{ 
-				EnChantSlashEffect(pOutPos,cnt,etype,bDoubleWeapon);
-			}
+				if (bSlash)
+				{
+					EnChantSlashEffect(pOutPos, cnt, etype, bDoubleWeapon);
+				}
 
-			if( (nEFLevel > 1) || bCharged )
-			{
-				EnChantWeaponEffect(etype,nEFLevel);
+				if ((nEFLevel > 1) || bCharged)
+				{
+					EnChantWeaponEffect(etype, nEFLevel);
+				}
 			}
 		}
 	}
 }
 
+/// Desc of first Enchant item on any custom slot
 MMatchItemDesc* ZCharacterObject::GetEnchantItemDesc()
 {
 	for(int i=MMCIP_CUSTOM1;i<=MMCIP_CUSTOM2;i++) {
@@ -260,6 +273,15 @@ MMatchItemDesc* ZCharacterObject::GetEnchantItemDesc()
 		if(pDesc && pDesc->IsEnchantItem() ) return pDesc;
 	}
 
+	return NULL;
+}
+/// Gva Desc of Enchant item on a given part
+MMatchItemDesc* ZCharacterObject::GetEnchantItemDesc(MMatchCharItemParts part)
+{
+	ZItem *pItem = m_Items.GetItem(part);
+	MMatchItemDesc* pDesc = pItem->GetDesc();
+	if(pDesc && pDesc->IsEnchantItem() ) return pDesc;
+	
 	return NULL;
 }
 
@@ -274,10 +296,43 @@ ZC_ENCHANT	ZCharacterObject::GetEnchantType()
 			case MWT_ENCHANT_COLD : return ZC_ENCHANT_COLD;
 			case MWT_ENCHANT_LIGHTNING: return ZC_ENCHANT_LIGHTNING;
 			case MWT_ENCHANT_POISON: return ZC_ENCHANT_POISON;
+			case MWT_ENCHANT_STARFIRE: return ZC_ENCHANT_STARFIRE;
 		}
 	}
 
 	return ZC_ENCHANT_NONE;
+}
+
+/// Gva Type of Enchant item on a given part
+ZC_ENCHANT	ZCharacterObject::GetEnchantType(MMatchCharItemParts part)
+{
+	MMatchItemDesc* pDesc = GetEnchantItemDesc(part);
+	if(pDesc)
+	{
+		switch(pDesc->m_nWeaponType)
+		{
+			case MWT_ENCHANT_FIRE : return ZC_ENCHANT_FIRE;
+			case MWT_ENCHANT_COLD : return ZC_ENCHANT_COLD;
+			case MWT_ENCHANT_LIGHTNING: return ZC_ENCHANT_LIGHTNING;
+			case MWT_ENCHANT_POISON: return ZC_ENCHANT_POISON;
+			case MWT_ENCHANT_STARFIRE: return ZC_ENCHANT_STARFIRE;
+		}
+	}
+
+	return ZC_ENCHANT_NONE;
+}
+
+/// Whether Lightning stun is on
+bool ZCharacterObject::HasLightningEnchant()
+{
+	for (int i = MMCIP_CUSTOM1; i <= MMCIP_CUSTOM2; i++) {
+		MMatchCharItemParts part = (MMatchCharItemParts)i;
+
+		ZC_ENCHANT etype = GetEnchantType(part);
+		if (etype == ZC_ENCHANT_LIGHTNING || etype == ZC_ENCHANT_STARFIRE)
+			return true;
+	}
+	return false;
 }
 
 void ZCharacterObject::SetGunLight()

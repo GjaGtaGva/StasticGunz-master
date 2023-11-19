@@ -12,7 +12,7 @@
 #define CYCLE_STAGE_UPDATECHECKSUM	500
 
 #define NUM_APPLYED_TEAMBONUS_TEAM_PLAYERS		3
-#define RESPAWN_DELAYTIME_AFTER_DYING			7000
+#define RESPAWN_DELAYTIME_AFTER_DYING			1 // 7000
 
 #define MAX_XP_BONUS_RATIO						2.0f
 #define MAX_BP_BONUS_RATIO						2.0f
@@ -36,11 +36,11 @@
 #define CLAN_SPONSORS_COUNT				4
 #endif
 #define CLAN_CREATING_NEED_BOUNTY		0 //1000
-#define CLAN_CREATING_NEED_LEVEL		0 //10
+#define CLAN_CREATING_NEED_LEVEL		2 //10
 
 
 #define CLAN_NAME_LENGTH			16
-#define MIN_CLANNAME	4
+#define MIN_CLANNAME	3 // 4
 #define MAX_CLANNAME	12
 
 enum MMatchClanGrade : i32
@@ -62,7 +62,8 @@ inline bool IsUpperClanGrade(MMatchClanGrade nSrcGrade, MMatchClanGrade nDstGrad
 //
 // Character
 //
-#define MIN_CHARNAME	4
+// Gva Book cia kanalu ir panasu characteriu name constraintai
+#define MIN_CHARNAME	3 // 4
 #define MAX_CHARNAME	16
 
 #define MAX_CHAR_LEVEL	99

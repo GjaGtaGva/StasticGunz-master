@@ -11,6 +11,8 @@
 #include "ZEquipmentListBox.h"
 #include "ZNetRepository.h"
 
+#include "shlwapi.h"
+
 ZShop::ZShop() : m_nPage(0), m_bCreated(false)
 {
 	m_ListFilter = zshop_item_filter_all;
@@ -166,4 +168,50 @@ void ZShop::SetItemsAll(u32* nItemList, int nItemCount)
 void ZShop::Clear()
 {
 	m_ItemVector.clear();
+}
+
+
+// Gva item search
+void ZShop::SerializeSearch()
+{
+	ZIDLResource* pResource = ZApplication::GetGameInterface()->GetIDLResource();
+	MListBox* pListBox = (MListBox*)pResource->FindWidget("AllEquipmentList");
+
+	if (pListBox) {
+		MEdit* pWidget = (MEdit*)pResource->FindWidget("Item_Search");
+
+		if ((strlen(pWidget->GetText()) > 0) && (strlen(pWidget->GetText()) <= 128))
+		{
+			pListBox->RemoveAll();
+
+			for (int i = 0; i < GetItemCount(); i++) {
+
+				MMatchItemDesc* pDesc = NULL;
+
+				pDesc = MGetMatchItemDescMgr()->GetItemDesc(m_ItemVector[i]);
+
+				if (pDesc != NULL) {
+
+					//if (CheckTypeWithListFilter(pDesc->m_nSlot, pDesc->IsEnchantItem()) == false) continue;
+					if (pDesc->m_nResSex != -1 && pDesc->m_nResSex != int(ZGetMyInfo()->GetSex())) continue;
+
+					if (StrStrIA(pDesc->m_szName, pWidget->GetText()) == NULL) continue;
+
+
+					MUID uidItem = MUID(0, i + 1);
+
+					if (CheckAddType(pDesc->m_nSlot))
+					{
+						((ZEquipmentListBox*)(pListBox))->Add(uidItem, pDesc->m_nID,
+							GetItemIconBitmap(pDesc, true),
+							pDesc->m_szName,
+							pDesc->m_nResLevel,
+							pDesc->m_nBountyPrice);
+					}
+				}
+			}
+		}
+
+
+	}
 }

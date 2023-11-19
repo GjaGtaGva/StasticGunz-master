@@ -11,7 +11,7 @@ protected:
 	MUID					m_uidReceiver;	// server
 	MCommandManager*		m_pCommandManager;
 
-	#define COMMAND_BUFFER_LEN	16384
+	#define COMMAND_BUFFER_LEN	65535
 
 	char					m_Buffer[COMMAND_BUFFER_LEN];
 	int						m_nBufferNext;

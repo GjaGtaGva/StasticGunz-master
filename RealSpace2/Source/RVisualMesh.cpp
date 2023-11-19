@@ -422,6 +422,7 @@ RVisualMesh::RVisualMesh() {
 	m_bRenderMatrix = false;
 
 	m_EnchantType = REnchantType_None;
+	m_EnchantType_2 = REnchantType_None;
 
 	m_GrenadeFireTime = 0;
 
@@ -880,6 +881,15 @@ void RVisualMesh::GetMotionInfo(int& sel_parts,int& sel_parts2,bool& bCheck,bool
 			}
 			break;
 
+		case eq_wd_scissor:
+			{
+				sel_parts  = eq_parts_right_scissor;
+				sel_parts2 = eq_parts_left_scissor;
+				/// bCheck means isTwoHanded
+				bCheck = true;
+			}
+			break;
+
 		case eq_ws_pistol:	
 			{ 
 				sel_parts = eq_parts_right_pistol; 
@@ -965,23 +975,57 @@ void GetRenderTrack(int isMan,int nMotion,bool& left,bool& right)
 
 void RVisualMesh::DrawEnchant(RVisualMesh* pVWMesh,int mode,rmatrix& m)
 {
-	return;
-
-	if(m_EnchantType==REnchantType_None)
-		return;
-
-	if(m_EnchantType==REnchantType_Fire) {
-		DrawEnchantFire(pVWMesh,mode,m);
-	}
-	else if(m_EnchantType==REnchantType_Cold) {
-		DrawEnchantCold(pVWMesh,mode,m);
-	}
-	else if(m_EnchantType==REnchantType_Lightning) {
-		DrawEnchantLighting(pVWMesh,mode,m);
-	}
-	else if(m_EnchantType==REnchantType_Poison) {
-		DrawEnchantPoison(pVWMesh,mode,m);
-	}
+	//if (m_EnchantType != REnchantType_None) {
+		if (m_EnchantType == REnchantType_Fire) {
+			DrawEnchantFire(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType == REnchantType_Cold) {
+			DrawEnchantCold(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType == REnchantType_Lightning) {
+			DrawEnchantLighting(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType == REnchantType_Poison) {
+			DrawEnchantPoison(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType == REnchantType_Starfire) {
+			DrawEnchantStarfire(pVWMesh, mode, m);
+		}
+	//}
+	//if (m_EnchantType_2 != REnchantType_None) {
+		if (m_EnchantType_2 == REnchantType_Fire) {
+			DrawEnchantFire(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType_2 == REnchantType_Cold) {
+			DrawEnchantCold(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType_2 == REnchantType_Lightning) {
+			DrawEnchantLighting(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType_2 == REnchantType_Poison) {
+			DrawEnchantPoison(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType_2 == REnchantType_Starfire) {
+			DrawEnchantStarfire(pVWMesh, mode, m);
+		}
+		/*switch (m_EnchantType_2) {
+			case REnchantType_Fire:
+				DrawEnchantFire(pVWMesh, mode, m);
+				break;
+			case REnchantType_Cold:
+				DrawEnchantCold(pVWMesh, mode, m);
+				break;
+			case REnchantType_Lightning:
+				DrawEnchantLighting(pVWMesh, mode, m);
+				break;
+			case REnchantType_Poison:
+				DrawEnchantPoison(pVWMesh, mode, m);
+				break;
+			case REnchantType_Starfire:
+				DrawEnchantStarfire(pVWMesh, mode, m);
+				break;
+		}*/
+	//}
 }
 
 void RVisualMesh::SetSpRenderMode(int mode) 
@@ -1143,6 +1187,11 @@ void RVisualMesh::DrawEnchantPoison(RVisualMesh* pVWMesh,int mode,rmatrix& m)
 
 }
 
+void RVisualMesh::DrawEnchantStarfire(RVisualMesh* pVWMesh,int mode,rmatrix& m)
+{
+
+}
+
 void RVisualMesh::RenderWeaponSub(RVisualMesh* WeaponMesh,
 	rmatrix(RVisualMesh::* DummyMatrix)[weapon_dummy_end],
 	int sel_parts, int mode,
@@ -1289,36 +1338,47 @@ bool RVisualMesh::IsDoubleWeapon()
 	return bCheck;
 }
 
+/// Looks at the first enchant
 void RVisualMesh::GetEnChantColor(u32* color)
 {
 	if(!color) return;
-
-	if (CustomColor[0] || CustomColor[1])
-	{
-		color[0] = CustomColor[0];
-		color[1] = CustomColor[1];
-		return;
+	
+	REnchantType type = m_EnchantType;
+	if (type == REnchantType_None){
+		type = m_EnchantType_2;
 	}
 
-	if(m_EnchantType==REnchantType_Fire) {
+	if(type == REnchantType_Fire) {
 		color[0] = 0x4fff6666;
 		color[1] = 0x0fff6666;
 	}
-	else if(m_EnchantType==REnchantType_Cold) {
+	else if(type == REnchantType_Cold) {
 		color[0] = 0x4f6666ff;
 		color[1] = 0x0f6666ff;
 	}
-	else if(m_EnchantType==REnchantType_Lightning) {
+	else if(type == REnchantType_Lightning) {
 		color[0] = 0x4f66ffff;
 		color[1] = 0x0f66ffff;
 	}
-	else if(m_EnchantType==REnchantType_Poison) {
+	else if(type == REnchantType_Poison) {
 		color[0] = 0x4f66ff66;
 		color[1] = 0x0f66ff66;
 	}
+	else if(type == REnchantType_Starfire) {
+		color[0] = 0x5f53479e;
+		color[1] = 0x1f53479e;
+	}
 	else {
-		color[0] = 0x4fffffff;
-		color[1] = 0x0fffffff;
+		/// Enchant colors override custom colors
+		if (CustomColor[0] || CustomColor[1])
+		{
+			color[0] = CustomColor[0];
+			color[1] = CustomColor[1];
+		}
+		else {
+			color[0] = 0x4fffffff;
+			color[1] = 0x0fffffff;
+		}
 	}
 }
 
@@ -1361,7 +1421,8 @@ void RVisualMesh::DrawTracks(bool draw,RVisualMesh* pVWMesh,int mode,rmatrix& m)
 
 		if(!m_pTracks[mode]) {
 			m_pTracks[mode] = new RWeaponTracks;
-			m_pTracks[mode]->Create(10);
+			/// Gva Sword Trail length is set here
+			m_pTracks[mode]->Create(50); //(10);
 		}
 
 		m_pTracks[mode]->m_vSwordPos[0] = vpos[0];

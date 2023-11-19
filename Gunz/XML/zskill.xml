@@ -2,7 +2,8 @@
 <!--
     
  * effecttype
-    0 - 일반적인 적
+    0 - 일반적인 적
+
     1 - 적 영역
 	2 - 캐스터 주변 영역
 	3 - 전체
@@ -14,7 +15,13 @@
     0 - 가운데
     3 - 머리
     4 - 이펙트 더미
-    5 - 등    6 - 머리    7 - 왼손    8 - 오른손    9 - 왼발    10 - 오른발
+    5 - 등
+    6 - 머리
+    7 - 왼손
+    8 - 오른손
+    9 - 왼발
+    10 - 오른발
+
 
  * effectareamin - 공격판정 최소 범위(Melee Skill만 쓴다.)
  * effectangle - 공격판정 각도(Melee Skill만 쓴다.)
@@ -35,6 +42,7 @@
 		difficulty="20" castingeffect="ef_slow_dam"  castingeffectType="5" castingpreeffect="ef_slow"   castingpreeffectType="4"
 		mod.damage="0" mod.dot="0" mod.criticalrate="0" mod.speed="50" mod.antimotion="false"
 		mod.root="false" mod.heal="0" castinganimation="1" />
+  <!--Gva check out this MagicFlame !-->
 	<SKILL id="2" name="Fire Missile" effecttype="1" hitcheck="true" guidable="false" velocity="2000" delay="2000"
 		lifetime="0" effectstarttime="100" effecttime="0" effectarea="2" resisttype="1" difficulty="15"
 		mod.damage="50" mod.criticalrate="80" mod.speed="100" mod.antimotion="false" mod.root="false"

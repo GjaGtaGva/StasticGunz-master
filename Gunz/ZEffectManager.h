@@ -115,6 +115,12 @@ enum SlashEffectMotion {
 	SEM_ManDoubleSlash4,
 	SEM_ManDoubleSlash5,
 
+	SEM_ManSnip1,
+	SEM_ManSnip2,
+	SEM_ManSnip3,
+	SEM_ManSnip4,
+	SEM_ManSnip5,
+
 	SEM_ManGreatSwordSlash1,
 	SEM_ManGreatSwordSlash2,
 	SEM_ManGreatSwordSlash3,
@@ -134,6 +140,12 @@ enum SlashEffectMotion {
 	SEM_WomanDoubleSlash3,
 	SEM_WomanDoubleSlash4,
 	SEM_WomanDoubleSlash5,
+
+	SEM_WomanSnip1,
+	SEM_WomanSnip2,
+	SEM_WomanSnip3,
+	SEM_WomanSnip4,
+	SEM_WomanSnip5,
 
 	SEM_WomanGreatSwordSlash1,
 	SEM_WomanGreatSwordSlash2,
@@ -227,7 +239,7 @@ protected:
 	RMesh*	m_pPinkSwordWaveEffect;
 	RMesh*	m_pGreenSwordWaveEffect;
 	RMesh*	m_pBlueSwordWaveEffect;
-	RMesh*	m_pSwordEnchantEffect[4];
+	RMesh*	m_pSwordEnchantEffect[5];
 	RMesh*	m_pMagicDamageEffect;
 	RMesh*	m_pMagicEffectWall[3];
 	RMesh*	m_pSwordUppercutEffect;
@@ -251,6 +263,7 @@ protected:
 	RMesh*	m_pSwordElec;
 	RMesh*	m_pSwordCold;
 	RMesh*	m_pSwordPoison;
+	RMesh*	m_pSwordStarfire;
 
 	RMesh* m_pChargingEffect;
 	RMesh* m_pChargedEffect;
@@ -362,7 +375,9 @@ public:
 	void AddTrackFire(const rvector& pos);
 	void AddTrackCold(const rvector& pos);
 	void AddTrackPoison(const rvector& pos);
+	void AddTrackStarfire(const rvector& pos);
 	void AddTrackMagic(const rvector& pos);
+	void AddTrackMiniMethor(const rvector& pos);
 	void AddTrackMethor(const rvector& pos);
 
 	float GetEnchantDamageObjectSIze(ZObject* pObj);
@@ -370,6 +385,7 @@ public:
 	void AddEnchantFire2(ZObject* pObj);
 	void AddEnchantCold2(ZObject* pObj);
 	void AddEnchantPoison2(ZObject* pObj);
+	void AddEnchantStarfire2(ZObject* pObj);
 
 	void AddBloodEffect(const rvector& Target, const rvector& TargetNormal);
 	void AddSlashEffect(const rvector& Target, const rvector& TargetNormal,int nType);

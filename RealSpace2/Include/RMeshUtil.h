@@ -71,6 +71,7 @@ enum RWeaponMotionType {
 	eq_wd_smg,		// 11
 	eq_wd_sword,	// 12
 	eq_wd_blade,	// 13
+	eq_wd_scissor,
 	eq_wd_dagger,	// 14
 
 	eq_weapon_end,
@@ -168,6 +169,7 @@ typedef enum _RMeshPartsType {
 	eq_parts_left_pistol,
 	eq_parts_left_smg,
 	eq_parts_left_blade,
+	eq_parts_left_scissor,
 	eq_parts_left_dagger,
 
 	// right weapon
@@ -183,6 +185,7 @@ typedef enum _RMeshPartsType {
 	eq_parts_right_rlauncher,
 	eq_parts_right_sword,
 	eq_parts_right_blade,
+	eq_parts_right_scissor,
 
 	eq_parts_end,
 

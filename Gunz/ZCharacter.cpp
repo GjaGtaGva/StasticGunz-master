@@ -62,6 +62,11 @@ bool CheckTeenVersionMesh(RMesh** ppMesh)
 			*ppMesh = ZGetWeaponMeshMgr()->Get( "blade_wood" );
 			return true;
 		}
+		else if(type==eq_wd_scissor) {
+			/// Faa need scissor_wood
+			*ppMesh = ZGetWeaponMeshMgr()->Get( "blade_wood" );
+			return true;
+		}
 	}
 
 	return false;
@@ -553,7 +558,8 @@ void ZCharacter::CheckDrawWeaponTrack()
 	{
 		if ((m_pVMesh->m_SelectWeaponMotionType == eq_wd_katana) ||
 			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_sword) ||
-			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_blade))
+			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_blade) ||
+			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_scissor))
 		{
 
 			if ((ZC_STATE_LOWER_ATTACK1 <= m_AniState_Lower && m_AniState_Lower <= ZC_STATE_LOWER_GUARD_CANCEL) ||
@@ -577,7 +583,7 @@ void ZCharacter::CheckDrawWeaponTrack()
 
 	bool bMan = IsMan();
 
-	if(m_pVMesh->m_SelectWeaponMotionType == eq_wd_blade) 
+	if(m_pVMesh->m_SelectWeaponMotionType == eq_wd_blade || m_pVMesh->m_SelectWeaponMotionType == eq_wd_scissor)
 	{
 			 if( m_AniState_Lower == ZC_STATE_LOWER_ATTACK1 ) GetDTM(bDTM,0,bMan);
 		else if( m_AniState_Lower == ZC_STATE_LOWER_ATTACK2 ) GetDTM(bDTM,1,bMan);
@@ -1243,6 +1249,15 @@ void ZCharacter::OnChangeWeapon(MMatchItemDesc* Weapon)
 #endif
 		}
 		else if( eq_wd_blade == type )
+		{
+#ifdef _BIRDSOUND
+			ZGetSoundEngine()->PlaySoundCharacter("fx_dagger_sheath",m_Position,IsObserverTarget());
+#else
+			ZGetSoundEngine()->PlaySound("fx_dagger_sheath",m_Position, IsObserverTarget());
+#endif
+		}
+		/// Faa need fx_scissor_sheath - scissor draw sound effect
+		else if( eq_wd_scissor == type )
 		{
 #ifdef _BIRDSOUND
 			ZGetSoundEngine()->PlaySoundCharacter("fx_dagger_sheath",m_Position,IsObserverTarget());
@@ -2182,6 +2197,7 @@ bool ZCharacter::Create(const MTD_CharInfo& CharInfo)
 	{
 		switch (pDesc->m_nID)
 		{
+		/// uwu
 		case 8501:
 			GetRGMain().SetSwordColor(GetUID(), 0xFFFFB7D5);
 			break;
@@ -2191,6 +2207,12 @@ bool ZCharacter::Create(const MTD_CharInfo& CharInfo)
 		case 8503:
 			GetRGMain().SetSwordColor(GetUID(), 0xFF00FFFF);
 			break;
+		}
+
+		/// Gva: reading "trail_color" parameter from zitem.xml
+		uint32_t customColor = pDesc->m_GvaTrailColor;
+		if (customColor) {
+			GetRGMain().SetSwordColor(GetUID(), customColor);
 		}
 	}
 
@@ -2335,11 +2357,11 @@ bool ZCharacter::CheckValidShotTime(int nItemID, float fTime, ZItem* pItem)
 	if (GetLastShotItemID() == nItemID) {
 		if (fTime - GetLastShotTime() < (float)pItem->GetDesc()->m_nDelay/1000.0f) {
 			MMatchWeaponType nWeaponType = pItem->GetDesc()->m_nWeaponType;
-			if ( (MWT_DAGGER <= nWeaponType && nWeaponType <= MWT_DOUBLE_KATANA) &&
+			if ( (MWT_DAGGER <= nWeaponType && nWeaponType <= MWT_SCISSOR) &&
 				(fTime - GetLastShotTime() >= 0.23f) ) 
 			{
 				// continue Valid... (칼질 정확한 시간측정이 어려워 매직넘버사용.
-			} else if ( (nWeaponType==MWT_DOUBLE_KATANA || nWeaponType==MWT_DUAL_DAGGER) &&
+			} else if ( (nWeaponType==MWT_DOUBLE_KATANA || nWeaponType==MWT_SCISSOR || nWeaponType==MWT_DUAL_DAGGER) &&
 				(fTime - GetLastShotTime() >= 0.11f) ) 
 			{
 				// continue Valid... (칼질 정확한 시간측정이 어려워 매직넘버사용.
@@ -2396,8 +2418,7 @@ void ZCharacter::OnDamagedAnimation(ZObject *pAttacker,int type)
 			ZCharacterObject* pCObj = MDynamicCast(ZCharacterObject, pAttacker);
 
 			if(pCObj) {
-				ZC_ENCHANT etype = pCObj->GetEnchantType();
-				if( etype == ZC_ENCHANT_LIGHTNING )
+				if (pCObj->HasLightningEnchant())
 					m_nStunType = ZST_LIGHTNING;
 			}
 		} else {
@@ -2445,6 +2466,7 @@ void ZCharacter::ActDead()
 		case MWT_KATANA:
 		case MWT_GREAT_SWORD:
 		case MWT_DOUBLE_KATANA:
+		case MWT_SCISSOR:
 			bKnockBack = false;
 			break;
 		case MWT_PISTOL:

@@ -420,6 +420,14 @@ void RMesh::CheckNameToType(RMeshNode* pMeshNode)
 			pMeshNode->m_isWeaponMesh = true;
 			pMeshNode->m_PartsType = eq_parts_left_blade;
 		}
+		else if (NCMPNAME("eq_wr_scissor", 13)) {
+			pMeshNode->m_isWeaponMesh = true;
+			pMeshNode->m_PartsType = eq_parts_right_scissor;
+		}
+		else if( NCMPNAME("eq_wl_scissor",13) ) {
+			pMeshNode->m_isWeaponMesh = true;
+			pMeshNode->m_PartsType = eq_parts_left_scissor;
+		}
 	} 
 	else if(NCMPNAME("eq_",3) ) {
 		if(NCMPNAME("eq_head",7) )	{

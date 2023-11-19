@@ -50,7 +50,13 @@ public:
 	void EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon);
 
 	MMatchItemDesc* GetEnchantItemDesc();
+	MMatchItemDesc* GetEnchantItemDesc(MMatchCharItemParts part);
+	//MMatchItemDesc* GetEnchantItemDesc(MMatchWeaponType weaponType);
+	//MMatchItemDesc* GetEnchantItemDesc(ZC_ENCHANT enchantType);
+
 	ZC_ENCHANT	GetEnchantType();
+	ZC_ENCHANT	GetEnchantType(MMatchCharItemParts part);
+	bool HasLightningEnchant();
 
 	void DrawShadow();
 	void Draw_SetLight(const rvector& vPosition);
@@ -74,6 +80,7 @@ protected:
 	ZModule_ColdDamage		*m_pModule_ColdDamage{};
 	ZModule_PoisonDamage	*m_pModule_PoisonDamage{};
 	ZModule_LightningDamage	*m_pModule_LightningDamage{};
+	ZModule_StarfireDamage	*m_pModule_StarfireDamage{};
 
 	bool m_bHero{};
 

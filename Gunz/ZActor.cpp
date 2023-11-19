@@ -531,6 +531,13 @@ bool ZActor::ProcessMotion(float fDelta)
 			m_Animation.Input(ZA_ANIM_DONE);
 		}
 	}
+	if(IsActiveModule(ZMID_STARFIREDAMAGE)==false) {
+
+		if (m_pVMesh->isOncePlayDone())
+		{
+			m_Animation.Input(ZA_ANIM_DONE);
+		}
+	}
 
 	return true;
 }
@@ -795,9 +802,8 @@ void ZActor::OnDamaged(ZObject* pAttacker, rvector srcPos, ZDAMAGETYPE damageTyp
 				bool bLightningDamage = false;
 
 				if(pCObj) {
-					ZC_ENCHANT etype = pCObj->GetEnchantType();
-					if( etype == ZC_ENCHANT_LIGHTNING )
-						bLightningDamage = true;	
+					if(pCObj->HasLightningEnchant())
+						bLightningDamage = true;
 				}
 
 				if(bLightningDamage && (damageType==ZD_KATANA_SPLASH)) {

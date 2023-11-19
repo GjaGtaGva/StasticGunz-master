@@ -12,7 +12,8 @@ enum ZSKILLRESISTTYPE {
 	ZSR_FIRE		= 1,
 	ZSR_COLD		= 2,
 	ZSR_LIGHTNING	= 3,
-	ZSR_POISON		= 4
+	ZSR_POISON		= 4,
+	ZSR_STARFIRE	= 5
 };
 
 enum ZSKILLEFFECTTYPE {		// 어떤 대상에게 사용되는지 결정

@@ -8,6 +8,7 @@ class ZModule_Resistance : public ZModule
 	int m_nCR;
 	int m_nPR;
 	int m_nLR;
+	int m_nSR;
 
 	void OnAdd(void);
 
@@ -22,4 +23,5 @@ public:
 	int GetCR() { return m_nCR; }
 	int GetPR() { return m_nPR; }
 	int GetLR() { return m_nLR; }
+	int GetSR() { return m_nSR; }
 };

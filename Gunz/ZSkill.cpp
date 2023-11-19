@@ -24,7 +24,7 @@ ZSkillDesc::ZSkillDesc()
 	szTrailEffect[0] = 0;
 	szTargetEffect[0] = 0;
 
-	fTrailEffectScale = 1.f;
+	fTrailEffectScale = 3.f; // 1.f;
 	bDrawTrack = true;
 	fColRadius = 0.0f;
 
@@ -72,6 +72,7 @@ bool ZSkillDesc::CheckResist(ZObject *pCurrent,float *pfDamage)
 		case ZSR_POISON		: nResist = pModule->GetPR();break;
 		case ZSR_COLD		: nResist = pModule->GetCR();break;
 		case ZSR_LIGHTNING	: nResist = pModule->GetLR();break;
+		case ZSR_STARFIRE	: nResist = pModule->GetSR();break;
 		
 		case ZSR_NONE		:
 		default				: return true;
@@ -86,6 +87,7 @@ bool ZSkillDesc::CheckResist(ZObject *pCurrent,float *pfDamage)
 
 		case ZSR_COLD		: 
 		case ZSR_LIGHTNING	: 
+		case ZSR_STARFIRE	:
 			nResist = nResist - nDifficulty;
 			if(rand()%100 > nResist) return true;
 			return false;

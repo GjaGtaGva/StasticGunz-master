@@ -109,7 +109,8 @@ void ZGameAction::OnPeerSkill_LastShot(float fShotTime,ZCharacter *pOwnerCharact
 	rvector _vdir = OwnerDir;
 	_vdir.z = 0;
 
-	ZC_ENCHANT zc_en_type = pOwnerCharacter->GetEnchantType();
+	ZC_ENCHANT zc_en_type = pOwnerCharacter->GetEnchantType(MMCIP_CUSTOM1);
+	ZC_ENCHANT zc_en_type_2 = pOwnerCharacter->GetEnchantType(MMCIP_CUSTOM2);
 
 	ZGetSoundEngine()->PlaySound(pOwnerCharacter->IsObserverTarget() ? "we_smash_2d" : "we_smash", waveCenter);
 
@@ -157,13 +158,18 @@ void ZGameAction::OnPeerSkill_LastShot(float fShotTime,ZCharacter *pOwnerCharact
 
 						tpos.z += 130.f;
 
-						if (zc_en_type == ZC_ENCHANT_NONE) {
 
+						if (zc_en_type != ZC_ENCHANT_NONE && zc_en_type_2 != ZC_ENCHANT_NONE) {
 							ZGetEffectManager()->AddSwordUppercutDamageEffect(tpos, pTar->GetUID());
 						}
 						else {
-
-							ZGetEffectManager()->AddSwordEnchantEffect(zc_en_type, pTar->GetPosition(), 20);
+							if (zc_en_type != ZC_ENCHANT_NONE) {
+								ZGetEffectManager()->AddSwordEnchantEffect(zc_en_type, pTar->GetPosition(), 20);
+							}
+							if (zc_en_type_2 != ZC_ENCHANT_NONE) {
+								/// Tas 20 - tai TIME
+								ZGetEffectManager()->AddSwordEnchantEffect(zc_en_type_2, pTar->GetPosition(), 20);
+							}
 						}
 
 						tpos -= pOwnerCharacter->m_Direction * 50.f;
@@ -180,7 +186,7 @@ void ZGameAction::OnPeerSkill_LastShot(float fShotTime,ZCharacter *pOwnerCharact
 #define SLASH_DAMAGE	3
 						int damage = (int)pDesc->m_nDamage * fDamageRange;
 
-						if (zc_en_type == ZC_ENCHANT_NONE)
+						if (zc_en_type == ZC_ENCHANT_NONE && zc_en_type_2 == ZC_ENCHANT_NONE)
 							damage *= SLASH_DAMAGE;
 
 						pTar->OnDamaged(pOwnerCharacter, pOwnerCharacter->GetPosition(), ZD_KATANA_SPLASH, MWT_KATANA, damage, SPLASH_DAMAGE_RATIO);
@@ -444,29 +450,42 @@ bool ZGameAction::OnEnchantDamage(MCommand* pCommand)
 	{
 		bool bObserverTarget = pTarget->GetUID()==ZGetCombatInterface()->GetTargetUID();
 		rvector soundPos = pTarget->GetPosition();
-		switch(pOwnerCharacter->GetEnchantType())
-		{
-			case ZC_ENCHANT_FIRE : {
-					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enfire_2d" : "we_enfire",soundPos);
+		
+		for (int i = MMCIP_CUSTOM1; i <= MMCIP_CUSTOM2; i++) {
+			MMatchCharItemParts part = (MMatchCharItemParts)i;
+
+			switch (pOwnerCharacter->GetEnchantType(part))
+			{
+				case ZC_ENCHANT_FIRE: {
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enfire_2d" : "we_enfire", soundPos);
 					ZModule_FireDamage *pMod = (ZModule_FireDamage*)pTarget->GetModule(ZMID_FIREDAMAGE);
-					if(pMod) pMod->BeginDamage( pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0 ,0.001f * (float)pDesc->m_nDelay);
+					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.001f * (float)pDesc->m_nDelay);
 				}break;
-			case ZC_ENCHANT_COLD : {
-				ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enice_2d" : "we_enice",soundPos);
+				case ZC_ENCHANT_COLD: {
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enice_2d" : "we_enice", soundPos);
 					ZModule_ColdDamage *pMod = (ZModule_ColdDamage*)pTarget->GetModule(ZMID_COLDDAMAGE);
-					if(pMod) pMod->BeginDamage( 0.01f*(float)pDesc->m_nLimitSpeed , 0.001f * (float)pDesc->m_nDelay);
+					if (pMod) pMod->BeginDamage(0.01f*(float)pDesc->m_nLimitSpeed, 0.001f * (float)pDesc->m_nDelay);
 				}break;
-			case ZC_ENCHANT_POISON : {
-					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enpoison_2d" : "we_enpoison",soundPos);
+				case ZC_ENCHANT_POISON: {
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enpoison_2d" : "we_enpoison", soundPos);
 					ZModule_PoisonDamage *pMod = (ZModule_PoisonDamage*)pTarget->GetModule(ZMID_POISONDAMAGE);
-					if(pMod) pMod->BeginDamage( pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0 ,0.001f * (float)pDesc->m_nDelay);
+					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.001f * (float)pDesc->m_nDelay);
 				}break;
-			case ZC_ENCHANT_LIGHTNING : {
-					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enlight_2d" : "we_enlight",soundPos);
+				case ZC_ENCHANT_LIGHTNING: {
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enlight_2d" : "we_enlight", soundPos);
 					ZModule_LightningDamage *pMod = (ZModule_LightningDamage*)pTarget->GetModule(ZMID_LIGHTNINGDAMAGE);
-					if(pMod) pMod->BeginDamage( pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0 ,0.001f * (float)pDesc->m_nDelay);
+					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.001f * (float)pDesc->m_nDelay);
 				}break;
-		};
+				case ZC_ENCHANT_STARFIRE: {
+					/// TODO we_enstar, we_enstar_2d - tweak sound
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enice_2d" : "we_enice", soundPos);
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enlight_2d" : "we_enlight", soundPos);
+					ZModule_StarfireDamage *pMod = (ZModule_StarfireDamage*)pTarget->GetModule(ZMID_STARFIREDAMAGE);
+					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.00068f * (float)pDesc->m_nDelay);
+					if (pMod) pMod->BeginSlow(0.00068f*(float)pDesc->m_nLimitSpeed, 0.00068f * (float)pDesc->m_nDelay);
+				}break;
+			};
+		}
 	}
 
 	return true;

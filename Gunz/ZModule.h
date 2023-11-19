@@ -68,4 +68,5 @@ struct ZModule_ColdDamage;
 struct ZModule_FireDamage;
 struct ZModule_PoisonDamage;
 struct ZModule_LightningDamage;
+struct ZModule_StarfireDamage;
 class ZModule_Skills;

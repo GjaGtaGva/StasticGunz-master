@@ -651,6 +651,8 @@ bool ZGameInterface::InitInterfaceListener()
 	SetListenerWidget("LobbyShopCaller", ZGetShopCallerButtonListener());
 	SetListenerWidget("StageShopCaller", ZGetShopCallerButtonListener());
 	SetListenerWidget("ShopClose", ZGetShopCloseButtonListener());
+	/// Gva 
+	SetListenerWidget("Item_Search", ZGetShopItemSearchInputListener());
 
 	SetListenerWidget("LobbyEquipmentCaller", ZGetEquipmentCallerButtonListener());
 	SetListenerWidget("StageEquipmentCaller", ZGetEquipmentCallerButtonListener());
@@ -4170,7 +4172,7 @@ void ZGameInterface::ShowShopOrEquipmentDialog(bool Shop)
 {
 	auto* pResource = GetIDLResource();
 
-	// Hide lobby and stage in case we're moving from one of those.
+	// Hide lobby and stage in case we're moving from one of those. 
 	ShowWidget("Lobby", false);
 	ShowWidget("Stage", false);
 
@@ -5067,6 +5069,18 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 			if (pItemDesc->m_nDamage)
 			{
 				sprintf_safe(temp, "%s : %d dmg/%s\n", ZMsg(MSG_WORD_DAMAGE), pItemDesc->m_nDamage, ZMsg(MSG_CHARINFO_SECOND));
+				str += temp;
+			}
+			break;
+
+		case MWT_ENCHANT_STARFIRE:
+			sprintf_safe(temp, "<%s>\n", ZMsg(MSG_WORD_ATTRIBUTE_STARFIRE));
+			str += temp;
+			sprintf_safe(temp, "%s : %d%s\n", ZMsg(MSG_WORD_RUNTIME), pItemDesc->m_nDelay / 1000, ZMsg(MSG_CHARINFO_SECOND));
+			str += temp;
+			if (pItemDesc->m_nDamage)
+			{
+				sprintf_safe(temp, "%s : %d dmg.\n", ZMsg(MSG_WORD_ATTACK), pItemDesc->m_nDamage);
 				str += temp;
 			}
 			break;

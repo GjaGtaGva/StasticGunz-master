@@ -392,6 +392,8 @@ bool ZEffectManager::Create(void)
 	m_pSwordEnchantEffect[1]	= m_pEffectMeshMgr->Get("ef_sworddam_ice");
 	m_pSwordEnchantEffect[2]	= m_pEffectMeshMgr->Get("ef_sworddam_flash");
 	m_pSwordEnchantEffect[3]	= m_pEffectMeshMgr->Get("ef_sworddam_poison");
+	/// TODO ef_sworddam_starfire - need elu file
+	m_pSwordEnchantEffect[4]	= m_pEffectMeshMgr->Get("ef_sworddam_flash");
 
 	m_pMagicDamageEffect		= m_pEffectMeshMgr->Get("magicmissile_damage");
 
@@ -420,6 +422,8 @@ bool ZEffectManager::Create(void)
 	m_pSwordElec		= m_pEffectMeshMgr->Get("ef_sword_flash");
 	m_pSwordCold		= m_pEffectMeshMgr->Get("ef_sword_ice");
 	m_pSwordPoison		= m_pEffectMeshMgr->Get("ef_sword_poison");
+	/// TODO ef_sword_starfire - need elu faile
+	m_pSwordStarfire		= m_pEffectMeshMgr->Get("ef_sword_flash");
 
 	m_pBulletOnWallEffect[0]	= m_pEffectMeshMgr->Get("ef_effect001.elu");
 	m_pBulletOnWallEffect[1]	= m_pEffectMeshMgr->Get("ef_effect002.elu");
@@ -499,6 +503,8 @@ bool ZEffectManager::Create(void)
 	m_pWeaponEnchant[ZC_ENCHANT_LIGHTNING]	= new ZEffectWeaponEnchant( m_pSwordElec,
 		veczero, veczero, NULL);
 	m_pWeaponEnchant[ZC_ENCHANT_POISON]		= new ZEffectWeaponEnchant( m_pSwordPoison,
+		veczero, veczero, NULL);
+	m_pWeaponEnchant[ZC_ENCHANT_STARFIRE]	= new ZEffectWeaponEnchant( m_pSwordStarfire,
 		veczero, veczero, NULL);
 
 	return true;
@@ -1185,6 +1191,7 @@ void ZEffectManager::AddTrackFire(const rvector &pos)
 
 void ZEffectManager::AddTrackCold(const rvector &pos)
 {
+	/// GVA you can modify the Ice shatter here !! TODO make it so that [fLife] could depend on the echant item
 	int Add = rand() % 10;
 	float fStartSize = 8 + Add;
 	float fEndSize = 14 + Add;
@@ -1211,6 +1218,44 @@ void ZEffectManager::AddTrackPoison(const rvector &pos)
 
 	m_BillBoardTexAniList[2].Add( pos, vel,r_frame[frame],0.f, fStartSize , fEndSize, fLife );
 }
+
+void ZEffectManager::AddTrackStarfire(const rvector &pos)
+{
+	/// TODO make it so that [fLife] could depend on the echant item level
+	//GetEnchantItemDesc();
+
+	int special = rand() % 1000;
+	int Add = rand() % 10 + rand() % 8;
+	float fStartSize = 4 + Add;
+	float fEndSize = 22 + Add;
+	/// Experiment
+	float fLife = special == 1 ? 12.617f : special < 4 ? 1.618f : 1.f;
+
+	int frame = rand()%8;
+	/// z velovity -15 instead of 15 at the other place. Experiment.
+	rvector vel = rvector(rand() % 15, rand() % 15, -15.f);
+
+	/// Bandom ketvirta - Magic
+	m_BillBoardTexAniList[3].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife );
+}
+
+/// Gva test
+void ZEffectManager::AddTrackMiniMethor(const rvector &pos)
+{
+	int Add = rand() % 6;
+	float fStartSize = 8 + Add;
+	float fEndSize = 10 + Add;
+	float fLife = 1.0f;
+
+	rvector vel = rvector(0, 0, 0);
+	rvector add = 0.5f*rvector(RANDOMFLOAT - 0.5f, RANDOMFLOAT - 0.5f, RANDOMFLOAT - 0.5f);
+
+	m_BillBoardTexAniList[4].Add(pos + add, vel, 0, 0.f, fStartSize, fEndSize, fLife);
+
+	add = 5.f*rvector(RANDOMFLOAT - 0.5f, RANDOMFLOAT - 0.5f, RANDOMFLOAT - 0.5f);
+	m_BillboardLists[4].Add(pos, add, rvector(0, 0, 0), 3.f, 12.f, 3.f);
+}
+
 
 void ZEffectManager::AddTrackMethor(const rvector &pos)
 {
@@ -1370,6 +1415,35 @@ void ZEffectManager::AddEnchantPoison2(ZObject* pObj)
 	int nTex = _tex_data[ rand()%4 ];
 
 	m_BillBoardTexAniList[2].Add(pos,vel, nTex, 0 ,fStartSize, fEndSize, fLife );
+}
+
+void ZEffectManager::AddEnchantStarfire2(ZObject* pObj)
+{
+	if(pObj==NULL) return;
+
+	float fSize = GetEnchantDamageObjectSIze( pObj );
+
+	float fStartSize = (10.f + EFRand) * fSize;
+	float fEndSize = (20.f + EFRand) * fSize;
+	float fLife = 1.0f;
+
+	rvector pos;
+	rvector vel = rvector(EFRand, EFRand, 15.45f);
+
+	static int partstype;
+
+	partstype = GetRandType(5,partstype,10);
+
+	rvector camera_dir = RCameraDirection * 20.f * fSize;
+
+	pos = pObj->m_pVMesh->GetBipTypePosition( g_EnchantEffectPartsPos[partstype] ) - camera_dir;
+
+	pos += GetRandVec(10);
+
+	int nTex = rand() % 7;
+
+	m_BillBoardTexAniList[2].Add(pos,vel, nTex, 0 ,fStartSize, fEndSize, fLife );
+	/// End of STARFIRE
 }
 
 void ZEffectManager::AddShotgunEffect(const rvector &pos, const rvector &out, const rvector &dir,ZObject* pChar )
@@ -1717,6 +1791,7 @@ void ZEffectManager::AddSwordEnchantEffect(ZC_ENCHANT type, const rvector& Targe
 	else if( type ==  ZC_ENCHANT_COLD )			pMesh = m_pSwordEnchantEffect[1];
 	else if( type ==  ZC_ENCHANT_LIGHTNING )	pMesh = m_pSwordEnchantEffect[2];
 	else if( type ==  ZC_ENCHANT_POISON )		pMesh = m_pSwordEnchantEffect[3];
+	else if( type ==  ZC_ENCHANT_STARFIRE )		pMesh = m_pSwordEnchantEffect[4];
 	else 
 		return;
 
@@ -2165,6 +2240,13 @@ void ZEffectManager::AddSlashEffect(const rvector& Target, const rvector& Target
 		case SEM_ManDoubleSlash4:		_add = true;	rot_angle = 3.14f/2.f;					break;
 		case SEM_ManDoubleSlash5:		_add = true;	rot_angle = -3.14f/2.f;					break;
 
+		/// TODO patewakint dar values
+		case SEM_ManSnip1:		_add = false;											break;
+		case SEM_ManSnip2:		_add = true;	rot_angle = 0.f;						break;
+		case SEM_ManSnip3:		_add = true;	rot_angle = 3.14f;						break;
+		case SEM_ManSnip4:		_add = true;	rot_angle = 3.14f / 2.2f;					break;
+		case SEM_ManSnip5:		_add = true;	rot_angle = -3.14f / 2.22f;				break;
+
 		case SEM_ManGreatSwordSlash1:		_add = false;										break;
 		case SEM_ManGreatSwordSlash2:		_add = true;	rot_angle = 0.f;					break;
 		case SEM_ManGreatSwordSlash3:		_add = true;	rot_angle = 3.14f;					break;
@@ -2184,6 +2266,13 @@ void ZEffectManager::AddSlashEffect(const rvector& Target, const rvector& Target
 		case SEM_WomanDoubleSlash3:	_add = false;												break;
 		case SEM_WomanDoubleSlash4:	_add = false;												break;
 		case SEM_WomanDoubleSlash5:	_add = false;												break;
+
+		/// Gva  no idea what I'm rotating here
+		case SEM_WomanSnip1:	_add = true;	rot_angle = 3.14f;				mode = 0;	break;
+		case SEM_WomanSnip2:	_add = true;	rot_angle = 3.14f;				mode = 1;	break;
+		case SEM_WomanSnip3:	_add = true;	rot_angle = 3.14f;							break;
+		case SEM_WomanSnip4:	_add = false;												break;
+		case SEM_WomanSnip5:	_add = false;												break;
 
 		case SEM_WomanGreatSwordSlash1:	_add = true;	rot_angle = 3.14f + 3.14f/2.f;mode = 0;	break;
 		case SEM_WomanGreatSwordSlash2:	_add = true;	rot_angle = 3.14f;						break;
@@ -2331,6 +2420,12 @@ void ZEffectManager::AddSlashEffectWall(const rvector& Target, const rvector& Ta
 		_CASE_DEF(SEM_ManDoubleSlash4, 3.2f,-0.1f,true,true  ,250);
 		_CASE_DEF(SEM_ManDoubleSlash5,-1.5f, 0.0f,true,false ,250);
 
+		_CASE_DEF(SEM_ManSnip1, 1.0f, 0.0f, true, false, 10);
+		_CASE_DEF(SEM_ManSnip2, -1.0f, 0.0f, true, false, 250);
+		_CASE_DEF(SEM_ManSnip3, -1.0f, 0.0f, false, false, 250);
+		_CASE_DEF(SEM_ManSnip4, -1.0f, 0.1f, true, true, 250);
+		_CASE_DEF(SEM_ManSnip5, 1.0f, 0.0f, true, false, 10);
+
 		_CASE_DEF(SEM_ManGreatSwordSlash1, 0.7f,0.f,true,false,250);
 		_CASE_DEF(SEM_ManGreatSwordSlash2, 3.5f,0.f,true,false,250);
 		_CASE_DEF(SEM_ManGreatSwordSlash3,-0.3f,0.f,true,false,250);
@@ -2350,6 +2445,13 @@ void ZEffectManager::AddSlashEffectWall(const rvector& Target, const rvector& Ta
 		_CASE_DEF(SEM_WomanDoubleSlash3, 0.0f, 0.0f,false,false,250);
 		_CASE_DEF(SEM_WomanDoubleSlash4, 3.2f,-0.1f,true,true  ,250);
 		_CASE_DEF(SEM_WomanDoubleSlash5,-1.5f, 0.0f,true,false ,250);
+
+		/// TODO patewakint dar values
+		_CASE_DEF(SEM_WomanSnip1, -1.0f, 0.0f, true, false, 10);
+		_CASE_DEF(SEM_WomanSnip2, 1.0f, 0.0f, true, false, 100);
+		_CASE_DEF(SEM_WomanSnip3, 1.0f, 0.0f, false, false, 250);
+		_CASE_DEF(SEM_WomanSnip4, 1.0f, -0.1f, true, true, 10);
+		_CASE_DEF(SEM_WomanSnip5, -1.0f, 0.0f, true, false, 250);
 
 		_CASE_DEF(SEM_WomanGreatSwordSlash1, 0.7f,0.f,true,false,250);
 		_CASE_DEF(SEM_WomanGreatSwordSlash2, 4.0f,0.f,true,false,250);

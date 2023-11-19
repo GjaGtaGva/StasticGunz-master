@@ -1084,6 +1084,8 @@ bool ZWeaponMagic::Update(float fElapsedTime)
 
 		ZSKILLEFFECTTRAILTYPE nEffectType = ZSTE_NONE;
 
+		/// GVA shatter is determined here and drawn using ZGetEffectManager 
+		
 		nEffectType = m_pSkillDesc->nTrailEffectType;
 
 		if (m_pSkillDesc->bDrawTrack)

@@ -871,6 +871,7 @@ void ZMyCharacter::OnGadget_Hanging()
 	{
 	case eq_wd_katana:
 	case eq_wd_blade:
+	case eq_wd_scissor:
 	case eq_wd_sword:
 	case eq_ws_dagger:
 	case eq_wd_dagger:
@@ -977,6 +978,7 @@ void ZMyCharacter::ProcessGadget()
 			break;
 		case MWT_KATANA:
 		case MWT_DOUBLE_KATANA:
+		case MWT_SCISSOR:
 			m_bSkill = true;
 			m_fSkillTime = g_pGame->GetTime();
 			m_bTumble = false;
@@ -1039,7 +1041,7 @@ void ZMyCharacter::ProcessGuard()
 	if (pSItem->GetDesc()->m_nType != MMIT_MELEE) return;
 
 	MMatchWeaponType type = pSItem->GetDesc()->m_nWeaponType;
-	if (type != MWT_KATANA && type != MWT_DOUBLE_KATANA) return;
+	if (type != MWT_KATANA && type != MWT_DOUBLE_KATANA && type != MWT_SCISSOR) return;
 
 
 	if (m_bGuard) {
@@ -1233,7 +1235,8 @@ void ZMyCharacter::ProcessShot()
 			m_pVMesh->m_SelectWeaponMotionType != eq_ws_dagger &&
 			m_pVMesh->m_SelectWeaponMotionType != eq_wd_dagger &&
 			m_pVMesh->m_SelectWeaponMotionType != eq_wd_sword &&
-			m_pVMesh->m_SelectWeaponMotionType != eq_wd_blade)
+			m_pVMesh->m_SelectWeaponMotionType != eq_wd_blade &&
+			m_pVMesh->m_SelectWeaponMotionType != eq_wd_scissor)
 		{
 			if (GetItems()->GetSelectedWeapon()->GetBullet() <= 0) {
 				ZGetSoundEngine()->PlaySEDryFire(GetItems()->GetSelectedWeapon()->GetDesc(), 0, 0, 0, true);
@@ -1260,6 +1263,7 @@ void ZMyCharacter::ProcessShot()
 	case eq_wd_dagger:
 	case eq_wd_sword:
 	case eq_wd_blade:
+	case eq_wd_scissor:
 		OnShotMelee();
 		break;
 	default:
@@ -2613,7 +2617,7 @@ void ZMyCharacter::OnDelayedWork(ZDELAYEDWORKITEM& Item)
 			if (pSItem && pSItem->GetDesc())
 				type = pSItem->GetDesc()->m_nWeaponType;
 
-			if (type == MWT_KATANA || type == MWT_DOUBLE_KATANA) {
+			if (type == MWT_KATANA || type == MWT_DOUBLE_KATANA || type == MWT_SCISSOR) {
 				ZPostSkill(g_pGame->GetTime(), ZC_SKILL_UPPERCUT, sel_type);
 			}
 		}
@@ -2807,6 +2811,10 @@ float ZMyCharacter::GetGravityConst()
 			AniFrameInfo* pAniLow = m_pVMesh->GetFrameInfo(ani_mode_lower);
 			if (pAniLow->m_nFrame < 160 * 11) return 0;
 		}
+		else if (pDesc->m_nWeaponType == MWT_SCISSOR) {
+			AniFrameInfo* pAniLow = m_pVMesh->GetFrameInfo(ani_mode_lower);
+			if (pAniLow->m_nFrame < 160 * 8) return 0;
+		}
 	}
 
 	if (m_bSkill) {
@@ -2814,6 +2822,10 @@ float ZMyCharacter::GetGravityConst()
 		if (pDesc->m_nWeaponType == MWT_DOUBLE_KATANA) {
 			AniFrameInfo* pAniLow = m_pVMesh->GetFrameInfo(ani_mode_lower);
 			if (pAniLow->m_nFrame < 160 * 20) return 0;
+		}
+		else if (pDesc->m_nWeaponType == MWT_SCISSOR) {
+			AniFrameInfo* pAniLow = m_pVMesh->GetFrameInfo(ani_mode_lower);
+			if (pAniLow->m_nFrame < 160 * 24) return 0;
 		}
 	}
 

@@ -67,6 +67,7 @@ int RMeshMgr::Add(const char* name, const char* modelname, bool namesort)
 	return m_id_last-1;
 }
 
+/// Gva book: XML list loading parsing
 int	RMeshMgr::LoadXmlList(const char* name, RFPROGRESSCALLBACK pfnProgressCallback, void *CallbackParam)
 {
 	__BP(2007,"RMeshMgr::LoadXmlList");

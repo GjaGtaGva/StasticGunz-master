@@ -39,6 +39,8 @@ RWeaponMotionType WeaponTypeToMotionType(MMatchWeaponType WeaponType)
 		return eq_wd_sword;
 	case MWT_DOUBLE_KATANA:
 		return eq_wd_blade;
+	case MWT_SCISSOR:
+		return eq_wd_scissor;
 	};
 
 	return eq_weapon_etc;
@@ -73,6 +75,12 @@ float GetPiercingRatio(MMatchWeaponType wtype, RMeshPartsType partstype)
 	{
 		if (bHead)	fRatio = 0.65f;
 		else		fRatio = 0.6f;
+	}
+	break;
+	case MWT_SCISSOR:
+	{
+		if (bHead)	fRatio = 0.9f;
+		else		fRatio = 0.55f;
 	}
 	break;
 	case MWT_GREAT_SWORD:

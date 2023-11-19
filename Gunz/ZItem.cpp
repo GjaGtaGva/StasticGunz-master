@@ -153,6 +153,12 @@ float ZItem::GetPiercingRatio(MMatchWeaponType wtype,RMeshPartsType partstype)
 				else		fRatio = 0.6f;
 			}
 			break;
+		case MWT_SCISSOR:
+			{
+				if(bHead)	fRatio = 0.9f;
+				else		fRatio = 0.55f;
+			}
+			break;
 		case MWT_GREAT_SWORD:	
 			{
 				if(bHead)	fRatio = 0.65f;

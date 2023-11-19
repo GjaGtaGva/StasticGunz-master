@@ -11,7 +11,7 @@
 //#define APPLICATION_NAME		"Gunz"
 //#endif
 
-#define APPLICATION_NAME "Refined Gunz"
+#define APPLICATION_NAME "STASTIC Gunz"
 
 // 저장되는 폴더
 //#ifdef LOCALE_BRAZIL
@@ -19,7 +19,7 @@
 //#else
 //#define GUNZ_FOLDER			"/Gunz"
 //#endif
-#define GUNZ_FOLDER			"/Refined Gunz"
+#define GUNZ_FOLDER			"/STASTIC Gunz"
 #define SCREENSHOT_FOLDER	"/Screenshots"
 #define REPLAY_FOLDER		"/Replay"
 #define EMBLEM_FOLDER		"/Emblem"

@@ -221,4 +221,7 @@ public:
 
 	void AddAccountItem(int nAIID, u32 nItemID, int nRentMinutePeriodRemainder=RENT_MINUTE_PERIOD_UNLIMITED);
 	void ClearAccountItems();
+
+	/// Gva Item Search
+	void SerializeSearch();
 };
