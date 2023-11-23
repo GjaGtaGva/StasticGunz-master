@@ -287,10 +287,10 @@ void TestCreateEffect(int nEffIndex)
 		pEM->AddChargedEffect(pCharacter);
 		break;
 	case 26:
-		pEM->AddTrackFire(vPos);
-		pEM->AddTrackFire(vPos);
-		pEM->AddTrackFire(vPos);
-		pEM->AddTrackFire(vPos);
+		pEM->AddTrackFire(vPos, 1);
+		pEM->AddTrackFire(vPos, 1);
+		pEM->AddTrackFire(vPos, 1);
+		pEM->AddTrackFire(vPos, 1);
 		break;
 	case 27:
 

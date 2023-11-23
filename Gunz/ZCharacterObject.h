@@ -42,12 +42,12 @@ public:
 
 	void UpdateEnchant();
 
-	void DrawEnchantSub(ZC_ENCHANT etype,rvector& pos);
+	void DrawEnchantSub(ZC_ENCHANT etype,rvector& pos, int nEFLevel);
 
 	void DrawEnchant(ZC_STATE_LOWER AniState_Lower,bool bCharged);
 	void EnChantWeaponEffect(ZC_ENCHANT etype,int nLevel);
-	void EnChantSlashEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon);
-	void EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon);
+	void EnChantSlashEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon, int nEFLevel);
+	void EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon, int nEFLevel);
 
 	MMatchItemDesc* GetEnchantItemDesc();
 	MMatchItemDesc* GetEnchantItemDesc(MMatchCharItemParts part);

@@ -1090,8 +1090,13 @@ bool ZWeaponMagic::Update(float fElapsedTime)
 
 		if (m_pSkillDesc->bDrawTrack)
 		{
-				if(nEffectType==ZSTE_FIRE)		ZGetEffectManager()->AddTrackFire(pos);
-			else if(nEffectType==ZSTE_COLD)		ZGetEffectManager()->AddTrackCold(pos);
+			/// Could not find a slick way to get nEFLevel of the item. Not sure what this doesn, locking it at 1
+			/// Would need to obtain MMatchItemDesc*-
+			// MMatchItemDesc* pENDesc = GetEnchantItemDesc(part);
+			int nEFLevel = 1;
+
+				if(nEffectType==ZSTE_FIRE)		ZGetEffectManager()->AddTrackFire(pos, nEFLevel);
+			else if(nEffectType==ZSTE_COLD)		ZGetEffectManager()->AddTrackCold(pos, nEFLevel);
 			else if(nEffectType==ZSTE_MAGIC)	ZGetEffectManager()->AddTrackMagic(pos);
 		}
 

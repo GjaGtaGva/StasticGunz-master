@@ -372,10 +372,10 @@ public:
 	void AddShotEffect(rvector* pSource,int size,const rvector& Target, const rvector& TargetNormal, ZTargetType nTargetType,MMatchWeaponType wtype,ZObject* pObj,bool bDrawFireEffects,bool bDrawTargetEffects );
 	void AddShotgunEffect(const rvector& pos,const rvector& out,const rvector& dir,ZObject* pObj);
 
-	void AddTrackFire(const rvector& pos);
-	void AddTrackCold(const rvector& pos);
-	void AddTrackPoison(const rvector& pos);
-	void AddTrackStarfire(const rvector& pos);
+	void AddTrackFire(const rvector& pos, int nEFLevel);
+	void AddTrackCold(const rvector& pos, int nEFLevel);
+	void AddTrackPoison(const rvector& pos, int nEFLevel);
+	void AddTrackStarfire(const rvector& pos, int nEFLevel);
 	void AddTrackMagic(const rvector& pos);
 	void AddTrackMiniMethor(const rvector& pos);
 	void AddTrackMethor(const rvector& pos);

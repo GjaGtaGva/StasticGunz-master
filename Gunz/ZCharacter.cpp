@@ -558,6 +558,10 @@ void ZCharacter::CheckDrawWeaponTrack()
 	{
 		if ((m_pVMesh->m_SelectWeaponMotionType == eq_wd_katana) ||
 			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_sword) ||
+			(m_pVMesh->m_SelectWeaponMotionType == eq_ws_dagger) ||
+			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_dagger) ||
+			/// Shotgun - experiment. Will remove.
+			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_shotgun) ||
 			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_blade) ||
 			(m_pVMesh->m_SelectWeaponMotionType == eq_wd_scissor))
 		{
@@ -572,6 +576,10 @@ void ZCharacter::CheckDrawWeaponTrack()
 						(m_AniState_Lower != ZC_STATE_LOWER_ATTACK4_RET))
 						bDrawTracks = true;
 				}
+			}
+			/// STARFIRE shatter - the track
+			else if (m_pVMesh->m_EnchantType == REnchantType_Starfire || m_pVMesh->m_EnchantType_2 == REnchantType_Starfire) {
+				bDrawTracks = true;
 			}
 		}
 	}

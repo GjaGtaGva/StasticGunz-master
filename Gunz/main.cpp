@@ -636,8 +636,9 @@ int PASCAL GunzMain(HINSTANCE this_inst, HINSTANCE prev_inst, LPSTR cmdline, int
 	SetCurrentDirectory(szModuleFileName);
 
 #ifdef _PUBLISH
-	/// Gva mutex disabled so we could run mutiple clients
-	/*// Create a mutex so we can't run multiple clients
+	
+	/*/// Mutex disabled so I could run mutiple clients.
+	// Create a mutex so we can't run multiple clients
 	Mutex = CreateMutex(NULL, TRUE, "RGunz");
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 	{

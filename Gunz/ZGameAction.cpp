@@ -482,7 +482,7 @@ bool ZGameAction::OnEnchantDamage(MCommand* pCommand)
 					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enlight_2d" : "we_enlight", soundPos);
 					ZModule_StarfireDamage *pMod = (ZModule_StarfireDamage*)pTarget->GetModule(ZMID_STARFIREDAMAGE);
 					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.00068f * (float)pDesc->m_nDelay);
-					if (pMod) pMod->BeginSlow(0.00068f*(float)pDesc->m_nLimitSpeed, 0.00068f * (float)pDesc->m_nDelay);
+					if (pMod) pMod->BeginSlow(0.0168f*(float)pDesc->m_nLimitSpeed, 0.00068f * (float)pDesc->m_nDelay);
 				}break;
 			};
 		}

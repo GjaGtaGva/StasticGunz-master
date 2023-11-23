@@ -484,6 +484,8 @@ bool ZEffectManager::Create(void)
 	m_BillBoardTexAniList[2].Create("SFX/gd_effect_019.bmp");
 	m_BillBoardTexAniList[3].Create("SFX/ef_magicmissile.bmp");
 	m_BillBoardTexAniList[4].Create("SFX/ef_methor_smoke.tga");
+	/// Gva Future experiment - use ef_slow for enchant. Adjust BILLBOARDTEXANILIST_COUNT
+	// m_BillBoardTexAniList[5].Create("SFX/ef_slow.BMP");
 
 	m_BillBoardTexAniList[0].SetTile(4,4,0.25f,0.25f);
 	m_BillBoardTexAniList[1].SetTile(4,4,0.25f,0.25f);
@@ -1178,24 +1180,24 @@ void ZEffectManager::AddTrackMagic(const rvector &pos)
 	m_BillBoardTexAniList[3].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife );
 }
 
-void ZEffectManager::AddTrackFire(const rvector &pos)
+void ZEffectManager::AddTrackFire(const rvector &pos, int nEFLevel)
 {
 	int Add = rand() % 20;
 	float fStartSize = 10 + Add;
 	float fEndSize = 20 + Add;
-	float fLife = 0.4f;
+	float fLife = 0.4f + 0.05f * nEFLevel;
 	rvector vel = rvector(0,0,25);
 
 	m_BillBoardTexAniList[1].Add( pos, vel, 0, 0.f,fStartSize , fEndSize, fLife );
 }
 
-void ZEffectManager::AddTrackCold(const rvector &pos)
+void ZEffectManager::AddTrackCold(const rvector &pos, int nEFLevel)
 {
-	/// GVA you can modify the Ice shatter here !! TODO make it so that [fLife] could depend on the echant item
+	/// GVA modify the Ice shatter here !! 
 	int Add = rand() % 10;
 	float fStartSize = 8 + Add;
 	float fEndSize = 14 + Add;
-	float fLife = 1.0f;
+	float fLife = 1.0f + .2f * nEFLevel;
 
 	int frame = rand()%8;
 	rvector vel = rvector(0,0,-25.f);
@@ -1203,11 +1205,11 @@ void ZEffectManager::AddTrackCold(const rvector &pos)
 	m_BillBoardTexAniList[2].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife );
 }
 
-void ZEffectManager::AddTrackPoison(const rvector &pos)
+void ZEffectManager::AddTrackPoison(const rvector &pos, int nEFLevel)
 {
 	int Add = rand() % 10;
 	float fStartSize = 10 + Add;
-	float fEndSize = 20 + Add;
+	float fEndSize = 20 + Add + 10 * nEFLevel;
 	float fLife = 1.0f;
 
 	static int r_frame[4] = { 8,9,12,13 };
@@ -1219,24 +1221,25 @@ void ZEffectManager::AddTrackPoison(const rvector &pos)
 	m_BillBoardTexAniList[2].Add( pos, vel,r_frame[frame],0.f, fStartSize , fEndSize, fLife );
 }
 
-void ZEffectManager::AddTrackStarfire(const rvector &pos)
+void ZEffectManager::AddTrackStarfire(const rvector &pos, int nEFLevel)
 {
-	/// TODO make it so that [fLife] could depend on the echant item level
-	//GetEnchantItemDesc();
-
 	int special = rand() % 1000;
 	int Add = rand() % 10 + rand() % 8;
 	float fStartSize = 4 + Add;
 	float fEndSize = 22 + Add;
-	/// Experiment
-	float fLife = special == 1 ? 12.617f : special < 4 ? 1.618f : 1.f;
+
+	/// Faa Final Don't Change fLife !
+	float fLife = 
+		special == 1 ? 
+			1.618f*nEFLevel 
+			: special < 4*nEFLevel ? 
+				1.f : 0.618f;
 
 	int frame = rand()%8;
-	/// z velovity -15 instead of 15 at the other place. Experiment.
 	rvector vel = rvector(rand() % 15, rand() % 15, -15.f);
 
 	/// Bandom ketvirta - Magic
-	m_BillBoardTexAniList[3].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife );
+	m_BillBoardTexAniList[3].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife);
 }
 
 /// Gva test

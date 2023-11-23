@@ -1235,9 +1235,16 @@ void RVisualMesh::RenderWeaponSub(RVisualMesh* WeaponMesh,
 	if (m_bRenderMatrix)
 		WeaponMesh->m_bRenderMatrix = false;
 
-	if (RenderTracks) {
+	/// Starfire is force-enabled. It's its shatter...
+	if (m_EnchantType == REnchantType_Starfire || m_EnchantType_2 == REnchantType_Starfire) {
 		DrawTracks(m_bDrawTracks, WeaponMesh, mode, WeaponWorldMatrix);
-		DrawEnchant(WeaponMesh, mode, WeaponWorldMatrix);
+	} 
+	else {
+		/// original, wrapped in a SPECIAL.
+		if (RenderTracks) {
+			DrawTracks(m_bDrawTracks, WeaponMesh, mode, WeaponWorldMatrix);
+			DrawEnchant(WeaponMesh, mode, WeaponWorldMatrix);
+		}
 	}
 }
 
@@ -1338,7 +1345,7 @@ bool RVisualMesh::IsDoubleWeapon()
 	return bCheck;
 }
 
-/// Looks at the first enchant
+/// Sets the Track color the way it should be.
 void RVisualMesh::GetEnChantColor(u32* color)
 {
 	if(!color) return;
@@ -1382,6 +1389,7 @@ void RVisualMesh::GetEnChantColor(u32* color)
 	}
 }
 
+/// Gva book
 void RVisualMesh::DrawTracks(bool draw,RVisualMesh* pVWMesh,int mode,rmatrix& m) 
 {
 	if( pVWMesh == NULL )	return;
@@ -1422,7 +1430,14 @@ void RVisualMesh::DrawTracks(bool draw,RVisualMesh* pVWMesh,int mode,rmatrix& m)
 		if(!m_pTracks[mode]) {
 			m_pTracks[mode] = new RWeaponTracks;
 			/// Gva Sword Trail length is set here
-			m_pTracks[mode]->Create(50); //(10);
+			/// Should be a setting 10 - 50 or to 100
+			/// Starfire is longer and force-enabled. It's its shatter...
+			if (m_EnchantType == REnchantType_Starfire || m_EnchantType_2 == REnchantType_Starfire) {
+				m_pTracks[mode]->Create(81);
+			}
+			else {
+				m_pTracks[mode]->Create(50);
+			}
 		}
 
 		m_pTracks[mode]->m_vSwordPos[0] = vpos[0];

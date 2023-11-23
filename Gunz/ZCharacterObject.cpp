@@ -113,19 +113,19 @@ void ZCharacterObject::UpdateEnchant()
 	}
 }
 
-void ZCharacterObject::DrawEnchantSub(ZC_ENCHANT etype,rvector& pos)
+void ZCharacterObject::DrawEnchantSub(ZC_ENCHANT etype,rvector& pos, int nEFLevel)
 {
 	if(etype==ZC_ENCHANT_FIRE)
-		ZGetEffectManager()->AddTrackFire( pos );
+		ZGetEffectManager()->AddTrackFire( pos, nEFLevel);
 	else if(etype==ZC_ENCHANT_COLD)
-		ZGetEffectManager()->AddTrackCold( pos );
+		ZGetEffectManager()->AddTrackCold( pos, nEFLevel);
 	else if(etype==ZC_ENCHANT_POISON)
-		ZGetEffectManager()->AddTrackPoison( pos );
+		ZGetEffectManager()->AddTrackPoison( pos, nEFLevel);
 	else if(etype==ZC_ENCHANT_STARFIRE)
-		ZGetEffectManager()->AddTrackStarfire( pos );
+		ZGetEffectManager()->AddTrackStarfire( pos, nEFLevel);
 }
 
-void ZCharacterObject::EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon)
+void ZCharacterObject::EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon, int nEFLevel)
 {
 	int nRand = (GetEffectLevel()+1) * 3;
 
@@ -138,7 +138,7 @@ void ZCharacterObject::EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT e
 		float asf = (rand()%10)/10.f;
 		rvector pos = pOutPos[0] + (pOutPos[1]-pOutPos[0]) * asf;
 
-		DrawEnchantSub( etype , pos );
+		DrawEnchantSub( etype , pos, nEFLevel);
 
 		if(bDoubleWeapon)
 		{
@@ -149,12 +149,12 @@ void ZCharacterObject::EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT e
 			float asf = (rand()%10)/10.f;
 			rvector pos = pOutPos[2] + (pOutPos[3]-pOutPos[2]) * asf;
 
-			DrawEnchantSub( etype , pos );
+			DrawEnchantSub( etype , pos, nEFLevel);
 		}
 	}
 }
 
-void ZCharacterObject::EnChantSlashEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon)
+void ZCharacterObject::EnChantSlashEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon, int nEFLevel)
 {
 	if(cnt==0) {
 		m_pVMesh->GetWeaponPos( pOutPos );
@@ -163,7 +163,7 @@ void ZCharacterObject::EnChantSlashEffect(rvector* pOutPos,int cnt,ZC_ENCHANT et
 	float asf = (3 + rand()%3)/10.f;
 	rvector pos = pOutPos[0] + (pOutPos[1]-pOutPos[0]) * asf;
 
-	DrawEnchantSub( etype , pos );
+	DrawEnchantSub( etype , pos, nEFLevel);
 
 	if(bDoubleWeapon)
 	{
@@ -174,7 +174,7 @@ void ZCharacterObject::EnChantSlashEffect(rvector* pOutPos,int cnt,ZC_ENCHANT et
 		float asf = (3 + rand()%3)/10.f;
 		rvector pos = pOutPos[2] + (pOutPos[3]-pOutPos[2]) * asf;
 
-		DrawEnchantSub( etype , pos );
+		DrawEnchantSub( etype , pos, nEFLevel);
 	}
 }
 
@@ -247,12 +247,12 @@ void ZCharacterObject::DrawEnchant(ZC_STATE_LOWER AniState_Lower,bool bCharged)
 
 				if ( (nEFLevel > 2) || ((nEFLevel > 1) && bCharged) )
 				{
-					EnChantMovingEffect(pOutPos, cnt, etype, bDoubleWeapon);
+					EnChantMovingEffect(pOutPos, cnt, etype, bDoubleWeapon, nEFLevel);
 				}
 
 				if (bSlash)
 				{
-					EnChantSlashEffect(pOutPos, cnt, etype, bDoubleWeapon);
+					EnChantSlashEffect(pOutPos, cnt, etype, bDoubleWeapon, nEFLevel);
 				}
 
 				if ((nEFLevel > 1) || bCharged)
