@@ -93,7 +93,8 @@ void ZShop::Serialize()
 														  GetItemIconBitmap(pItemDesc, true),
 														  pItemDesc->m_szName,
                                                           pItemDesc->m_nResLevel,
-														  pItemDesc->m_nBountyPrice);
+														  pItemDesc->m_nBountyPrice,
+														  pItemDesc->m_nColor);
 				}
 			}
 
@@ -206,7 +207,8 @@ void ZShop::SerializeSearch()
 							GetItemIconBitmap(pDesc, true),
 							pDesc->m_szName,
 							pDesc->m_nResLevel,
-							pDesc->m_nBountyPrice);
+							pDesc->m_nBountyPrice,
+							pDesc->m_nColor);
 					}
 				}
 			}

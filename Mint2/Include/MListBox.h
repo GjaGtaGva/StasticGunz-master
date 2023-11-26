@@ -119,6 +119,11 @@ public:
 		if (m_Items.GetCount()>0) return m_Items.Get(0)->GetColor();
 		return MCOLOR(DEFCOLOR_MLIST_TEXT);
 	}
+
+	virtual const MCOLOR GetColor(int i) override {
+		if (m_Items.GetCount() > 0) return m_Items.Get(i)->GetColor();
+		return MCOLOR(DEFCOLOR_MLIST_TEXT);
+	}
 };
 
 struct MLISTFIELD{

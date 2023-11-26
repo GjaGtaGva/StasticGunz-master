@@ -5019,6 +5019,10 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 
 	if (pItemDesc->IsEnchantItem())
 	{
+
+
+
+
 		switch (pItemDesc->m_nWeaponType)
 		{
 		case MWT_ENCHANT_FIRE:
@@ -5031,6 +5035,8 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 				sprintf_safe(temp, "%s : %d dmg/%s\n", ZMsg(MSG_WORD_DAMAGE), pItemDesc->m_nDamage, ZMsg(MSG_CHARINFO_SECOND));
 				str += temp;
 			}
+			sprintf_safe(temp, "Effect Level : %d\n", pItemDesc->m_nEffectLevel);
+			str += temp;
 			break;
 
 		case MWT_ENCHANT_COLD:
@@ -5043,6 +5049,8 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 				sprintf_safe(temp, "%s -%d%%\n", ZMsg(MSG_WORD_RUNSPEED), 100 - pItemDesc->m_nLimitSpeed);
 				str += temp;
 			}
+			sprintf_safe(temp, "Effect Level : %d\n", pItemDesc->m_nEffectLevel);
+			str += temp;
 			sprintf_safe(temp, "%s\n", ZMsg(MSG_WORD_DONOTDASH));
 			str += temp;
 			sprintf_safe(temp, "%s\n", ZMsg(MSG_WORD_DONOTHANGWALL));
@@ -5059,6 +5067,8 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 				sprintf_safe(temp, "%s : %d dmg.\n", ZMsg(MSG_WORD_ATTACK), pItemDesc->m_nDamage);
 				str += temp;
 			}
+			sprintf_safe(temp, "Effect Level : %d\n", pItemDesc->m_nEffectLevel);
+			str += temp;
 			break;
 
 		case MWT_ENCHANT_POISON:
@@ -5071,10 +5081,14 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 				sprintf_safe(temp, "%s : %d dmg/%s\n", ZMsg(MSG_WORD_DAMAGE), pItemDesc->m_nDamage, ZMsg(MSG_CHARINFO_SECOND));
 				str += temp;
 			}
+			sprintf_safe(temp, "Effect Level : %d\n", pItemDesc->m_nEffectLevel);
+			str += temp;
 			break;
 
 		case MWT_ENCHANT_STARFIRE:
 			sprintf_safe(temp, "<%s>\n", ZMsg(MSG_WORD_ATTRIBUTE_STARFIRE));
+			str += temp;
+			sprintf_safe(temp, "It's Eva.");
 			str += temp;
 			sprintf_safe(temp, "%s : %d%s\n", ZMsg(MSG_WORD_RUNTIME), pItemDesc->m_nDelay / 1000, ZMsg(MSG_CHARINFO_SECOND));
 			str += temp;
@@ -5083,6 +5097,8 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 				sprintf_safe(temp, "%s : %d dmg.\n", ZMsg(MSG_WORD_ATTACK), pItemDesc->m_nDamage);
 				str += temp;
 			}
+			sprintf_safe(temp, "Effect Level : %d\n", pItemDesc->m_nEffectLevel);
+			str += temp;
 			break;
 		}
 	}
@@ -5245,8 +5261,19 @@ void ZGameInterface::SetupItemDescription(MMatchItemDesc* pItemDesc, const char 
 	MTextArea* pTextArea3 = (MTextArea*)ZGetGameInterface()->GetIDLResource()->FindWidget(szTextArea3);
 	if (pTextArea1)
 	{
-		pTextArea1->SetTextColor(MCOLOR(255, 255, 255));
+		/// Gva
+		//pTextArea1->SetTextColor(MCOLOR(255, 255, 255));
+		//pTextArea1->SetTextColor(MCOLOR(69, 147, 163));
+		pTextArea1->SetTextColor(MCOLOR(pItemDesc->m_nColor));
+
 		pTextArea1->SetText(pItemDesc->m_szName);
+
+		pTextArea1->AddText("\n");
+		char gvaBuff[128];
+		sprintf_safe(gvaBuff, "ID: %i\n\n", pItemDesc->m_nID);
+		pTextArea1->AddText(gvaBuff);
+		sprintf_safe(gvaBuff, "COLOR: %x\n", pItemDesc->m_nColor);
+		pTextArea1->AddText(gvaBuff);
 
 		pTextArea1->AddText("\n\n\n");
 		pTextArea1->AddText(GetRestrictionString(pItemDesc).c_str(), MCOLOR(170, 170, 170));

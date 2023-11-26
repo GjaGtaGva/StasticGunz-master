@@ -241,9 +241,24 @@ void ZEquipmentListBox::AttachMenu(ZItemMenu* pMenu)
 	((MPopupMenu*)m_pItemMenu)->Show(false);
 }
 
+void ZEquipmentListBox::Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, const char* szLevel, const char* szPrice, u32 m_nColor)
+{
+	MListBox::Add(new ZEquipmentListItem(uidItem, nItemID, pIconBitmap, szName, szLevel, szPrice, m_nColor));
+}
+
+void ZEquipmentListBox::Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, int nLevel,int nBountyPrice, u32 m_nColor)
+{
+	char szBounty[64], szLevel[64];
+	
+	itoa_safe(nLevel, szLevel, 10);
+	itoa_safe(nBountyPrice, szBounty, 10);
+
+	Add(uidItem, nItemID, pIconBitmap, szName, szLevel, szBounty, m_nColor);
+}
+
 void ZEquipmentListBox::Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, const char* szLevel, const char* szPrice)
 {
-	MListBox::Add(new ZEquipmentListItem(uidItem, nItemID, pIconBitmap, szName, szLevel, szPrice));
+	MListBox::Add(new ZEquipmentListItem(uidItem, nItemID, pIconBitmap, szName, szLevel, szPrice, DEFCOLOR_MLIST_TEXT));
 }
 
 void ZEquipmentListBox::Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, int nLevel,int nBountyPrice)
@@ -253,7 +268,7 @@ void ZEquipmentListBox::Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitm
 	itoa_safe(nLevel, szLevel, 10);
 	itoa_safe(nBountyPrice, szBounty, 10);
 
-	Add(uidItem, nItemID, pIconBitmap, szName, szLevel, szBounty);
+	Add(uidItem, nItemID, pIconBitmap, szName, szLevel, szBounty, DEFCOLOR_MLIST_TEXT);
 }
 
 void ZEquipmentListBox::Add(const int nAIID, u32 nItemID, MBitmap* pIconBitmap, const char* szName, int nLevel)

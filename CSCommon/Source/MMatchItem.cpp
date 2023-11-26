@@ -480,10 +480,6 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 		{
 			pNewDesc->m_nRange = atoi(szAttrValue);
 		}
-		else if (!_stricmp(szAttrName, MICTOK_COLOR))
-		{
-			// color 처리해야 함..-_-z
-		}
 		else if (!_stricmp(szAttrName, MICTOK_DESC))
 		{
 			strcpy_safe(pNewDesc->m_szDesc, MGetStringResManager()->GetStringFromXml(szAttrValue));
@@ -551,10 +547,16 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 			else
 				pNewDesc->m_bDuplicate = true;
 		}
+		else if (!_stricmp(szAttrName, MICTOK_COLOR))
+		{
+			uint32_t hexNumber;
+			sscanf(szAttrValue, "#%x", &hexNumber);
+			pNewDesc->m_nColor = hexNumber;
+		}
 		else if( !_stricmp(szAttrName, MICTOK_GVA_TRAIL_COLOR) )
 		{
 			uint32_t hexNumber;
-			sscanf(szAttrValue, "%x", &hexNumber);
+			sscanf(szAttrValue, "#%x", &hexNumber);
 			pNewDesc->m_GvaTrailColor = hexNumber;
 		}
 	}

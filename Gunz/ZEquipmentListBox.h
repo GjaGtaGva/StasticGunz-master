@@ -19,14 +19,26 @@ public:
 	char	m_szName[256];
 	char	m_szLevel[256];
 	char	m_szPrice[256];
+	u32		m_nColor;
 public:
 
-	ZEquipmentListItem(const MUID& uidItem, const u32 nItemID, MBitmap* pBitmap, const char* szName, const char* szLevel, const char* szPrice)
+	const MCOLOR GetColor() { return GetColor(0); }
+	const MCOLOR GetColor(int i) {
+		if (i == 0) {
+			if (m_nColor) {
+				return MCOLOR(m_nColor);
+			}
+		}
+		return MCOLOR(DEFCOLOR_MLIST_TEXT);
+	}
+
+	ZEquipmentListItem(const MUID& uidItem, const u32 nItemID, MBitmap* pBitmap, const char* szName, const char* szLevel, const char* szPrice, const u32 m_nColorItem)
 	{
 		m_nAIID = 0;
 		m_nItemID = nItemID;
 		m_pBitmap = pBitmap;
 		m_UID = uidItem;
+		m_nColor = m_nColorItem;
 		strcpy_safe(m_szName, szName);
 		strcpy_safe(m_szLevel, szLevel);
 		strcpy_safe(m_szPrice, szPrice);
@@ -37,6 +49,7 @@ public:
 		m_nItemID = nItemID;
 		m_pBitmap = pBitmap;
 		m_UID = MUID(0,0);
+		m_nColor = DEFCOLOR_MLIST_TEXT;
 		strcpy_safe(m_szName, szName);
 		strcpy_safe(m_szLevel, szLevel);
 		m_szPrice[0] = 0;
@@ -48,6 +61,7 @@ public:
 		m_nItemID = 0;
 		m_pBitmap = NULL;
 		m_UID = MUID(0,0);
+		m_nColor = 0;
 		m_szName[0] = 0;
 		m_szLevel[0] = 0;
 		m_szPrice[0] = 0;
@@ -108,7 +122,11 @@ public:
 	void AttachMenu(ZItemMenu* pMenu);
 
 	void Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, const char* szLevel, const char* szPrice);
-	void Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, int nLevel,int nBountyPrice);
+	void Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, int nLevel, int nBountyPrice);
+
+	void Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, const char* szLevel, const char* szPrice, u32 m_nColor);
+	void Add(const MUID& uidItem, u32 nItemID, MBitmap* pIconBitmap, const char* szName, int nLevel,int nBountyPrice, u32 m_nColor);
+
 	void Add(const int nAIID, u32 nItemID, MBitmap* pIconBitmap, const char* szName, int nLevel);
 
 	void SetDescriptionWidget(MWidget *pWidget)	{ m_pDescFrame = pWidget; }

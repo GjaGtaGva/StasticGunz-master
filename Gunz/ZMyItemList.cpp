@@ -173,7 +173,7 @@ void ZMyItemList::Serialize()
 															   pItemDesc->m_nID,
 															   GetItemIconBitmap(pItemDesc, true),
 															   pItemDesc->m_szName,
-															   pItemDesc->m_nResLevel,pItemDesc->GetBountyValue());
+															   pItemDesc->m_nResLevel,pItemDesc->GetBountyValue(), pItemDesc->m_nColor);
 					}
 				}
 			}
@@ -213,7 +213,7 @@ void ZMyItemList::Serialize()
 															   pItemDesc->m_nID,
 															   GetItemIconBitmap(pItemDesc, true),
 															   pItemDesc->m_szName,
-															   pItemDesc->m_nResLevel,pItemDesc->GetBountyValue());
+															   pItemDesc->m_nResLevel,pItemDesc->GetBountyValue(), pItemDesc->m_nColor);
 
 						m_ItemIndexVectorEquip.push_back( (*itor).first );
 					}
@@ -356,7 +356,8 @@ void ZMyItemList::SerializeSearch() {
 							GetItemIconBitmap(pItemDesc, true),
 							pItemDesc->m_szName,
 							pItemDesc->m_nResLevel,
-							pItemDesc->m_nBountyPrice);
+							pItemDesc->m_nBountyPrice,
+							pItemDesc->m_nColor);
 					}
 				}
 
