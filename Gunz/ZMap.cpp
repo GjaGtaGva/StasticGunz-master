@@ -43,6 +43,26 @@ static StringView GetMapName(const StringView& Path)
 	return Path.substr(NameIndex, Path.size() - NameIndex - 1);
 }
 
+/// "Stastic/Faa"
+static StringView GetSubMapName(const StringView& Path)
+{
+	if (Path.size() < 2)
+		return "";
+
+	const auto SlashIndex = Path.find_last_of("/\\", Path.size() - 2);
+	if (SlashIndex == Path.npos)
+		return "";
+
+	const auto Slash2Index = Path.find_last_of("/\\", Path.size() - 2 - SlashIndex);
+	if (Slash2Index == Path.npos){
+		const auto NameIndex = SlashIndex + 1;
+		return Path.substr(NameIndex, Path.size() - NameIndex - 1);
+	}
+
+	const auto NameIndex = Slash2Index + 1;
+	return Path.substr(NameIndex, Path.size() - NameIndex - 1);
+}
+
 static bool IsMapPath(MZFileSystem& FS, const MZDirDesc& MapDirNode, const StringView& DirName)
 {
 	char MapXMLPath[_MAX_PATH];
@@ -78,6 +98,7 @@ static bool AddMaps(MComboBox& Widget, MChannelRule& ChannelRule)
 	auto&& GameType = ZGetGameClient()->GetMatchStageSetting()->GetGameType();
 
 	char MapDirectory[64];
+	/// "maps/" 
 	ZGetCurrMapPath(MapDirectory);
 
 	auto MapsDirNode = FS.GetDirectory(MapDirectory);
@@ -89,11 +110,28 @@ static bool AddMaps(MComboBox& Widget, MChannelRule& ChannelRule)
 	for (auto&& MapNode : MapsDirNode->SubdirsRange())
 	{
 		auto MapName = GetMapName(MapNode.Path);
+
 		if (IsMapPath(FS, MapNode, MapName) &&
-			ShouldAddMap(MapName, ChannelRule, GameType))
-		{
+			ShouldAddMap(MapName, ChannelRule, GameType)
+			){
 			Widget.Add(MapName);
+		}else{
+
+			// /// Gva Load from subdirectories
+			// /// gavenup
+			// auto MapSubDirNode = FS.GetDirectory(MapNode.Path);
+
+			// for (auto&& SubMapNode : MapSubDirNode->SubdirsRange()) {
+			// 	auto SubMapName = GetSubMapName(SubMapNode.Path);
+
+			// 	if (IsMapPath(FS, SubMapNode, SubMapName)) {
+			// 		Widget.Add(SubMapName);
+			// 	}
+			// }
 		}
+
+
+
 	}
 
 	return true;

@@ -175,13 +175,22 @@ struct MINITIALCOSTUME
 #define MAX_COSTUME_TEMPLATE		6
 const MINITIALCOSTUME g_InitialCostume[MAX_COSTUME_TEMPLATE][2] =
 {
+	/// Gva modify char creation initial sets here. 
+	/// Change the names UI_CC_LIST_03_01 - UI_CC_LIST_03_06 at strings.xml
+
+	/// male then female
+	/// { Dagger, Gun1, Gun2, Item1, Item2,   chest, hands, legs, feet }
 	{
-		{ 1, 5001, 4001, 30301, 0,     21001, 0, 23001, 0 },
-		{ 1, 5001, 4001, 30301, 0,     21501, 0, 23501, 0 }
+		/// Litra follower 
+		/// TODO add head 1547, or not.
+		{ 1015, 1052, 1156, 1175, 0,    1296, 0, 1421, 1483 },
+		{ 1015, 1052, 1156, 1175, 0,    1283, 0, 1460, 54154 }
 	},
 	{
-		{ 2, 5002, 0,    30301, 0,     21001, 0, 23001, 0 },
-		{ 2, 5002, 0,    30301, 0,     21501, 0, 23501, 0 }
+		/// Fimbul watcher 
+		/// TODO add head 1814, adjust shotguns
+		{ 1037, 57078, 57079, 100, 101,     1314, 0, 53927, 54069 },
+		{ 1037, 57079, 57078, 100, 101,     1315, 1397, 1403, 1469 }
 	},
 	{
 		{ 1, 4005, 5001, 30401, 0,     21001, 0, 23001, 0 },

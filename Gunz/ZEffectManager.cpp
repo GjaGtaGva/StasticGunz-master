@@ -1236,7 +1236,7 @@ void ZEffectManager::AddTrackStarfire(const rvector &pos, int nEFLevel)
 				1.f : 0.618f;
 
 	int frame = rand()%8;
-	rvector vel = rvector(rand() % 15, rand() % 15, -15.f);
+	rvector vel = rvector(rand() % 15, rand() % 15, rand() % 2 == 1 ? 15.f : -15.f);
 
 	/// Bandom ketvirta - Magic
 	m_BillBoardTexAniList[3].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife);

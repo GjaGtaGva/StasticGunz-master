@@ -10,14 +10,23 @@
 #include "ZOptionInterface.h"
 #include "ZTestGame.h"
 #include "ZMyBotCharacter.h"
+#include "MUtil.h"
+#include "HitRegistration.h"
+#include "ZPickInfo.h"
 
 static rvector playerPoss;
 static rvector playerPoss2;
 
+
+
 bool CheckDeveloperMode(const char* Name)
 {
+	const char* m_szUserName = ZGetGame()->m_pMyCharacter->GetUserName();
+
+	return _startsWithTest(Name);
+
 	/// Testavimas
-	//return true;
+	return true;
 
 	if (ZApplication::GetInstance()->GetLaunchMode() != ZApplication::ZLAUNCH_MODE_STANDALONE_GAME)
 	{
@@ -26,6 +35,36 @@ bool CheckDeveloperMode(const char* Name)
 	}
 
 	return true;
+}
+
+bool _startsWithTest(const char* str) {
+    // Check if the string is not null
+    if (str == nullptr) {
+        return false;
+    }
+
+    // Get the length of the string
+    size_t len = std::strlen(str);
+
+    // Check if the string is at least 4 characters long (length of "test")
+    if (len < 4) {
+        return false;
+    }
+
+    // Convert the string to lowercase
+    char* lowercaseStr = new char[len + 1];
+    for (size_t i = 0; i < len; ++i) {
+        lowercaseStr[i] = std::tolower(str[i]);
+    }
+    lowercaseStr[len] = '\0';
+
+    // Check if the lowercase string starts with "test"
+    bool result = (std::strncmp(lowercaseStr, "test", 4) == 0);
+
+    // Cleanup
+    delete[] lowercaseStr;
+
+    return result;
 }
 
 struct BoolResult
@@ -762,7 +801,6 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 
 
 	CmdManager.AddCommand(0, "faa", [](const char *line, int argc, char ** const argv) {
-
 		uint32_t hexNumber;
 		sscanf(argv[1], "%x", &hexNumber);
 		if(!hexNumber) sscanf("#FF4593A3", "%x", &hexNumber);
@@ -809,5 +847,42 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 		ZGetGame()->m_pMyCharacter->SetPosition(rvector(pos.x, pos.y, pos.z+dz));
 	},
 		CCF_ALL, 1, 1, true, "/jump <dz>", "");
+
+	CmdManager.AddCommand(0, "tplook", [](const char *line, int argc, char ** const argv) {
+
+		/// get player pos
+		rvector pos = ZGetGame()->m_pMyCharacter->GetPosition();
+		rvector dir = ZGetGame()->m_pMyCharacter->GetDirection();
+		ZItem* item = ZGetGame()->m_pMyCharacter->GetItems()->GetSelectedWeapon();
+		rvector to = pos + 10000.f * dir;
+
+		auto pOwner = ZGetGame()->m_pMyCharacter;
+		auto SrcPos = v3(pos);
+		auto DestPos = v3(to);
+
+		ZPICKINFO pickinfo;
+
+		constexpr u32 PickPassFlag = RM_FLAG_ADDITIVE | RM_FLAG_HIDE |
+			RM_FLAG_PASSROCKET | RM_FLAG_PASSBULLET;
+			
+		bool Picked = PickHistory(
+			pOwner, 
+			SrcPos, 
+			DestPos, 
+			ZGetGame()->GetWorld()->GetBsp(), 
+			pickinfo,
+			MakePairValueAdapter(ZGetGame()->m_ObjectManager), 
+			10.f, 
+			PickPassFlag
+		);
+
+		/// set new player pos
+		if(Picked){
+			rvector landPos = pickinfo.bpi.PickPos;
+			ZGetGame()->m_pMyCharacter->SetPosition(landPos);
+		}
+
+	},
+		CCF_ALL, 0, 0, true, "/tplook", "");
 
 }

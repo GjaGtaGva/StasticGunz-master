@@ -149,6 +149,12 @@ public:
 
 	ZMyCharacter();
 
+	/// Gva whether I'm wintered. 
+	bool IsWintered()
+	{
+		return m_Items.GetItem(MMCIP_FINGERL)->GetDescID() == 2000;
+	}
+
 	void InitSpawn();
 
 	void ProcessInput(float fDelta);

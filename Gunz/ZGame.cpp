@@ -751,17 +751,19 @@ void ZGame::CheckMyCharDead(float fElapsed)
 		}
 		else
 		{
-			uidAttacker = m_pMyCharacter->GetLastThrower();
+			if(!m_pMyCharacter->IsWintered()){ 
+				uidAttacker = m_pMyCharacter->GetLastThrower();
 
-			ZObject *pAttacker = ZGetObjectManager()->GetObject(uidAttacker);
-			if (pAttacker == NULL || !IsAttackable(pAttacker, m_pMyCharacter))
-			{
-				uidAttacker = ZGetMyUID();
-				pAttacker = m_pMyCharacter;
+				ZObject *pAttacker = ZGetObjectManager()->GetObject(uidAttacker);
+				if (pAttacker == NULL || !IsAttackable(pAttacker, m_pMyCharacter))
+				{
+					uidAttacker = ZGetMyUID();
+					pAttacker = m_pMyCharacter;
+				}
+				m_pMyCharacter->OnDamaged(pAttacker, m_pMyCharacter->GetPosition(),
+					ZD_FALLING, MWT_NONE, m_pMyCharacter->GetHP());
+				ZChatOutput(ZMsg(MSG_GAME_FALL_NARAK));
 			}
-			m_pMyCharacter->OnDamaged(pAttacker, m_pMyCharacter->GetPosition(),
-				ZD_FALLING, MWT_NONE, m_pMyCharacter->GetHP());
-			ZChatOutput(ZMsg(MSG_GAME_FALL_NARAK));
 		}
 	}
 
@@ -3401,7 +3403,7 @@ void ZGame::OnPeerDieMessage(ZCharacter* pVictim, ZCharacter* pAttacker)
 				MMatchObjCache* pCache = ZGetGameClient()->FindObjCache(ZGetMyUID());
 				if (pCache && pCache->CheckFlag(MTD_PlayerFlags_AdminHide))
 				{
-					sprintf_safe( szMsg, "^%d%s^9 ½º½º·Î ÆÐ¹è",
+					sprintf_safe( szMsg, "^%d%s^9 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¹ï¿½",
 									(pAttacker->GetTeamID() == MMT_BLUE) ? 3 : 1,
 									pAttacker->GetProperty()->szName);
 					ZGetGameInterface()->GetCombatInterface()->m_AdminMsg.OutputChatMsg( szMsg);
@@ -3430,7 +3432,7 @@ void ZGame::OnPeerDieMessage(ZCharacter* pVictim, ZCharacter* pAttacker)
 			MMatchObjCache* pCache = ZGetGameClient()->FindObjCache(ZGetMyUID());
 			if (pCache && pCache->CheckFlag(MTD_PlayerFlags_AdminHide))
 			{
-				sprintf_safe( szMsg, "^%d%s^9 ½Â¸®,  ^%d%s^9 ÆÐ¹è",
+				sprintf_safe( szMsg, "^%d%s^9 ï¿½Â¸ï¿½,  ^%d%s^9 ï¿½Ð¹ï¿½",
 							(pAttacker->GetTeamID() == MMT_BLUE) ? 3 : 1, pAttacker->GetProperty()->szName,
 							(pVictim->GetTeamID() == MMT_BLUE) ? 3 : 1,   pVictim->GetProperty()->szName);
 				ZGetGameInterface()->GetCombatInterface()->m_AdminMsg.OutputChatMsg( szMsg);
