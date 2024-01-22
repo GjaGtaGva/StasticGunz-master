@@ -559,6 +559,10 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 			sscanf(szAttrValue, "#%x", &hexNumber);
 			pNewDesc->m_GvaTrailColor = hexNumber;
 		}
+		else if (!_stricmp(szAttrName, MICTOK_STASTIC))
+		{
+			pNewDesc->m_STASTIC = atoi(szAttrValue);
+		}
 	}
 
 

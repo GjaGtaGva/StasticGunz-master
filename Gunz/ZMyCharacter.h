@@ -152,7 +152,12 @@ public:
 	/// Gva whether I'm wintered. 
 	bool IsWintered()
 	{
-		return m_Items.GetItem(MMCIP_FINGERL)->GetDescID() == 2000;
+		MMatchItemDesc *leftFinger = m_Items.GetDesc(MMCIP_FINGERL);
+		if (leftFinger) {
+			/// STASTIC 2000: get wintered
+			return leftFinger->GotSTASTIC(2000);
+		}
+		return false;
 	}
 
 	void InitSpawn();

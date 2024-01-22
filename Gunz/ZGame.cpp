@@ -2831,6 +2831,14 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 			}
 			else {
 				OnHitObject();
+
+				/// STASTIC 2010: Leap - tp to hit position
+				if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2010)) {
+					rvector landPos = pickinfo.bpi.PickPos;
+					ZGetGame()->m_pMyCharacter->SetPosition(landPos);
+					ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
+					ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+				}
 			}
 
 			ret.HitPos = pickinfo.info.vOut;
@@ -2844,6 +2852,13 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 			ret.BulletMarkNormal = Normalized(pickinfo.bpi.pInfo->plane.normal());
 			ret.BulletMark = true;
 
+			/// STASTIC 2010: Leap - tp to hit position
+			if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2010)) {
+				rvector landPos = pickinfo.bpi.PickPos;
+				ZGetGame()->m_pMyCharacter->SetPosition(landPos);
+				ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
+				ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+			}
 		}
 		else {
 			assert(false);
@@ -2854,6 +2869,14 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 	else {
 		ret.HitPos = SrcPos + dir * 10000.f;
 		ret.TargetType = ZTT_NOTHING;
+
+		/// STASTIC 2010: Leap - tp to hit position - or by some distance at looking direction
+		if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2010)) {
+			rvector landPos = SrcPos + dir * 3000.f;
+			ZGetGame()->m_pMyCharacter->SetPosition(landPos);
+			ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
+			ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+		}
 	}
 
 	return ret;

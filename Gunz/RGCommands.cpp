@@ -18,25 +18,7 @@ static rvector playerPoss;
 static rvector playerPoss2;
 
 
-
-bool CheckDeveloperMode(const char* Name)
-{
-	const char* m_szUserName = ZGetGame()->m_pMyCharacter->GetUserName();
-
-	return _startsWithTest(Name);
-
-	/// Testavimas
-	return true;
-
-	if (ZApplication::GetInstance()->GetLaunchMode() != ZApplication::ZLAUNCH_MODE_STANDALONE_GAME)
-	{
-		ZChatOutputF("%s can only be used in developer mode", Name);
-		return false;
-	}
-
-	return true;
-}
-
+/// Whether lowercased [str] starts with "test"
 bool _startsWithTest(const char* str) {
     // Check if the string is not null
     if (str == nullptr) {
@@ -65,6 +47,24 @@ bool _startsWithTest(const char* str) {
     delete[] lowercaseStr;
 
     return result;
+}
+
+bool CheckDeveloperMode(const char* Name)
+{
+	const char* m_szUserName = ZGetGame()->m_pMyCharacter->GetUserName();
+
+	return _startsWithTest(Name);
+
+	/// Testavimas
+	return true;
+
+	if (ZApplication::GetInstance()->GetLaunchMode() != ZApplication::ZLAUNCH_MODE_STANDALONE_GAME)
+	{
+		ZChatOutputF("%s can only be used in developer mode", Name);
+		return false;
+	}
+
+	return true;
 }
 
 struct BoolResult
