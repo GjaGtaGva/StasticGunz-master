@@ -1,6 +1,6 @@
 /*
-last modify : Á¤µ¿¼· @ 2006/3/16
-desc : ¹«±â »ç¿ë Å° Ä¿½ºÅÍ¸¶ÀÌÁî °ü·Ã
+last modify : Ä®Â¤ÂµÃ¦Â¼Â· @ 2006/3/16
+desc : Â¹Â«Â±Ä Â»Ä“Ã¦Ä— Ã…Â° Ã„Ã¦Â½Å—Ã…Ä¶Ã¸Â¶Ä„Ä¢Ä®Ä« Â°Ã¼Â·Ä†
 */
 
 #include "stdafx.h"
@@ -1227,6 +1227,16 @@ void ZMyCharacter::ProcessShot()
 
 	m_fNextShotTimeType[nParts] = g_pGame->GetTime() + (float)(nWeaponDelay)*0.001f;
 
+	/// STASTIC 2030: Flier
+	if (pSelectedItem->GotSTASTIC(2030)) {
+		m_pModule_Movable->UpdateGravity(-0.01f * pSelectedItem->GetDesc()->m_nEffectLevel);	
+		return;
+	}
+	/// STASTIC 2031: Flier variant - without canceling attack action
+	if (pSelectedItem->GotSTASTIC(2031)) {
+		m_pModule_Movable->UpdateGravity(-0.01f * pSelectedItem->GetDesc()->m_nEffectLevel);	
+	}
+
 	if (GetItems()->GetSelectedWeapon()->GetBulletAMagazine() <= 0)
 	{
 		if (m_pVMesh->m_SelectWeaponMotionType != eq_wd_grenade &&
@@ -2434,7 +2444,7 @@ void ZMyCharacter::UpdateCAFactor(float fDelta)
 ////////////////////////////////////////////////////////////
 ZDummyCharacter::ZDummyCharacter() : ZMyCharacter()
 {
-	// ·£´ıÀ¸·Î ¾Æ¹«°Å³ª ÀÔµµ·Ï ¸¸µç´Ù
+	// Â·Â£Â´Å¼Ä„Ã¸Â·Äª Â¾Ä˜Â¹Â«Â°Ã…Â³Å– Ä„ÅŒÂµÂµÂ·Ä» Ã¸Ã¸ÂµÄ“Â´Å
 #define _DUMMY_CHARACTER_PRESET		5
 	u32 nMeleePreset[_DUMMY_CHARACTER_PRESET] = { 1, 11, 3, 14, 15 };
 	u32 nPrimaryPreset[_DUMMY_CHARACTER_PRESET] = { 4010, 4013, 5004, 6004, 9001 };

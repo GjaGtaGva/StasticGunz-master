@@ -32,9 +32,9 @@ ZInterfaceBackground::~ZInterfaceBackground( void)
 
 void ZInterfaceBackground::LoadMesh( void)
 {
-#ifdef _FASTDEBUG
-	return;
-#endif
+// #ifdef _FASTDEBUG
+// 	return;
+// #endif
 
 	if ( m_pLogin == NULL)
 	{
@@ -111,20 +111,20 @@ void ZInterfaceBackground::OnUpdate(float fElapsed)
 
 void ZInterfaceBackground::Draw(void)
 {
-#ifdef _FASTDEBUG
-	MWidget* pWidget = (MWidget*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget( "CharSelection");
-	if ( pWidget)
-	{
-		if ( ZApplication::GetGameInterface()->GetState() == GUNZ_CHARSELECTION)
-			pWidget->Show( true);
-	}
+// #ifdef _FASTDEBUG
+// 	MWidget* pWidget = (MWidget*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget( "CharSelection");
+// 	if ( pWidget)
+// 	{
+// 		if ( ZApplication::GetGameInterface()->GetState() == GUNZ_CHARSELECTION)
+// 			pWidget->Show( true);
+// 	}
 
-	MPicture* pPicture = (MPicture*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget( "CharSel_TopScreen");
-	if ( pPicture)
-		pPicture->SetOpacity( 0);
+// 	MPicture* pPicture = (MPicture*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget( "CharSel_TopScreen");
+// 	if ( pPicture)
+// 		pPicture->SetOpacity( 0);
 
-	return;
-#endif
+// 	return;
+// #endif
 
 	// Set rendering state
 	RSetViewport( 0, 0, RGetScreenWidth(), RGetScreenHeight());
@@ -270,9 +270,9 @@ void ZInterfaceBackground::Draw(void)
 
 void ZInterfaceBackground::OnInvalidate()
 {
-#ifdef _FASTDEBUG
-	return;
-#endif
+// #ifdef _FASTDEBUG
+// 	return;
+// #endif
 
 	if( m_pLogin)
 		m_pLogin->OnInvalidate();
@@ -281,9 +281,9 @@ void ZInterfaceBackground::OnInvalidate()
 
 void ZInterfaceBackground::OnRestore()
 {
-#ifdef _FASTDEBUG
-	return;
-#endif
+// #ifdef _FASTDEBUG
+// 	return;
+// #endif
 
 	if( m_pLogin)
 		m_pLogin->OnRestore();

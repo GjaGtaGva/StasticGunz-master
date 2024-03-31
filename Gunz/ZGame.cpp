@@ -2879,6 +2879,27 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 		}
 	}
 
+	/// STASTIC 2011: Leap forward
+	if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2011)) {
+
+		int offset = 10.f;
+		int m_nEffectLevel = pOwner->GetItems()->GetSelectedWeapon()->GetDesc()->m_nEffectLevel;
+		if(m_nEffectLevel){
+			offset *= m_nEffectLevel;
+		}
+		rvector landPos = SrcPos + dir * offset;
+		ZGetGame()->m_pMyCharacter->SetPosition(landPos);
+		ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
+		ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+	}
+
+
+	/// STASTIC 2020: Autoreload
+	if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2020)) {
+		if ( !g_pGame->IsReplay())
+			ZGetGameInterface()->Reload();
+	}
+
 	return ret;
 }
 

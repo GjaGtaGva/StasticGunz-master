@@ -799,12 +799,43 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 	},
 		CCF_ALL, 7, 7, true, "", "");
 
+	
+	CmdManager.AddCommand(0, "clearnpc", [](const char *line, int argc, char ** const argv) {
+
+		ZPostQuestTestClearNPC();
+	},
+			CCF_ALL, 0, 0, true, "/clearnpc", "");
+
+
+	CmdManager.AddCommand(0, "checkgrade", [](const char *line, int argc, char ** const argv) {
+	
+		ZChatOutputF("UGradeID: %i, PGradeID: %i, IsAdminGrade: %s", ZGetMyInfo()->GetUGradeID(), ZGetMyInfo()->GetPGradeID(), ZGetMyInfo()->IsAdminGrade());
+	},
+			CCF_ALL, 0, 0, true, "/checkgrade", "");
+
 
 	CmdManager.AddCommand(0, "faa", [](const char *line, int argc, char ** const argv) {
+
 		uint32_t hexNumber;
 		sscanf(argv[1], "%x", &hexNumber);
 		if(!hexNumber) sscanf("#FF4593A3", "%x", &hexNumber);
 		ZChatOutput(MCOLOR(hexNumber), "Stastic Faa");
+
+#ifdef _QUEST
+		ZChatOutput("QUEST is derived");
+#endif
+#ifndef _QUEST
+		ZChatOutput("no quest defined");
+#endif
+
+#ifdef _PUBLISH
+		ZChatOutput("_PUBLISH is defined");
+#endif
+#ifndef _PUBLISH
+		ZChatOutput("no publish defined");
+#endif
+
+
 	},
 		CCF_ALL, 0, 1, true, "/faa <color>", "");
 

@@ -2,7 +2,7 @@
 
 // Controls whether voicechat is enabled, and whether libraries this feature
 // depends on (portaudio, Opus) are linked into the Gunz executable.
-#define VOICECHAT
+//#define VOICECHAT
 
 // Controls whether portals can be created.
 #define PORTAL
@@ -33,7 +33,7 @@
 #define NO_DIRECTION_LOCK
 
 // Default field of view in radians.
-#define DEFAULT_FOV		1.22173048f // 70 degrees in radians
+#define DEFAULT_FOV		1.5708f // 90 degrees in radians
 
 // Default distance from the camera to the near plane in the projection transform.
 // 5.0f in vanilla Gunz
@@ -91,4 +91,4 @@
 #define UPDATE_STAGE_CHARVIEWER
 
 // Controls whether the hit sound (fx_myhit) stacks when hitting multiple enemies at once.
-#define DONT_STACK_HITSOUNDS
+//#define DONT_STACK_HITSOUNDS

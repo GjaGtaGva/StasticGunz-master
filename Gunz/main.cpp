@@ -164,7 +164,7 @@ RRESULT OnCreate(void *pParam)
 
 	g_pDC = new MDrawContextR2(RGetDevice());
 
-#ifndef _FASTDEBUG
+// #ifndef _FASTDEBUG
 	if( ZGetInitialLoading()->IsUseEnable() )
 	{
 		ZGetInitialLoading()->AddBitmap( 0, "Interface/Default/LOADING/loading_adult.jpg" );
@@ -174,7 +174,7 @@ RRESULT OnCreate(void *pParam)
 		ZGetInitialLoading()->SetPercentage( 0.0f );
 		ZGetInitialLoading()->Draw( MODE_FADEIN, 0 , true );
 	}
-#endif
+// #endif
 
 	g_Mint.Initialize(800, 600, g_pDC, g_pDefFont);
 	Mint::GetInstance()->SetHWND(RealSpace2::g_hWnd);
@@ -214,10 +214,10 @@ RRESULT OnCreate(void *pParam)
 	ZGetInitialLoading()->SetLoadingStr("Done.");
 	if( ZGetInitialLoading()->IsUseEnable() )
 	{
-#ifndef _FASTDEBUG
+// #ifndef _FASTDEBUG
 		ZGetInitialLoading()->SetPercentage( 100.f );
 		ZGetInitialLoading()->Draw( MODE_FADEOUT, 0 ,true  );
-#endif
+// #endif
 		ZGetInitialLoading()->Release();
 	}
 

@@ -28,6 +28,14 @@ _USING_NAMESPACE_REALSPACE2
 
 //#define _BIRDCAMERA
 
+//#ifndef _PUBLISH
+//#define _PUBLISH
+//#endif
+
+/// Gva enable _FASTDEBUG for quick character selection screen with no animations
+#ifndef _FASTDEBUG
+#define _FASTDEBUG
+#endif
 
 #ifndef _PUBLISH
 //	#define _FASTDEBUG

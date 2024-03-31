@@ -1456,9 +1456,11 @@ void ZGameInterface::OnLobbyCreate()
 
 	MPicture* pPicture = 0;
 	pPicture = (MPicture*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget("Lobby_StripBottom");
-	if (pPicture != NULL)	pPicture->SetAnimation(0, 1000.0f);
+	//if (pPicture != NULL)	pPicture->SetAnimation(0, 1000.0f);
+	if (pPicture != NULL)	pPicture->SetAnimation(0, 100.0f);
 	pPicture = (MPicture*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget("Lobby_StripTop");
-	if (pPicture != NULL)	pPicture->SetAnimation(1, 1000.0f);
+	//if (pPicture != NULL)	pPicture->SetAnimation(1, 1000.0f);
+	if (pPicture != NULL)	pPicture->SetAnimation(1, 100.0f);
 
 	pPicture = (MPicture*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget("Lobby_RoomListBG");
 	if (pPicture)
