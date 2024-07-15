@@ -458,12 +458,12 @@ void ZCharacterSelectView::OnChangedCharInfo(int sex,int index)
 	u32 nItemID[MMCIP_END];
 	memset(nItemID, 0, sizeof(nItemID));
 
-	// 헤어
+	// Egil
 
 //	nItemID[MMCIP_HEAD] = g_InitialHair[nHairIndex][(int)(nSex)];
 	nItemID[MMCIP_HEAD] = 0;
 
-	// 코스츔
+	// Ascroch
 	nItemID[MMCIP_MELEE] = g_InitialCostume[index][sex].nMeleeItemID;
 	nItemID[MMCIP_PRIMARY] = g_InitialCostume[index][sex].nPrimaryItemID;
 	nItemID[MMCIP_SECONDARY] = g_InitialCostume[index][sex].nSecondaryItemID;
@@ -741,12 +741,12 @@ void ZCharacterSelectView::OnReceivedAccountCharInfo(void* pCharListBlob)
 			pLabel = (MLabel*)ZApplication::GetGameInterface()->GetIDLResource()->FindWidget( szWidgetName);
 			if ( pLabel)
 			{
-				/* 클랜정보는 뺐습니다. - bird
+				/* bird
 				char szString[256];
 				if ( strcmp( pAccountCharInfo->szClanName, "") == 0)
-					strcpy_safe( szString, "클랜 : ---");
+					strcpy_safe( szString, "클占쏙옙 : ---");
 				else
-					sprintf_safe( szString, "클랜 : %s", pAccountCharInfo->szClanName);
+					sprintf_safe( szString, "클占쏙옙 : %s", pAccountCharInfo->szClanName);
 				pLabel->SetText( szString);
 				*/
 				pLabel->SetText("");
@@ -797,7 +797,7 @@ void ZCharacterSelectView::OnReceivedAccountCharInfo(void* pCharListBlob)
 		pButton->Enable( (m_nNumOfCharacter == MAX_CHAR_COUNT) ? false : true);
 
 
-	// 내가 정말 뉴비인지 체크
+	// errnallo ciau
 	if (nCharMaxLevel <= 1) ZGetMyInfo()->SetNewbie(true);
 }
 

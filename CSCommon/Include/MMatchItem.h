@@ -356,6 +356,7 @@ public:
 	MMatchItemType GetItemType();
 
 	bool GotSTASTIC(int stId) {
+		if (m_pDesc == NULL) return false;
 		return m_pDesc->GotSTASTIC(stId);
 	}
 };

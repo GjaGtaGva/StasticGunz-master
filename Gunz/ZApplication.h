@@ -141,7 +141,11 @@ public:
 	auto GetTimescale() const { return Timescale; }
 	void SetTimescale(float f) { Timescale = f; }
 
-	/// Gva set dev mode to always be on - for developing
-	//bool IsDeveloperMode() const { return GetLaunchMode() == ZApplication::ZLAUNCH_MODE_STANDALONE_GAME; }
-	bool IsDeveloperMode() const { return true; }
+	bool IsDeveloperMode() const { 
+		/// Gva set dev mode to always be on - for developing
+		#ifndef _PUBLISH
+		return true;
+		#endif
+		return GetLaunchMode() == ZApplication::ZLAUNCH_MODE_STANDALONE_GAME;
+	 }
 };

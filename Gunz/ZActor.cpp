@@ -254,12 +254,12 @@ void ZActor::InitMesh(char* szMeshName, MQUEST_NPC nNPCType)
 	if(!pMesh) 
 	{
 		_ASSERT(0);
-		mlog("ZActor::InitMesh() -  ¿øÇÏ´Â ¸ðµ¨À» Ã£À»¼ö ¾øÀ½\n");
+		mlog("ZActor::InitMesh() -  ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n");
 		return;
 	}
 
 	int nVMID = g_pGame->m_VisualMeshMgr.Add(pMesh);
-	if(nVMID==-1) mlog("ZActor::InitMesh() - Ä³¸¯ÅÍ »ý¼º ½ÇÆÐ\n");
+	if(nVMID==-1) mlog("ZActor::InitMesh() - Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n");
 
 	RVisualMesh* pVMesh = g_pGame->m_VisualMeshMgr.GetFast(nVMID);
 
@@ -531,6 +531,7 @@ bool ZActor::ProcessMotion(float fDelta)
 			m_Animation.Input(ZA_ANIM_DONE);
 		}
 	}
+	/// Gva manau sito nereikia. Reik testuot multi player starfire & lightning 
 	if(IsActiveModule(ZMID_STARFIREDAMAGE)==false) {
 
 		if (m_pVMesh->isOncePlayDone())

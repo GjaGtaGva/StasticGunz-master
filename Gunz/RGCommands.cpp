@@ -18,45 +18,11 @@ static rvector playerPoss;
 static rvector playerPoss2;
 
 
-/// Whether lowercased [str] starts with "test"
-bool _startsWithTest(const char* str) {
-    // Check if the string is not null
-    if (str == nullptr) {
-        return false;
-    }
-
-    // Get the length of the string
-    size_t len = std::strlen(str);
-
-    // Check if the string is at least 4 characters long (length of "test")
-    if (len < 4) {
-        return false;
-    }
-
-    // Convert the string to lowercase
-    char* lowercaseStr = new char[len + 1];
-    for (size_t i = 0; i < len; ++i) {
-        lowercaseStr[i] = std::tolower(str[i]);
-    }
-    lowercaseStr[len] = '\0';
-
-    // Check if the lowercase string starts with "test"
-    bool result = (std::strncmp(lowercaseStr, "test", 4) == 0);
-
-    // Cleanup
-    delete[] lowercaseStr;
-
-    return result;
-}
-
 bool CheckDeveloperMode(const char* Name)
 {
-	const char* m_szUserName = ZGetGame()->m_pMyCharacter->GetUserName();
-
-	return _startsWithTest(Name);
-
-	/// Testavimas
+#ifndef _PUBLISH
 	return true;
+#endif
 
 	if (ZApplication::GetInstance()->GetLaunchMode() != ZApplication::ZLAUNCH_MODE_STANDALONE_GAME)
 	{
@@ -799,17 +765,24 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 	},
 		CCF_ALL, 7, 7, true, "", "");
 
-	
+	/// doesnt work
 	CmdManager.AddCommand(0, "clearnpc", [](const char *line, int argc, char ** const argv) {
 
 		ZPostQuestTestClearNPC();
 	},
 			CCF_ALL, 0, 0, true, "/clearnpc", "");
 
+	/// Gva experimental
+	CmdManager.AddCommand(0, "setquestgod", [](const char *line, int argc, char ** const argv) {
+		bool bNowGod = atof(argv[1]) == 1;
+		ZGetQuest()->SetCheet(ZQUEST_CHEET_GOD, bNowGod);
+	},
+		CCF_ALL, 1, 1, true, "/setquestgod <yes>", "");
+
 
 	CmdManager.AddCommand(0, "checkgrade", [](const char *line, int argc, char ** const argv) {
 	
-		ZChatOutputF("UGradeID: %i, PGradeID: %i, IsAdminGrade: %s", ZGetMyInfo()->GetUGradeID(), ZGetMyInfo()->GetPGradeID(), ZGetMyInfo()->IsAdminGrade());
+		ZChatOutputF("UGradeID: %d, PGradeID: %d, IsAdminGrade: %d, launchMode: %d", ZGetMyInfo()->GetUGradeID(), ZGetMyInfo()->GetPGradeID(), ZGetMyInfo()->IsAdminGrade(), ZApplication::GetInstance()->GetLaunchMode());
 	},
 			CCF_ALL, 0, 0, true, "/checkgrade", "");
 
@@ -819,7 +792,7 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 		uint32_t hexNumber;
 		sscanf(argv[1], "%x", &hexNumber);
 		if(!hexNumber) sscanf("#FF4593A3", "%x", &hexNumber);
-		ZChatOutput(MCOLOR(hexNumber), "Stastic Faa");
+		ZChatOutput(MCOLOR(hexNumber), "Stastic Faa 2019");
 
 #ifdef _QUEST
 		ZChatOutput("QUEST is derived");
@@ -835,6 +808,11 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 		ZChatOutput("no publish defined");
 #endif
 
+	if(CheckDeveloperMode("Faa")){
+		ZChatOutput("CheckDeveloperMode is true");
+	} else{
+		ZChatOutput("CheckDeveloperMode is false");
+	}
 
 	},
 		CCF_ALL, 0, 1, true, "/faa <color>", "");

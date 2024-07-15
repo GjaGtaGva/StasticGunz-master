@@ -113,6 +113,15 @@ void ZMyCharacter::OnDraw()
 	ZCharacter::OnDraw();
 }
 
+bool ZMyCharacter::GotStastic(int stId)
+{
+	ZItem* pSelectedItem = GetItems()->GetSelectedWeapon();
+	if (pSelectedItem == NULL)
+		return false;
+
+	return pSelectedItem->GotSTASTIC(stId);
+}
+
 void ZMyCharacter::ProcessInput(float fDelta)
 {
 	if (ZApplication::GetGame()->GetMatch()->GetRoundState() == MMATCH_ROUNDSTATE_PREPARE) return;
@@ -142,8 +151,9 @@ void ZMyCharacter::ProcessInput(float fDelta)
 	{
 		bool ButtonPressed = false;
 
+		/// STASTIC 3010 - Charging while moving
 		if (!m_bWallJump && !m_bTumble && !m_bSkill && !m_bMoveLimit &&
-			!m_bBlast && !m_bBlastFall && !m_bBlastAirmove && !m_bCharging &&
+			!m_bBlast && !m_bBlastFall && !m_bBlastAirmove && (!m_bCharging || GotStastic(3010)) &&
 			!m_bSlash && !m_bJumpSlash && !m_bJumpSlashLanding)
 		{
 			auto AddAccel = [&](auto& vec)

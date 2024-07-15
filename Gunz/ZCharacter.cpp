@@ -1140,7 +1140,7 @@ void ZCharacter::UpdateVelocity(float fDelta)
 		forward.z=0;
 		Normalize(forward);
 
-		// ÃÖ´ë°ªÀ» ºñÀ²·Î Á¦¾îÇÑ´Ù.
+		// ï¿½Ö´ë°ªï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 		float run_speed = RUN_SPEED * fRatio;
 		float back_speed = BACK_SPEED * fRatio;
 		float stop_formax_speed = STOP_FORMAX_SPEED * (1/fRatio);  
@@ -1524,7 +1524,7 @@ void ZCharacter::UpdateSound()
 		if(m_nWhichFootSound!=nCurrFoot && pMaterial) {	
 			if(m_nWhichFootSound==0)
 			{	
-				// ¿Þ¹ß
+				// ï¿½Þ¹ï¿½
 				rvector pos = m_pVMesh->GetLFootPosition();
 				char *szSndName=g_pGame->GetSndNameFromBsp("man_fs_l", pMaterial);
 
@@ -1807,7 +1807,7 @@ void ZCharacter::OutputDebugString_CharacterState()
 
 	ZItem* pItem = m_Items.GetSelectedWeapon();
 
-	// ¼±ÅÃµÈ ¹«±â
+	// ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½
 #define IF_SITEM_ENUM(a)		if(a==m_Items.GetSelectedWeaponType())		{ AddTextEnum(m_Items.GetSelectedWeaponType(),a); }
 #define ELSE_IF_SITEM_ENUM(a)	else if(a==m_Items.GetSelectedWeaponType())	{ AddTextEnum(m_Items.GetSelectedWeaponType(),a); }
 
@@ -2058,13 +2058,13 @@ void ZCharacter::InitMesh()
 	pMesh = ZGetMeshMgr()->Get(szMeshName);
 
 	if(!pMesh) {
-		mlog("AddCharacter ¿øÇÏ´Â ¸ðµ¨À» Ã£À»¼ö ¾øÀ½\n");
+		mlog("AddCharacter ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n");
 	}
 
 	int nVMID = g_pGame->m_VisualMeshMgr.Add(pMesh);
 
 	if(nVMID==-1) {
-		mlog("AddCharacter Ä³¸¯ÅÍ »ý¼º ½ÇÆÐ\n");
+		mlog("AddCharacter Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n");
 	}
 
 	m_nVMID = nVMID;
@@ -2132,21 +2132,11 @@ void ZCharacter::InitProperties()
 	m_Property.fMaxAP += fAddedAP;
 	m_Property.fMaxHP += fAddedHP;
 
-	if(GetUserGrade() == MMUG_DEVELOPER) {
-		strcpy_safe(m_szUserName,ZMsg(MSG_WORD_DEVELOPER));
-		strcpy_safe(m_szUserAndClanName,ZMsg(MSG_WORD_DEVELOPER));
-	}
-	else if(GetUserGrade() == MMUG_ADMIN) {
-		strcpy_safe(m_szUserName,ZMsg(MSG_WORD_ADMIN));
-		strcpy_safe(m_szUserAndClanName,ZMsg(MSG_WORD_ADMIN));
-	}
-	else {
-		strcpy_safe(m_szUserName,m_Property.szName);
-		if(m_Property.szClanName[0])
-			sprintf_safe(m_szUserAndClanName,"%s(%s)",m_Property.szName,m_Property.szClanName);
-		else
-			sprintf_safe(m_szUserAndClanName,"%s",m_Property.szName);
-	}
+	strcpy_safe(m_szUserName,m_Property.szName);
+	if(m_Property.szClanName[0])
+		sprintf_safe(m_szUserAndClanName,"%s(%s)",m_Property.szName,m_Property.szClanName);
+	else
+		sprintf_safe(m_szUserAndClanName,"%s",m_Property.szName);
 
 	MMatchObjCache* pObjCache = ZGetGameClient()->FindObjCache(GetUID());
 	if (pObjCache && IsAdminGrade(pObjCache->GetUGrade()) && 
@@ -2339,8 +2329,8 @@ void ZCharacter::ChangeWeapon(MMatchCharItemParts nParts)
 
 	if (pSelectedItemDesc==NULL) {
 		m_Items.SelectWeapon(BackupParts);
-		mlog("¼±ÅÃµÈ ¹«±âÀÇ µ¥ÀÌÅÍ°¡ ¾ø´Ù.\n");
-		mlog("ZCharacter ¹«±â»óÅÂ¿Í RVisualMesh ÀÇ ¹«±â»óÅÂ°¡ Æ²·ÁÁ³´Ù\n");
+		mlog("ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½.\n");
+		mlog("ZCharacter ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¿ï¿½ RVisualMesh ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â°ï¿½ Æ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 		return;
 	}
 
@@ -2368,11 +2358,11 @@ bool ZCharacter::CheckValidShotTime(int nItemID, float fTime, ZItem* pItem)
 			if ( (MWT_DAGGER <= nWeaponType && nWeaponType <= MWT_SCISSOR) &&
 				(fTime - GetLastShotTime() >= 0.23f) ) 
 			{
-				// continue Valid... (Ä®Áú Á¤È®ÇÑ ½Ã°£ÃøÁ¤ÀÌ ¾î·Á¿ö ¸ÅÁ÷³Ñ¹ö»ç¿ë.
+				// continue Valid... (Ä®ï¿½ï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½.
 			} else if ( (nWeaponType==MWT_DOUBLE_KATANA || nWeaponType==MWT_SCISSOR || nWeaponType==MWT_DUAL_DAGGER) &&
 				(fTime - GetLastShotTime() >= 0.11f) ) 
 			{
-				// continue Valid... (Ä®Áú Á¤È®ÇÑ ½Ã°£ÃøÁ¤ÀÌ ¾î·Á¿ö ¸ÅÁ÷³Ñ¹ö»ç¿ë.
+				// continue Valid... (Ä®ï¿½ï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½.
 			} else {
 #ifdef _CHECKVALIDSHOTLOG
 				sprintf_safe(szLog, "IGNORE>> [%s] (%u:%u) Interval(%0.2f) Delay(%0.2f) \n", 

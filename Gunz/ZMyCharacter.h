@@ -159,6 +159,8 @@ public:
 		}
 		return false;
 	}
+		
+	bool GotStastic(int stId);
 
 	void InitSpawn();
 

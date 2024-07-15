@@ -25,6 +25,7 @@ enum MMATCH_MAP
 	MMATCH_MAP_CATACOMB,
 	MMATCH_MAP_JAIL,
 	MMATCH_MAP_SHOWERROOM,
+	MMATCH_MAP_CLOCKWORK_TIME,
 
 	MMATCH_MAP_MAX
 };
@@ -65,6 +66,7 @@ const struct MMatchMapDesc
 	{MMATCH_MAP_CATACOMB,		"Catacomb",		"map_Dungeon.bmp",		"banner_Dungeon.tga",		1.0f,	16,		true},
 	{MMATCH_MAP_JAIL,			"Jail",			"map_Prison.bmp",		"banner_Prison.tga",		1.0f,	16,		true},
 	{MMATCH_MAP_SHOWERROOM,		"Shower Room",	"map_Prison II.bmp",	"banner_Prison II.tga",		1.0f,	16,		true},
+	{MMATCH_MAP_CLOCKWORK_TIME,	"Clockwork Time",	"map_Clockwork Time.bmp",	"banner_Clockwork Time.tga",		1.0f,	16,		false},
 };
 
 

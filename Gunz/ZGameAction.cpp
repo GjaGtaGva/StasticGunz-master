@@ -28,7 +28,7 @@ bool ZGameAction::OnReaction(MCommand* pCommand)
 	float fTime;
 	int nReactionID;
 
-	pCommand->GetParameter(&fTime,			0, MPT_FLOAT);		// ½Ã°£
+	pCommand->GetParameter(&fTime,			0, MPT_FLOAT);		// ï¿½Ã°ï¿½
 	pCommand->GetParameter(&nReactionID,	1, MPT_INT);
 
 	ZCharacter *pChar=ZGetCharacterManager()->Find(pCommand->GetSenderUID());
@@ -76,11 +76,11 @@ bool ZGameAction::OnPeerSkill(MCommand* pCommand)
 	if (pOwnerCharacter == NULL) return true;
 
 	switch(nSkill)	{
-		// ¶ç¿ì±â ½ºÅ³
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³
 		case ZC_SKILL_UPPERCUT		: OnPeerSkill_Uppercut(pOwnerCharacter);break;
-			// °­º£±â ½ºÇÃ·¡½Ã
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½
 		case ZC_SKILL_SPLASHSHOT	: OnPeerSkill_LastShot(fTime,pOwnerCharacter);break;
-			// ´Ü°Ë Æ¯¼ö°ø°Ý
+			// ï¿½Ü°ï¿½ Æ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		case ZC_SKILL_DASH			: OnPeerSkill_Dash(pOwnerCharacter);break;
 	}
 
@@ -481,6 +481,7 @@ bool ZGameAction::OnEnchantDamage(MCommand* pCommand)
 					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enice_2d" : "we_enice", soundPos);
 					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enlight_2d" : "we_enlight", soundPos);
 					ZModule_StarfireDamage *pMod = (ZModule_StarfireDamage*)pTarget->GetModule(ZMID_STARFIREDAMAGE);
+					/// TODO effect to implement: disable victim's gravity for some time
 					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.00068f * (float)pDesc->m_nDelay);
 					if (pMod) pMod->BeginSlow(0.0168f*(float)pDesc->m_nLimitSpeed, 0.00068f * (float)pDesc->m_nDelay);
 				}break;

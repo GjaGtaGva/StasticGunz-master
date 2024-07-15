@@ -1016,16 +1016,16 @@ bool GetUserGradeIDColor(MMatchUserGradeID gid, MCOLOR& UserNameColor, char* sp_
 	if (gid == MMUG_DEVELOPER)
 	{
 		UserNameColor = MCOLOR(255, 128, 64);
-		if (sp_name) {
-			strcpy_safe(sp_name, maxlen, ZMsg(MSG_WORD_DEVELOPER));
-		}
+		// if (sp_name) {
+		// 	strcpy_safe(sp_name, maxlen, ZMsg(MSG_WORD_DEVELOPER));
+		// }
 		return true;
 	}
 	else if (gid == MMUG_ADMIN) {
 		UserNameColor = MCOLOR(255, 128, 64);
-		if (sp_name) {
-			strcpy_safe(sp_name, maxlen, ZMsg(MSG_WORD_ADMIN));
-		}
+		// if (sp_name) {
+		// 	strcpy_safe(sp_name, maxlen, ZMsg(MSG_WORD_ADMIN));
+		// }
 		return true;
 	}
 
