@@ -903,7 +903,7 @@ void MMatchServer::OnStageSetting(const MUID& uidPlayer, const MUID& uidStage, v
 
 	if (IsSwordsOnly(pNode->nGameType)
 		|| pNode->SwordsOnly
-		|| MGetGameTypeMgr()->IsQuestDerived(pNode->nGameType))
+		|| MGetGameTypeMgr()->IsQuestDerivedEX(pNode->nGameType))
 		pNode->Netcode = NetcodeType::P2PLead;
 
 	MMatchStageSetting* pSetting = pStage->GetStageSetting();

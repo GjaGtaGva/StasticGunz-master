@@ -1005,7 +1005,12 @@ bool RBspObject::Open(const char *filename, ROpenMode nOpenFlag, RFPROGRESSCALLB
 		sprintf_safe(navfilename, "%s.nav", filename);
 		if (!OpenNav(navfilename))
 		{
-			MLog("RBspObject::Open -- No navigation file for %s\n", filename);
+			/// Gva
+			/// if no nav file is open, spawned npcs will not move at all.
+			/// Opening another map's nav file enables them to move, but they're STUPId
+			/// Need a better brain
+			MLog("RBspObject::Open -- No navigation file for %s. Opening fallback.\n", filename);
+			OpenNav("quest/maps/Mansion_Hall1/Mansion_Hall1.RS.nav");
 		}
 
 #ifdef _WIN32

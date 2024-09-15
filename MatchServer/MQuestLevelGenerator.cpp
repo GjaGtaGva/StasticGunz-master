@@ -40,11 +40,11 @@ void MQuestLevelGenerator::BuildSacriQItem(unsigned int nItemID)
 
 MQuestLevel* MQuestLevelGenerator::MakeLevel()
 {
-	// ½Ã³ª¸®¿À °áÁ¤
+	// ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	m_nScenarioID = MakeScenarioID();
 
 
-	// ÁÖ»çÀ§ ±¼¸²
+	// ï¿½Ö»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	int dice = (int)Dice(1, SCENARIO_STANDARD_DICE_SIDES, 0);
 
 	MQuestLevel* pNewLevel = new MQuestLevel();
@@ -53,18 +53,30 @@ MQuestLevel* MQuestLevelGenerator::MakeLevel()
 	return pNewLevel;
 }
 
+MQuestLevel* MQuestLevelGenerator::MakeExploration()
+{
+	m_nScenarioID = 100;
+
+	int dice = (int)Dice(1, SCENARIO_STANDARD_DICE_SIDES, 0);
+
+	MQuestLevel* pNewLevel = new MQuestLevel();
+	pNewLevel->Init(m_nScenarioID, dice);
+
+	return pNewLevel;
+}
 
 int MQuestLevelGenerator::MakeScenarioID()
 {
-
-
 	MMatchQuest* pQuest = MMatchServer::GetInstance()->GetQuest();
 	int id = pQuest->GetScenarioCatalogue()->MakeScenarioID(m_nMapsetID, m_nPlayerQL, m_nSacriQItemID);
 
-	// ½Ã³ª¸®¿À°¡ ¾øÀ¸¸é ±âº» ½Ã³ª¸®¿À.
 	if (!pQuest->GetScenarioCatalogue()->GetInfo(id))
 	{
 		id = pQuest->GetScenarioCatalogue()->GetDefaultStandardScenarioID();
+		mlog("[Gva:MQuestLevelGenerator::MakeScenarioID] using default scenario id: %i\n", id);
+	}
+	else {
+		mlog("[Gva:MQuestLevelGenerator::MakeScenarioID] generated scenario id: %i\n", id);
 	}
 
 

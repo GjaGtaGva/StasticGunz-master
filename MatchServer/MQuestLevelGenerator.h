@@ -26,4 +26,5 @@ public:
 
 	int ReturnScenarioID();
 	MQuestLevel* MakeLevel();
+	MQuestLevel* MakeExploration();
 };

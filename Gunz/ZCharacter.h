@@ -110,6 +110,28 @@ class ZModule_QuestStatus;
 class ZCharacter : public ZCharacterObject
 {
 	MDeclareRTTI;
+
+public:
+
+	/// Whether got STASTIC in current selected weapon
+	bool GotStastic(int stId){
+		ZItem* pSelectedItem = GetItems()->GetSelectedWeapon();
+		if (pSelectedItem == NULL)
+			return false;
+
+		return pSelectedItem->GotSTASTIC(stId);
+	}
+
+	/// Check if got STASTIC power on specified part.
+	/// Ideally in the future, STASTIC effects should not be constrained by part worn, but be passive buffs on the character. Current approach is easier...
+	bool GotStastic(int stId, MMatchCharItemParts part){
+		MMatchItemDesc *item = m_Items.GetDesc(part);
+		if (item) {
+			return item->GotSTASTIC(stId);
+		}
+		return false;
+	}
+
 public:
 	ZCharacter();
 	virtual ~ZCharacter() override;

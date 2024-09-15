@@ -12,7 +12,7 @@ using namespace std;
 class MMatchStage;
 struct MQuestPlayerInfo;
 
-/// NPC ¿ÀºêÁ§Æ®ÀÇ ÇÃ·¡±× - ¾ÆÁ÷±îÁø º°´Ù¸¥µ¥ »ç¿ëÇÏÁö ¾Ê´Â´Ù.
+/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´ï¿½.
 enum NPCOBJECT_FLAG
 {
 	NOF_NONE			= 0,
@@ -20,45 +20,45 @@ enum NPCOBJECT_FLAG
 };
 
 
-/// NPC ¿ÀºêÁ§Æ®
+/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 class MMatchNPCObject
 {
 private:
 	MUID				m_UID;						///< ID
-	MQUEST_NPC			m_nType;					///< NPCÅ¸ÀÔ
-	MUID				m_uidController;			///< Á¶Á¾ÀÚ
-	MVector3			m_Pos;						///< À§Ä¡
-	u32	m_nFlags;					///< ÇÃ·¡±× ¸ðÀ½
-	MQuestDropItem		m_DropItem;					///< °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ - ¾øÀ» °æ¿ì nDropItemType°¡ QDIT_NAÀÌ´Ù.
+	MQUEST_NPC			m_nType;					///< NPCÅ¸ï¿½ï¿½
+	MUID				m_uidController;			///< ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	MVector3			m_Pos;						///< ï¿½ï¿½Ä¡
+	u32	m_nFlags;					///< ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	MQuestDropItem		m_DropItem;					///< ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ nDropItemTypeï¿½ï¿½ QDIT_NAï¿½Ì´ï¿½.
 
 public:
-	/// »ý¼ºÀÚ
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	/// @param uid		NPC UID
-	/// @param nType	NPC Á¾·ù
-	/// @param nFlags	ÇÃ·¡½º
+	/// @param nType	NPC ï¿½ï¿½ï¿½ï¿½
+	/// @param nFlags	ï¿½Ã·ï¿½ï¿½ï¿½
 	MMatchNPCObject(MUID& uid, MQUEST_NPC nType, u32 nFlags=0);
-	/// ¼Ò¸êÀÚ
+	/// ï¿½Ò¸ï¿½ï¿½ï¿½
 	~MMatchNPCObject() { }
-	/// NPC Á¶Á¾À» ÇÃ·¹ÀÌ¾î¿¡°Ô ÇÒ´çÇÑ´Ù.
-	/// @param uidPlayer	ÇÒ´çÇÒ ÇÃ·¹ÀÌ¾î UID
+	/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½Ò´ï¿½ï¿½Ñ´ï¿½.
+	/// @param uidPlayer	ï¿½Ò´ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ UID
 	void AssignControl(MUID& uidPlayer);		
-	/// NPC Á¶Á¾ÀÚ ÇØÁ¦
+	/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	void ReleaseControl();
-	/// DropÇÒ ¾ÆÀÌÅÛÀ» ¼³Á¤ÇÑ´Ù.
-	/// @param pDropItem	¾ÆÀÌÅÛ Á¤º¸
+	/// Dropï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	/// @param pDropItem	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	void SetDropItem(MQuestDropItem* pDropItem);
 
 	// gets
-	MUID GetUID()					{ return m_UID; }				///< NPC UID ¹ÝÈ¯
-	MQUEST_NPC	GetType()			{ return m_nType; }				///< NPC Á¾·ù ¹ÝÈ¯
-	MUID& GetController()			{ return m_uidController; }		///< NPC Á¶Á¾ÀÚ(ÇÃ·¹ÀÌ¾î) UID ¹ÝÈ¯
-	MQuestDropItem* GetDropItem()	{ return &m_DropItem; }			///< µå·Ó ¾ÆÀÌÅÛ Á¤º¸ ¹ÝÈ¯
+	MUID GetUID()					{ return m_UID; }				///< NPC UID ï¿½ï¿½È¯
+	MQUEST_NPC	GetType()			{ return m_nType; }				///< NPC ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+	MUID& GetController()			{ return m_uidController; }		///< NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ã·ï¿½ï¿½Ì¾ï¿½) UID ï¿½ï¿½È¯
+	MQuestDropItem* GetDropItem()	{ return &m_DropItem; }			///< ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 
-	inline void SetFlag(unsigned int nFlag, bool bValue);			///< ÇÃ·¡±× ¼³Á¤
-	inline bool CheckFlag(unsigned int nFlag);						///< ÇÃ·¡±× Ã¼Å©
-	inline void SetFlags(unsigned int nFlags);						///< ÇÃ·¡±× ¼³Á¤
-	inline u32 GetFlags();								///< ÇÃ·¡±× ¹ÝÈ¯
-	inline bool HasDropItem();										///< µå·Ó ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖ´ÂÁö ¹ÝÈ¯
+	inline void SetFlag(unsigned int nFlag, bool bValue);			///< ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	inline bool CheckFlag(unsigned int nFlag);						///< ï¿½Ã·ï¿½ï¿½ï¿½ Ã¼Å©
+	inline void SetFlags(unsigned int nFlags);						///< ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	inline u32 GetFlags();								///< ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+	inline bool HasDropItem();										///< ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 
 };
 
@@ -67,7 +67,7 @@ typedef map<MUID, MMatchNPCObject*>		MMatchNPCObjectMap;
 
 class MQuestPlayerManager;
 
-/// NPC ¿ÀºêÁ§Æ® °ü¸®ÀÚ
+/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 class MMatchNPCManager
 {
 private:
@@ -78,13 +78,14 @@ private:
 
 	u32				m_nLastSpawnTime;		// for test
 
-	int								m_nNPCCount[MNST_END];		// ½ºÆùÅ¸ÀÔº° »ì¾ÆÀÖ´Â NPC¼ö
-	int								m_nBossCount;				// »ì¾ÆÀÖ´Â º¸½º ¼ö
+	int								m_nNPCCount[MNST_END];		// ï¿½ï¿½ï¿½ï¿½Å¸ï¿½Ôºï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ NPCï¿½ï¿½
+	int								m_nBossCount;				// ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
 	// func
 	MUID NewUID();
 	bool AssignControl(MUID& uidNPC, MUID& uidPlayer);
 	bool Spawn(MUID& uidNPC, MUID& uidController, unsigned char nSpawnPositionIndex);
+	bool Spawn(MUID& uidNPC, MUID& uidController, MVector& pos);
 	void Clear();
 	bool FindSuitableController(MUID& out, MQuestPlayerInfo* pSender);
 
@@ -93,40 +94,42 @@ private:
 public:
 	bool BossDead{};
 
-	/// »ý¼ºÀÚ
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	MMatchNPCManager();
-	/// ¼Ò¸êÀÚ
+	/// ï¿½Ò¸ï¿½ï¿½ï¿½
 	~MMatchNPCManager();
-	/// ÃÊ±âÈ­
-	/// @param pStage				½ºÅ×ÀÌÁö Å¬·¡½º
-	/// @param pPlayerManager		Äù½ºÆ®·ê¿¡¼­ÀÇ PlayerManager
+	/// ï¿½Ê±ï¿½È­
+	/// @param pStage				ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
+	/// @param pPlayerManager		ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ê¿¡ï¿½ï¿½ï¿½ï¿½ PlayerManager
 	void Create(MMatchStage* pStage, MQuestPlayerManager* pPlayerManager);
-	/// ÇØÁ¦
+	/// ï¿½ï¿½ï¿½ï¿½
 	void Destroy();
-	/// ¸ðµç NPC¸¦ ¾ø¾Ø´Ù.
+	/// ï¿½ï¿½ï¿½ NPCï¿½ï¿½ ï¿½ï¿½ï¿½Ø´ï¿½.
 	void ClearNPC();
-	/// NPC ¿ÀºêÁ§Æ® »ý¼º
-	/// @param nType					NPC Á¾·ù
-	/// @param nSpawnPositionIndex		½ºÆù À§Ä¡
+	/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+	/// @param nType					NPC ï¿½ï¿½ï¿½ï¿½
+	/// @param nSpawnPositionIndex		ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
 	MMatchNPCObject* CreateNPCObject(MQUEST_NPC nType, unsigned char nSpawnPositionIndex);
-	/// NPC ¿ÀºêÁ§Æ® ÇØÁ¦
+	/// Override: spawn at exact coordinates
+	MMatchNPCObject* CreateNPCObject(MQUEST_NPC nType, MVector& pos);
+	/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 	/// @param uidNPC					NPC UID
-	/// @param outItem					NPC°¡ µå·ÓÇÏ´Â ¾ÆÀÌÅÛ ¹ÝÈ¯°ª
+	/// @param outItem					NPCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½
 	bool DestroyNPCObject(MUID& uidNPC, MQuestDropItem& outItem);
-	/// NPC ¿ÀºêÁ§Æ® ¹ÝÈ¯
+	/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È¯
 	/// @param uidNPC					NPC UID
 	MMatchNPCObject* GetNPCObject(MUID& uidNPC);
-	/// ÇÃ·¹ÀÌ¾î°¡ ½ºÅ×ÀÌÁö¿¡¼­ ³ª°¥¶§ È£ÃâµÈ´Ù.
-	/// @param uidPlayer				ÇÃ·¹ÀÌ¾î UID
+	/// ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½È´ï¿½.
+	/// @param uidPlayer				ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ UID
 	void OnDelPlayer(const MUID& uidPlayer);
-	/// ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ ÇØ´ç NPC¸¦ Á¶Á¾ÇÏ°í ÀÖ´ÂÁö Ã¼Å©
-	/// @param uidChar					ÇÃ·¹ÀÌ¾î UID
+	/// ï¿½Ø´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ø´ï¿½ NPCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ Ã¼Å©
+	/// @param uidChar					ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ UID
 	/// @param uidNPC					NPC UID
 	bool IsControllersNPC(MUID& uidChar, MUID& uidNPC);
-	/// NPC ¿ÀºêÁ§Æ®¼ö ¹ÝÈ¯
+	/// NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È¯
 	int GetNPCObjectCount();
-	/// ÇØ´ç ½ºÆùÅ¸ÀÔÀÇ NPC ¿ÀºêÁ§Æ®¼ö ¹ÝÈ¯
-	/// @param nSpawnType				NPC ½ºÆù Å¸ÀÔ
+	/// ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ NPC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È¯
+	/// @param nSpawnType				NPC ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½
 	int GetNPCObjectCount(MQuestNPCSpawnType nSpawnType);
 	int GetBossCount() { return m_nBossCount; }
 

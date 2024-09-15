@@ -98,7 +98,7 @@ void ZStageInterface::OnCreate()
 	if ( pDesc)
 	{
 		pDesc->SetTextColor( MCOLOR(0xFF808080));
-		pDesc->SetText( "¾ÆÀÌÅÛÀ» È­¸é Áß¾Ó¿¡ ÀÖ´Â µÎ°³ÀÇ Á¦´Ü¿¡ ²ø¾î³õÀ½À¸·Î½á °ÔÀÓ ·¹º§À» Á¶Á¤ÇÒ ¼ö ÀÖ½À´Ï´Ù.");
+		pDesc->SetText( "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½ß¾Ó¿ï¿½ ï¿½Ö´ï¿½ ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ü¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
 	}
 
 	ZApplication::GetGameInterface()->ShowWidget( "Stage_Flame0", false);
@@ -256,6 +256,7 @@ void ZStageInterface::OnStageInterfaceSettup()
 #define TRAINING_COLOR		MCOLOR(0,255,255)
 #define QUEST_COLOR			MCOLOR(255,255,255)
 #define SURVIVAL_COLOR		MCOLOR(255,255,255)
+#define GVA_COLOR			MCOLOR(69,147,163)
 
 	MCOLOR color;
 	switch ( ZGetGameClient()->GetMatchStageSetting()->GetGameType() )
@@ -305,6 +306,15 @@ void ZStageInterface::OnStageInterfaceSettup()
 
 		case MMATCH_GAMETYPE_SKILLMAP:
 			color = TRAINING_COLOR;
+			break;
+
+
+		case MMATCH_GAMETYPE_QUEST_CHALLENGE:
+			color = QUEST_COLOR;
+			break;
+
+		case MMATCH_GAMETYPE_EXPLORATION:
+			color = GVA_COLOR;
 			break;
 
 		default:
@@ -363,6 +373,7 @@ void ZStageInterface::ChangeStageGameSetting( MSTAGE_SETTING_NODE* pSetting)
 		 (pSetting->nGameType == MMATCH_GAMETYPE_GLADIATOR_SOLO) ||
 		 (pSetting->nGameType == MMATCH_GAMETYPE_BERSERKER) ||
 		 (pSetting->nGameType == MMATCH_GAMETYPE_TRAINING) ||
+		 (pSetting->nGameType == MMATCH_GAMETYPE_EXPLORATION) ||
 		 (pSetting->nGameType == MMATCH_GAMETYPE_DUEL) ||
 		 (pSetting->nGameType == MMATCH_GAMETYPE_GUNGAME))
 	{
@@ -440,6 +451,7 @@ void ZStageInterface::ChangeStageGameSetting( MSTAGE_SETTING_NODE* pSetting)
 		if ((pSetting->nGameType == MMATCH_GAMETYPE_DEATHMATCH_SOLO) ||
 			(pSetting->nGameType == MMATCH_GAMETYPE_GLADIATOR_SOLO) ||
 			(pSetting->nGameType == MMATCH_GAMETYPE_TRAINING) ||
+			(pSetting->nGameType == MMATCH_GAMETYPE_EXPLORATION) ||
 			(pSetting->nGameType == MMATCH_GAMETYPE_BERSERKER) ||
 			(pSetting->nGameType == MMATCH_GAMETYPE_DUEL) ||
 			(pSetting->nGameType == MMATCH_GAMETYPE_GUNGAME))

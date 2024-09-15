@@ -402,9 +402,9 @@ void Portal::OnShot()
 		LastRClick = RClick;
 	}
 
-	if (!ZGetApplication()->IsDeveloperMode() &&
-		ZGetGameClient()->GetMatchStageSetting()->GetGameType() != MMATCH_GAMETYPE_TRAINING)
-		return;
+	// if (!ZGetApplication()->IsDeveloperMode() &&
+	// 	ZGetGameClient()->GetMatchStageSetting()->GetGameType() != MMATCH_GAMETYPE_TRAINING)
+	// 	return;
 
 	MMatchItemDesc *pDesc = ZGetGame()->m_pMyCharacter->GetSelectItemDesc();
 

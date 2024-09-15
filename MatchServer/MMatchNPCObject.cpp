@@ -50,7 +50,7 @@ bool MMatchNPCManager::AssignControl(MUID& uidNPC, MUID& uidPlayer)
 	MMatchNPCObject* pNPCObject = GetNPCObject(uidNPC);
 	if (!pNPCObject) return false;
 
-	// ControllerInfo ¼¼ÆÃ
+	// ControllerInfo ï¿½ï¿½ï¿½ï¿½
 	SetNPCObjectToControllerInfo(uidPlayer, pNPCObject);
 
 	// route cmd
@@ -100,6 +100,30 @@ bool MMatchNPCManager::Spawn(MUID& uidNPC, MUID& uidController, unsigned char nS
 	return false;
 }
 
+/// Override: spawn at exact coordinates
+bool MMatchNPCManager::Spawn(MUID& uidNPC, MUID& uidController, MVector& pos)
+{
+	MMatchObject* pObject = MMatchServer::GetInstance()->GetObject(uidController);
+	if ((pObject) && (m_pStage))
+	{
+		MMatchNPCObject* pNPCObject = GetNPCObject(uidNPC);
+		if (pNPCObject)
+		{
+			SetNPCObjectToControllerInfo(uidController, pNPCObject);
+
+			MCommand* pCmd = MMatchServer::GetInstance()->CreateCommand(MC_QUEST_NPC_SPAWN_POS, uidController);
+			pCmd->AddParameter(new MCmdParamUID(uidController));
+			pCmd->AddParameter(new MCmdParamUID(uidNPC));
+			pCmd->AddParameter(new MCmdParamUChar((unsigned char)pNPCObject->GetType()));
+			pCmd->AddParameter(new MCmdParamVector(pos.x, pos.y, pos.z));
+			MMatchServer::GetInstance()->RouteToBattle(m_pStage->GetUID(), pCmd);
+
+			return true;
+		}
+	}
+	return false;
+}
+
 MMatchNPCObject* MMatchNPCManager::CreateNPCObject(MQUEST_NPC nType, unsigned char nSpawnPositionIndex)
 {
 	MQuestNPCInfo* pNPCInfo = MMatchServer::GetInstance()->GetQuest()->GetNPCInfo(nType);
@@ -112,14 +136,14 @@ MMatchNPCObject* MMatchNPCManager::CreateNPCObject(MQUEST_NPC nType, unsigned ch
 
 	m_NPCObjectMap.insert(MMatchNPCObjectMap::value_type(uidNPC, pNewNPC));
 
-	// spawnº° NPC CountÁõ°¡
+	// spawnï¿½ï¿½ NPC Countï¿½ï¿½ï¿½ï¿½
 	MQuestNPCSpawnType nSpawnType = MNST_MELEE;
 	
 	if (pNPCInfo)
 	{
 		nSpawnType = pNPCInfo->GetSpawnType();
 
-		// ¸¸¾à º¸½ºÀÌ¸é BossCount Áõ°¡
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ BossCount ï¿½ï¿½ï¿½ï¿½
 		if ((pNPCInfo->nGrade == NPC_GRADE_BOSS) || (pNPCInfo->nGrade == NPC_GRADE_LEGENDARY))
 		{
 			m_nBossCount++;
@@ -129,19 +153,64 @@ MMatchNPCObject* MMatchNPCManager::CreateNPCObject(MQUEST_NPC nType, unsigned ch
 	
 
 
-	// ÄÁÆ®·Ñ·¯ ÇÒ´ç
+	// ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½Ò´ï¿½
 	MUID uidController = MUID(0,0);
 	if (!FindSuitableController(uidController, NULL))
 	{
-		// Àû´çÇÑ »ç¶÷ÀÌ ¾øÀ¸¸é ¹«½Ã
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		MQuestDropItem TempItem;
 		DestroyNPCObject(uidNPC, TempItem);
 		return NULL;
 	}
 
-	// ½ºÆù
+	// ï¿½ï¿½ï¿½ï¿½
 	if (!Spawn(uidNPC, uidController, nSpawnPositionIndex))
 	{
+		MQuestDropItem TempItem;
+		DestroyNPCObject(uidNPC, TempItem);
+		return NULL;
+	}
+
+	return pNewNPC;
+}
+
+/// Override: spawn at exact coordinates
+MMatchNPCObject* MMatchNPCManager::CreateNPCObject(MQUEST_NPC nType, MVector& pos)
+{
+	MQuestNPCInfo* pNPCInfo = MMatchServer::GetInstance()->GetQuest()->GetNPCInfo(nType);
+	if (pNPCInfo == NULL) return NULL;
+
+	MUID uidNPC = NewUID();
+	u32 nNPCFlags=0;
+
+	MMatchNPCObject* pNewNPC = new MMatchNPCObject(uidNPC, nType, nNPCFlags);
+
+	m_NPCObjectMap.insert(MMatchNPCObjectMap::value_type(uidNPC, pNewNPC));
+
+	MQuestNPCSpawnType nSpawnType = MNST_MELEE;
+	
+	if (pNPCInfo)
+	{
+		nSpawnType = pNPCInfo->GetSpawnType();
+		if ((pNPCInfo->nGrade == NPC_GRADE_BOSS) || (pNPCInfo->nGrade == NPC_GRADE_LEGENDARY))
+		{
+			m_nBossCount++;
+		}
+	}
+	m_nNPCCount[nSpawnType]++;
+	
+	MUID uidController = MUID(0,0);
+	if (!FindSuitableController(uidController, NULL))
+	{
+		mlog("CreateNPCObjectPos suitable controller not found\n");
+		MQuestDropItem TempItem;
+		DestroyNPCObject(uidNPC, TempItem);
+		return NULL;
+	}
+
+	if (!Spawn(uidNPC, uidController, pos))
+	{
+		mlog("CreateNPCObjectPos SpawnPos got false\n");
 		MQuestDropItem TempItem;
 		DestroyNPCObject(uidNPC, TempItem);
 		return NULL;
@@ -165,21 +234,21 @@ bool MMatchNPCManager::DestroyNPCObject(MUID& uidNPC, MQuestDropItem& outItem)
 #endif
 #endif
 
-		// Controller°¡ ÀÖ¾úÀ¸¸é Controller¿¡¼­µµ Áö¿öÁØ´Ù.
+		// Controllerï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ Controllerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½.
 		MUID uidController = pNPCObject->GetController();
 		if (uidController != MUID(0,0))
 		{
 			DelNPCObjectToControllerInfo(uidController, pNPCObject);
 		}
 
-		// spawnº° NPC Count°¨¼ö
+		// spawnï¿½ï¿½ NPC Countï¿½ï¿½ï¿½ï¿½
 		MQuestNPCSpawnType nSpawnType = MNST_MELEE;
 		MQuestNPCInfo* pNPCInfo = MMatchServer::GetInstance()->GetQuest()->GetNPCInfo(pNPCObject->GetType());
 		if (pNPCInfo)
 		{
 			nSpawnType = pNPCInfo->GetSpawnType();
 
-			// ¸¸¾à º¸½ºÀÌ¸é BossCount °¨¼Ò
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ BossCount ï¿½ï¿½ï¿½ï¿½
 			if ((pNPCInfo->nGrade == NPC_GRADE_BOSS) || (pNPCInfo->nGrade == NPC_GRADE_LEGENDARY))
 			{
 				m_nBossCount--;
@@ -201,7 +270,7 @@ bool MMatchNPCManager::DestroyNPCObject(MUID& uidNPC, MQuestDropItem& outItem)
 
 MUID MMatchNPCManager::NewUID()
 {
-	// MMatchObject uid¿Í °°Àº ±×·ì »ç¿ë
+	// MMatchObject uidï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ ï¿½ï¿½ï¿½
 	return MMatchServer::GetInstance()->UseUID();
 }
 
@@ -246,25 +315,25 @@ void MMatchNPCManager::OnDelPlayer(const MUID& uidPlayer)
 //		for (MMatchNPCObjectMap::iterator itorNPC = pDelPlayerInfo->NPCObjects.begin(); 
 //			itorNPC != pDelPlayerInfo->NPCObjects.end(); ++itorNPC)
 
-		// ¿©±â º°·Î ¾ÈÀÌ»Ú´Ù. ³ªÁß¿¡ ÀÌ»Ú°Ô °íÃÄ¾ßÇÒµí - bird
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì»Ú´ï¿½. ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½Ì»Ú°ï¿½ ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½Òµï¿½ - bird
 		while (!pDelPlayerInfo->NPCObjects.empty())
 		{
 			MMatchNPCObjectMap::iterator itorNPC = pDelPlayerInfo->NPCObjects.begin();
 
 			MMatchNPCObject* pNPCObject = (*itorNPC).second;
-			MUID uidNPC = pNPCObject->GetUID();		// ¿©±â¼­ »¶³µÀ½ - bird
+			MUID uidNPC = pNPCObject->GetUID();		// ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - bird
 
 			MUID uidController = MUID(0,0);
 			if (FindSuitableController(uidController, pDelPlayerInfo))
 			{
-				// Áö¿ï ÇÃ·¹ÀÌ¾î¿¡°Ô ÇÒ´çµÈ NPC¸¦ ´Ù¸¥ ÇÃ·¹ÀÌ¾î¿¡°Ô ¿Å°ÜÁØ´Ù.
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½Ò´ï¿½ï¿½ NPCï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½Å°ï¿½ï¿½Ø´ï¿½.
 				AssignControl(uidNPC, uidController);
 			}
 			else
 			{
-				// Àû´çÇÑ »ç¶÷ÀÌ ¾øÀ¸¸é NPC Á¦°Å
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ NPC ï¿½ï¿½ï¿½ï¿½
 				MQuestDropItem TempItem;
-				DestroyNPCObject(uidNPC, TempItem);	// ¿©±â¼­ NPCObjects.erase ÇÔ
+				DestroyNPCObject(uidNPC, TempItem);	// ï¿½ï¿½ï¿½â¼­ NPCObjects.erase ï¿½ï¿½
 			}
 		}
 	}
@@ -277,7 +346,7 @@ void MMatchNPCManager::ClearNPC()
 	{
 		MMatchNPCObject* pNPCObject = (*itor).second;
 
-		// Controller°¡ ÀÖ¾úÀ¸¸é Controller¿¡¼­µµ Áö¿öÁØ´Ù.
+		// Controllerï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ Controllerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½.
 		MUID uidController = pNPCObject->GetController();
 		if (uidController != MUID(0,0))
 		{
@@ -369,7 +438,7 @@ bool MMatchNPCManager::IsControllersNPC(MUID& uidChar, MUID& uidNPC)
 
 
 //////////////////////////////////////////////////////////////////////////
-// ÀÌ ÇÃ·¹ÀÌ¾îÀÇ ÄÁÆ®·ÑÀ» ´Ù¸¥»ç¶÷¿¡°Ô ¿Å±ä´Ù.
+// ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½ï¿½.
 
 void MMatchNPCManager::RemovePlayerControl(const MUID& uidPlayer)
 {
@@ -384,17 +453,17 @@ void MMatchNPCManager::RemovePlayerControl(const MUID& uidPlayer)
 			MMatchNPCObjectMap::iterator itorNPC = pDelPlayerInfo->NPCObjects.begin();
 
 			MMatchNPCObject* pNPCObject = (*itorNPC).second;
-			MUID uidNPC = pNPCObject->GetUID();		// ¿©±â¼­ »¶³µÀ½ - bird
+			MUID uidNPC = pNPCObject->GetUID();		// ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - bird
 
 			MUID uidController = MUID(0,0);
 			if (FindSuitableController(uidController, pDelPlayerInfo))
 			{
-				// Áö¿ï ÇÃ·¹ÀÌ¾î¿¡°Ô ÇÒ´çµÈ NPC¸¦ ´Ù¸¥ ÇÃ·¹ÀÌ¾î¿¡°Ô ¿Å°ÜÁØ´Ù.
+				// ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½Ò´ï¿½ï¿½ NPCï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½Å°ï¿½ï¿½Ø´ï¿½.
 				AssignControl(uidNPC, uidController);
 			}
 			else
 			{
-				// Àû´çÇÑ »ç¶÷ÀÌ ¾øÀ¸¸é ÀçÇÒ´ç Æ÷±â
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½
 				break;
 			}
 		}

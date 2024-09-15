@@ -31,7 +31,7 @@ void MMatchRuleBaseQuest::OnBegin()
 m_nFirstPlayerCount = (int)m_pStage->GetObjCount();
 	m_nNPCSpawnCount=0;
 
-	// °ÔÀÓ Á¤º¸¸¦ °¢ À¯Àú¿¡°Ô º¸³½´Ù.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	RouteGameInfo();
 
 	m_bQuestCompleted = false;
@@ -72,20 +72,20 @@ bool MMatchRuleBaseQuest::OnCheckRoundFinish()
 {
 	if (CheckPlayersAlive() == false)
 	{
-		/// ´Ù Á×À¸¸é ³¡³­´Ù. => ½ÇÆÐ °á°ú¸¦ Åëº¸ÇÏ´Â ¹æ½ÄÀ¸·Î ¼öÁ¤µÇ¾î¾ß ÇÔ. - by Ãß±³¼º.
+		/// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. => ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ëº¸ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ ï¿½ï¿½. - by ï¿½ß±ï¿½ï¿½ï¿½.
 
-		// ´Ù Á×¾úÀ»°æ¿ì´Â ±×³É ³¡³»Áö ¸»°í Äù½ºÆ®°¡ ½ÇÆÐµÈ °ÍÀ¸·Î ¼³Á¤ÀÌ µÇ¾î¾ß ÇÑ´Ù.
-		// ÇöÀç´Â ´Ù Á×¾úÀ»°æ¿ì´Â °ÔÀÓÀÌ ±×³É ³¡³ª°í Á¤»óÀûÀ¸·Î Äù½ºÆ®°¡ ³¡³µÀ»¶§¿Í °°Àº ¸¶¹«¸® Ã³¸®¸¦ ÇÑ´Ù.
+		// ï¿½ï¿½ ï¿½×¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ðµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ ï¿½Ñ´ï¿½.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½×¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 
 #ifdef _QUEST_ITEM
-		// Äù½ºÆ® ½ÇÆÐ¸¦ ¿©±â¼­ ¹Ù·Î Ã³¸®ÇØÁÜ.
+		// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ð¸ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½Ù·ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 		OnFailed();
 #endif
 
 		return true;
 	}
 
-	// Quest CompletedµÇ¾úÀ¸¸é ÀÏÁ¤ ½Ã°£ÈÄ Á¾·áµÈ´Ù. Áö±ÝÀº ±×³É ¹Ù·Î..-_-¤»
+	// Quest Completedï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½Ù·ï¿½..-_-ï¿½ï¿½
 	if (m_bQuestCompleted)
 	{
 		return true;
@@ -101,7 +101,7 @@ void MMatchRuleBaseQuest::OnRoundTimeOut()
 	MMatchRule::OnRoundTimeOut();
 }
 
-// ¹ÝÈ¯°ªÀÌ falseÀÌ¸é °ÔÀÓÀÌ ³¡³­´Ù.
+// ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ falseï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 bool MMatchRuleBaseQuest::RoundCount()
 {
 	if (++m_nRoundCount < 1) return true;
@@ -155,10 +155,10 @@ void MMatchRuleBaseQuest::OnRequestNPCDead(MUID& uidSender, MUID& uidKiller, MUI
 	else
 	{
 		if(m_NPCManager.GetNPCObject(uidNPC)==NULL) {
-			// finishµÈ ÀÌÈÄ¿¡´Â npcµéÀÌ Å¬¸®¾îµÈ »óÅÂÀÌ´Ù
+			// finishï¿½ï¿½ ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ npcï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½
 			//_ASSERT(0);
 		}else {
-			// ¹®Á¦°¡ÀÖ´Ù.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½.
 			_ASSERT(0);
 		}
 	}
@@ -223,10 +223,10 @@ void MMatchRuleBaseQuest::RefreshPlayerStatus()
 	for (auto i=m_pStage->GetObjBegin(); i!=m_pStage->GetObjEnd(); i++)
 	{
 		MMatchObject* pObj = i->second;
-		if (pObj->GetEnterBattle() == false) continue;	// ¹èÆ²Âü°¡ÇÏ°í ÀÖ´Â ÇÃ·¹ÀÌ¾î¸¸ Ã¼Å©
+		if (pObj->GetEnterBattle() == false) continue;	// ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¸ Ã¼Å©
 		if (IsAdminGrade(pObj) && pObj->CheckPlayerFlags(MTD_PlayerFlags_AdminHide)) continue;
 
-		// ¸ðµÎ ºÎÈ°
+		// ï¿½ï¿½ï¿½ ï¿½ï¿½È°
 		pObj->SetAlive(true);
 	}
 
@@ -251,7 +251,7 @@ bool MMatchRuleBaseQuest::CheckPlayersAlive()
 	for (auto i=m_pStage->GetObjBegin(); i!=m_pStage->GetObjEnd(); i++)
 	{
 		pObj = i->second;
-		if (pObj->GetEnterBattle() == false) continue;	// ¹èÆ²Âü°¡ÇÏ°í ÀÖ´Â ÇÃ·¹ÀÌ¾î¸¸ Ã¼Å©
+		if (pObj->GetEnterBattle() == false) continue;	// ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¸ Ã¼Å©
 		if (IsAdminGrade(pObj) && pObj->CheckPlayerFlags(MTD_PlayerFlags_AdminHide)) continue;
 
 		if (pObj->CheckAlive()==true)
@@ -260,7 +260,7 @@ bool MMatchRuleBaseQuest::CheckPlayersAlive()
 		}
 	}
 
-	// ¸ðµÎ Á×¾úÀ¸¸é ¸®¼Â
+	// ï¿½ï¿½ï¿½ ï¿½×¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (nAliveCount == 0) return false;
 
 	return true;
@@ -277,6 +277,23 @@ MMatchNPCObject* MMatchRuleBaseQuest::SpawnNPC(MQUEST_NPC nNPC, int nPosIndex)
 	}
 
 	return pNPCObject;
+}
+
+MMatchNPCObject* MMatchRuleBaseQuest::SpawnNPC(MQUEST_NPC nNPC, MVector& pos)
+{
+	MMatchNPCObject* pNPCObject = m_NPCManager.CreateNPCObject(nNPC, pos);
+	if (pNPCObject)
+	{
+		m_nNPCSpawnCount++;
+	}
+
+	return pNPCObject;
+}
+
+
+void MMatchRuleBaseQuest::OnRequestNPCSpawn(int nNPCType, MVector& pos)
+{
+	SpawnNPC(MQUEST_NPC(nNPCType), pos);
 }
 
 
@@ -329,7 +346,7 @@ void MMatchRuleBaseQuest::CheckMonsterBible( const MUID& uidUser, const int nMon
 	if( (0 > nMonsterBibleIndex) || (MAX_DB_MONSTERBIBLE_SIZE <= nMonsterBibleIndex) )
 		return;
 
-	// ¿©±â¼­ Ã³¸®.
+	// ï¿½ï¿½ï¿½â¼­ Ã³ï¿½ï¿½.
 
 	MMatchCharInfo* pCharInfo = pObj->GetCharInfo();
 	if( 0 == pCharInfo )
@@ -344,10 +361,10 @@ void MMatchRuleBaseQuest::CheckMonsterBible( const MUID& uidUser, const int nMon
 
 
 #ifdef _DEBUG
-	// Ã³À½ È¹µæÇÑ ¸ó½ºÅÍ Á¤º¸.
+	// Ã³ï¿½ï¿½ È¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	mlog( "MMatchRuleBaseQuest::CheckMonsterBible - New obtain monster info:%d\n", nMonsterBibleIndex );
 
-	// ÇöÀç °¡Áö°í ÀÖ´Â ¸ó½ºÅÍ Á¤º¸.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	MQuestMonsterBible qmb = pCharInfo->m_QMonsterBible;
 	for( int i = 0; i < MAX_DB_MONSTERBIBLE_SIZE; ++i )
 	{
@@ -370,17 +387,17 @@ void MMatchRuleBaseQuest::PostNewMonsterInfo( const MUID& uidUser, const char nM
 	if( 0 > nMonIndex )
 		return;
 
-	// ¿©±â¼­ ¹Ù·Î Ã³À½ ½ÀµæÇÑ ¸ó½ºÅÍ Á¤º¸¸¦ º¸³»ÁÜ.
+	// ï¿½ï¿½ï¿½â¼­ ï¿½Ù·ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	MCommand* pMonInfoCmd = MMatchServer::GetInstance()->CreateCommand( MC_MATCH_NEW_MONSTER_INFO, uidUser );
 	if( 0 == pMonInfoCmd )
 	{
-		mlog( "MMatchRuleBaseQuest::CheckMonsterBible - »õ·Î ½ÀµæÇÑ ¸ó½ºÅÍ Á¤º¸¸¦ ¾Ë·ÁÁÖ´Â Ä¿¸Çµå »ý¼º ½ÇÆÐ.\n" );
+		mlog( "MMatchRuleBaseQuest::CheckMonsterBible - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö´ï¿½ Ä¿ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 		return;
 	}
 	pMonInfoCmd->AddParameter( new MCmdParamChar(nMonIndex) );
 
 	if( !MMatchServer::GetInstance()->Post(pMonInfoCmd) )
-		mlog( "MMatchRuleBaseQuest::CheckMonsterBible - »õ·Î ½ÀµæÇÑ ¸ó½ºÅÍ Á¤º¸¸¦ ¾Ë·ÁÁÖ´Â Ä¿¸Çµå POST½ÇÆÐ.\n" );
+		mlog( "MMatchRuleBaseQuest::CheckMonsterBible - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½Ö´ï¿½ Ä¿ï¿½Çµï¿½ POSTï¿½ï¿½ï¿½ï¿½.\n" );
 }
 
 
@@ -400,7 +417,7 @@ void MMatchRuleBaseQuest::ReAssignNPC()
 		for (auto i=pStage->GetObjBegin(); i!=pStage->GetObjEnd(); i++)
 		{
 			MMatchObject* pObj = i->second;
-			if (pObj->GetEnterBattle() == false) continue;	// ¹èÆ²Âü°¡ÇÏ°í ÀÖ´Â ÇÃ·¹ÀÌ¾î¸¸ Ã¼Å©
+			if (pObj->GetEnterBattle() == false) continue;	// ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¸ Ã¼Å©
 
 			u32 lat = pObj->GetQuestLatency();
 

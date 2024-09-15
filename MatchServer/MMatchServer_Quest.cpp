@@ -16,7 +16,7 @@ void MMatchServer::OnRequestNPCDead(const MUID& uidSender, const MUID& uidKiller
 	MMatchObject* pSender = GetObject(uidSender);
 	if (!IsEnabledObject(pSender)) return;
 
-	// killer °¡ npc ÀÏ ¼öµµ ÀÖ´Ù.
+	// killer ï¿½ï¿½ npc ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½.
 //	MMatchObject* pKiller = GetObject(uidKiller);
 //	if (!IsEnabledObject(pKiller)) return;
 
@@ -27,7 +27,7 @@ void MMatchServer::OnRequestNPCDead(const MUID& uidSender, const MUID& uidKiller
 		return;
 	}
 
-	if (MGetGameTypeMgr()->IsQuestDerived(pStage->GetStageSetting()->GetGameType()))
+	if (MGetGameTypeMgr()->IsQuestDerivedEX(pStage->GetStageSetting()->GetGameType()))
 	{
 		MMatchRuleBaseQuest* pQuestRule = (MMatchRuleBaseQuest*)pStage->GetRule();
 		pQuestRule->OnRequestNPCDead((MUID&)uidSender, (MUID&)uidKiller, uidNPC, pos);
@@ -49,12 +49,12 @@ void MMatchServer::OnQuestRequestDead(const MUID& uidVictim)
 	MMatchStage* pStage = FindStage(pVictim->GetStageUID());
 	if (pStage == NULL) return;
 
-	if ( !MGetGameTypeMgr()->IsQuestDerived(pStage->GetStageSetting()->GetGameType())) return;
+	if ( !MGetGameTypeMgr()->IsQuestDerivedEX(pStage->GetStageSetting()->GetGameType())) return;
 
 	MMatchRuleBaseQuest* pQuestRule = (MMatchRuleBaseQuest*)pStage->GetRule();
 	pQuestRule->OnRequestPlayerDead((MUID&)uidVictim);
 
-	// ¼­¹ö´Â Á×ÀºÁÙ ¾Ë°íÀÖ¾ú´Âµ¥ ¶Ç Á×¾ú´Ù°í ½Å°íµé¾î¿Â°æ¿ì Á×¾ú´Ù´Â ¸Þ½ÃÁö¸¸ ¶ó¿ìÆÃÇÑ´Ù
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë°ï¿½ï¿½Ö¾ï¿½ï¿½Âµï¿½ ï¿½ï¿½ ï¿½×¾ï¿½ï¿½Ù°ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½Â°ï¿½ï¿½ ï¿½×¾ï¿½ï¿½Ù´ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 	if (pVictim->CheckAlive() == false) {	
 		MCommand* pNew = CreateCommand(MC_MATCH_RESPONSE_SUICIDE, MUID(0,0));
 		int nResult = MOK;
@@ -67,7 +67,7 @@ void MMatchServer::OnQuestRequestDead(const MUID& uidVictim)
 	pVictim->OnDead();
 
 
-	// Á×¾ú´Ù´Â ¸Þ¼¼Áö º¸³¿
+	// ï¿½×¾ï¿½ï¿½Ù´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	MCommand* pCmd = CreateCommand(MC_MATCH_QUEST_PLAYER_DEAD, MUID(0,0));
 	pCmd->AddParameter(new MCommandParameterUID(uidVictim));
 	RouteToBattle(pStage->GetUID(), pCmd);	
@@ -79,9 +79,9 @@ void MMatchServer::OnQuestRequestDead(const MUID& uidVictim)
 
 void MMatchServer::OnQuestTestRequestNPCSpawn(const MUID& uidPlayer, int nNPCType, int nNPCCount)
 {
-#ifndef _DEBUG
-	return;
-#endif
+// #ifndef _DEBUG
+// 	return;
+// #endif
 
 	if (MGetServerConfig()->GetServerMode() != MSM_TEST) return;
 
@@ -94,7 +94,7 @@ void MMatchServer::OnQuestTestRequestNPCSpawn(const MUID& uidPlayer, int nNPCTyp
 	if (!IsAdminGrade(pPlayer)) return;
 #endif
 
-	if (MGetGameTypeMgr()->IsQuestDerived(pStage->GetStageSetting()->GetGameType()))
+	if (MGetGameTypeMgr()->IsQuestDerivedEX(pStage->GetStageSetting()->GetGameType()))
 	{
 		MMatchRuleBaseQuest* pQuestRule = (MMatchRuleBaseQuest*)pStage->GetRule();
 		pQuestRule->OnRequestTestNPCSpawn(nNPCType, nNPCCount);
@@ -102,6 +102,22 @@ void MMatchServer::OnQuestTestRequestNPCSpawn(const MUID& uidPlayer, int nNPCTyp
 
 }
 
+
+void MMatchServer::OnExplorationRequestNPCSpawn(const MUID& uidPlayer, int nNPCType, MVector& pos)
+{
+
+	MMatchObject* pPlayer = GetObject(uidPlayer);
+	if (pPlayer == NULL) return;
+	MMatchStage* pStage = FindStage(pPlayer->GetStageUID());
+	if (pStage == NULL) return;
+
+	if (MGetGameTypeMgr()->IsQuestDerivedEX(pStage->GetStageSetting()->GetGameType()))
+	{
+		MMatchRuleBaseQuest* pQuestRule = (MMatchRuleBaseQuest*)pStage->GetRule();
+		pQuestRule->OnRequestNPCSpawn(nNPCType, pos);
+	}
+
+}
 void MMatchServer::OnQuestTestRequestClearNPC(const MUID& uidPlayer)
 {
 #ifndef _DEBUG
@@ -119,7 +135,7 @@ void MMatchServer::OnQuestTestRequestClearNPC(const MUID& uidPlayer)
 	if (!IsAdminGrade(pPlayer)) return;
 #endif
 
-	if (MGetGameTypeMgr()->IsQuestDerived(pStage->GetStageSetting()->GetGameType()))
+	if (MGetGameTypeMgr()->IsQuestDerivedEX(pStage->GetStageSetting()->GetGameType()))
 	{
 		MMatchRuleBaseQuest* pQuestRule = (MMatchRuleBaseQuest*)pStage->GetRule();
 		pQuestRule->OnRequestTestClearNPC();
@@ -223,7 +239,7 @@ void MMatchServer::OnResponseCharQuestItemList( const MUID& uidSender )
 	if( !IsEnabledObject(pPlayer) )
 		return;
 
-	// ÀÌÀü¿¡ µðºñ ¾ï¼¼½º¸¦ ¾ÈÇß¾úÀ¸¸é µðºñ¿¡¼­ Äù½ºÆ® ¾ÆÀÌÅÛ Á¤º¸¸¦ °¡Á®¿Â´Ù
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¼¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ñ¿¡¼ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
 	if( !pPlayer->GetCharInfo()->m_QuestItemList.IsDoneDbAccess() )
 	{
 		if( !GetDBMgr()->GetCharQuestItemInfo(pPlayer->GetCharInfo()) )
@@ -236,11 +252,11 @@ void MMatchServer::OnResponseCharQuestItemList( const MUID& uidSender )
 	MCommand* pNewCmd = CreateCommand( MC_MATCH_RESPONSE_CHAR_QUEST_ITEM_LIST, MUID(0, 0) );
 	if( 0 == pNewCmd )
 	{
-		mlog( "MMatchServer::OnResponseCharQuestItemList - Command»ý¼º ½ÇÆÐ.\n" );
+		mlog( "MMatchServer::OnResponseCharQuestItemList - Commandï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 		return;
 	}
 
-	// °®°í ÀÖ´Â Äù½ºÆ® ¾ÆÀÌÅÛ ¸®½ºÆ® Àü¼Û.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½.
 	int					nIndex			= 0;
 	MTD_QuestItemNode*	pQuestItemNode	= 0;
 	void*				pQuestItemArray = MMakeBlobArray( static_cast<int>(sizeof(MTD_QuestItemNode)), 
@@ -279,30 +295,30 @@ void MMatchServer::OnResponseBuyQeustItem( const MUID& uidSender, const u32 nIte
 	MQuestItemDescManager::iterator itQItemDesc = GetQuestItemDescMgr().find( nItemID );
 	if( GetQuestItemDescMgr().end() == itQItemDesc )
 	{
-		mlog( "MMatchServer::OnResponseBuyQuestItem - %d¾ÆÀÌÅÛ descriptionÀ» Ã£Áö ¸øÇß½À´Ï´Ù.\n", nItemID );
+		mlog( "MMatchServer::OnResponseBuyQuestItem - %dï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ descriptionï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.\n", nItemID );
 		return;
 	}
 
 	MQuestItemDesc* pQuestItemDesc = itQItemDesc->second;
 	if( 0 == pQuestItemDesc )
 	{
-		mlog( "MMatchServer::OnRequestBuyQuestItem - %dÀÇ item descriptionÀÌ ºñÁ¤»óÀûÀÔ´Ï´Ù.\n", nItemID );
+		mlog( "MMatchServer::OnRequestBuyQuestItem - %dï¿½ï¿½ item descriptionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.\n", nItemID );
 		return;
 	}
 
-	// »óÁ¡¿¡¼­ ÆÇ¸ÅµÇ°í ÀÖ´Â ¾ÆÀÌÅÛÀÎÁö °Ë»ç.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ÅµÇ°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½.
 	if( !MGetMatchShop()->IsSellItem(pQuestItemDesc->m_nItemID) )
 	{
-		mlog( "MMatchServer::OnRequestBuyQuestItem - %d´Â »óÁ¡¿¡¼­ ÆÇ¸ÅµÇ°í ÀÖ´Â ¾ÆÀÌÅÛÀÌ ¾Æ´Ô.\n", pQuestItemDesc->m_nItemID );
+		mlog( "MMatchServer::OnRequestBuyQuestItem - %dï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ÅµÇ°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½.\n", pQuestItemDesc->m_nItemID );
 		return;
 	}
 
-	// ÃæºÐÇÑ ¹Ù¿îÆ¼°¡ µÇ´ÂÁö °Ë»ç.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½Æ¼ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½.
 	if( pPlayer->GetCharInfo()->m_nBP < itQItemDesc->second->m_nPrice )
 	{
-		// ¹Ù¿îÆ¼°¡ ºÎÁ·ÇÑ´Ù´Â Á¤º¸¸¦ ¾Ë·ÁÁà¾ß ÇÔ.
-		// ÀÓ½Ã·Î MMatchItem¿¡¼­ »ç¿ëÇÏ´Â°É »ç¿ëÇßÀ½.
-		// ÇÊ¿äÇÏ¸é Quest item¿¡ ¸Â´Â Ä¿¸Çµå·Î ¼öÁ¤ÇØ¾ß ÇÔ.
+		// ï¿½Ù¿ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´Ù´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë·ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
+		// ï¿½Ó½Ã·ï¿½ MMatchItemï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+		// ï¿½Ê¿ï¿½ï¿½Ï¸ï¿½ Quest itemï¿½ï¿½ ï¿½Â´ï¿½ Ä¿ï¿½Çµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ï¿½.
 		MCommand* pBPLess = CreateCommand( MC_MATCH_RESPONSE_BUY_QUEST_ITEM, MUID(0,0) );
 		pBPLess->AddParameter( new MCmdParamInt(MERR_TOO_EXPENSIVE_BOUNTY) );
 		pBPLess->AddParameter( new MCmdParamInt(pPlayer->GetCharInfo()->m_nBP) );
@@ -316,17 +332,17 @@ void MMatchServer::OnResponseBuyQeustItem( const MUID& uidSender, const u32 nIte
 #ifdef _DEBUG
 		int n = itQItem->second->GetCount();
 #endif
-		// ÃÖ´ë °³¼ö¸¦ ³Ñ´ÂÁö °Ë»ç.
+		// ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½.
 		if( MAX_QUEST_ITEM_COUNT >= itQItem->second->GetCount() )
 		{
-			// °³¼ö Áõ°¡
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			itQItem->second->Increase();
 		}
 		else
 		{
-			// °¡Áú¼ö ÀÖ´Â ¾ÆÀÌÅÛÀÇ ÃÖ´ë ¼ö¸¦ ³Ñ¾î¼¹À½.
-			// ÀÓ½Ã·Î MMatchItem¿¡¼­ »ç¿ëÇÏ´Â°É »ç¿ëÇßÀ½.
-			// ÇÊ¿äÇÏ¸é Quest item¿¡ ¸Â´Â Ä¿¸Çµå·Î ¼öÁ¤ÇØ¾ß ÇÔ.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾î¼¹ï¿½ï¿½.
+			// ï¿½Ó½Ã·ï¿½ MMatchItemï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+			// ï¿½Ê¿ï¿½ï¿½Ï¸ï¿½ Quest itemï¿½ï¿½ ï¿½Â´ï¿½ Ä¿ï¿½Çµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ï¿½.
 			MCommand* pTooMany = CreateCommand( MC_MATCH_RESPONSE_BUY_QUEST_ITEM, MUID(0,0) );
 			pTooMany->AddParameter( new MCmdParamInt(MERR_TOO_MANY_ITEM) );
 			pTooMany->AddParameter( new MCmdParamInt(pPlayer->GetCharInfo()->m_nBP) );
@@ -339,24 +355,24 @@ void MMatchServer::OnResponseBuyQeustItem( const MUID& uidSender, const u32 nIte
 		MQuestItem* pNewQuestItem = new MQuestItem();
 		if( 0 == pNewQuestItem )
 		{
-			mlog( "MMatchServer::OnResponseBuyQuestItem - »õ·Î¿î Äù½ºÆ® ¾ÆÀÌÅÛ »ý¼º ½ÇÆÐ.\n" );
+			mlog( "MMatchServer::OnResponseBuyQuestItem - ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return;
 		}
 
 		if( !pNewQuestItem->Create(nItemID, 1, GetQuestItemDescMgr().FindQItemDesc(nItemID)) )
 		{
 			delete pNewQuestItem;
-			mlog( "MMatchServer::OnResponseBuyQeustItem - %d¹øÈ£ ¾ÆÀÌÅÛ Create( ... )ÇÔ¼ö È£Ãâ ½ÇÆÐ.\n" );
+			mlog( "MMatchServer::OnResponseBuyQeustItem - %dï¿½ï¿½È£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Create( ... )ï¿½Ô¼ï¿½ È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return;
 		}
 
 		pPlayer->GetCharInfo()->m_QuestItemList.insert( MQuestItemMap::value_type(nItemID, pNewQuestItem) );
 	}
 
-	// Ä³¸¯ÅÍ Á¤º¸ Ä³½³ ¾÷µ¥ÀÌÆ®¸¦ ¸ÕÀú ÇØÁØ´Ù.
+	// Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø´ï¿½.
 	UpdateCharDBCachingData( pPlayer );	
 
-	// µðºñ¿¡ ¹Ù¿îÆ¼ ´õÇØÁØ´Ù
+	// ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½
 	int nPrice = pQuestItemDesc->m_nPrice;
 
 	if (!GetDBMgr()->UpdateCharBP(pPlayer->GetCharInfo()->m_nCID, -nPrice))
@@ -373,20 +389,20 @@ void MMatchServer::OnResponseBuyQeustItem( const MUID& uidSender, const u32 nIte
 
 	pPlayer->GetCharInfo()->m_nBP -= nPrice;
 
-	// ¾ÆÀÌÅÛ °Å·¡ Ä«¿îÆ® Áõ°¡. ³»ºÎ¿¡¼­ µðºñ ¾÷µ¥ÀÌÆ® °áÁ¤.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å·ï¿½ Ä«ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½.
 	pPlayer->GetCharInfo()->GetDBQuestCachingData().IncreaseShopTradeCount();
 
 	MCommand* pNewCmd = CreateCommand( MC_MATCH_RESPONSE_BUY_QUEST_ITEM, MUID(0, 0) );
 	if( 0 == pNewCmd )
 	{
-		mlog( "MMatchServer::OnResponseBuyQuestItem - new Command½ÇÆÐ.\n" );
+		mlog( "MMatchServer::OnResponseBuyQuestItem - new Commandï¿½ï¿½ï¿½ï¿½.\n" );
 		return;
 	}
 	pNewCmd->AddParameter( new MCmdParamInt(MOK) );
 	pNewCmd->AddParameter( new MCmdParamInt(pPlayer->GetCharInfo()->m_nBP) );
 	RouteToListener( pPlayer, pNewCmd );
 
-	// Äù½ºÆ® ¾ÆÀÌÅÛ ¸®½ºÆ®¸¦ ´Ù½Ã Àü¼ÛÇÔ.
+	// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	OnRequestCharQuestItemList( pPlayer->GetUID() );
 }
 
@@ -407,38 +423,38 @@ void MMatchServer::OnResponseSellQuestItem( const MUID& uidSender, const u32 nIt
 	MMatchObject* pPlayer = GetObject( uidSender );
 	if( !IsEnabledObject(pPlayer) )
 	{
-		mlog( "MMatchServer::OnResponseSellQuestItem - À¯Àú¸¦ Ã£´Âµ¥ ½ÇÆÐÇß½À´Ï´Ù. UserName:%s\n", pPlayer->GetCharInfo()->m_szName );
+		mlog( "MMatchServer::OnResponseSellQuestItem - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. UserName:%s\n", pPlayer->GetCharInfo()->m_szName );
 		return;
 	}
 
 	MQuestItemDescManager::iterator itQItemDesc = GetQuestItemDescMgr().find( nItemID );
 	if( GetQuestItemDescMgr().end() == itQItemDesc )
 	{
-		mlog( "MMatchServer::OnResponseSellQuestItem - %dÀÇ ¾ÆÀÌÅÛ descriptionÀ» Ã£Áö ¸øÇß½À´Ï´Ù. UserName:%s\n", nItemID, pPlayer->GetCharInfo()->m_szName );
+		mlog( "MMatchServer::OnResponseSellQuestItem - %dï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ descriptionï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. UserName:%s\n", nItemID, pPlayer->GetCharInfo()->m_szName );
 		return;
 	}
 	
 	MQuestItemDesc* pQItemDesc = itQItemDesc->second;
 	if( 0 == pQItemDesc )
 	{
-		mlog( "MMatchServer::OnResponseSellQuestItem - %d ¾ÆÀÌÅÛÀÇ decriptionÀÌ ºñÁ¤»óÀÔ´Ï´Ù. CharName:%s\n", nItemID, pPlayer->GetCharInfo()->m_szName );
+		mlog( "MMatchServer::OnResponseSellQuestItem - %d ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ decriptionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½. CharName:%s\n", nItemID, pPlayer->GetCharInfo()->m_szName );
 		return;
 	}
 
-	// ¾ÆÀÌÅÛ Ä«¿îÆ® °Ë»ç.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½Æ® ï¿½Ë»ï¿½.
 	MQuestItemMap::iterator itQItem = pPlayer->GetCharInfo()->m_QuestItemList.find( nItemID );
 	if( pPlayer->GetCharInfo()->m_QuestItemList.end() != itQItem )
 	{
 		if( nCount > itQItem->second->GetCount() )
 		{
-			// ÇÑ¹ø È¹µæÀº Çß´ø ¾ÆÀÌÅÛÀÌÁö¸¸, ÇöÁ¦ ¼ö·®ÀÌ ÆÈ·Á°í ÇÏ´Â ¼ö·®º¸´Ù ºÎÁ·ÇÔ.
+			// ï¿½Ñ¹ï¿½ È¹ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È·ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 			return;
 		}
 
-		// Ä³¸¯ÅÍ Á¤º¸ Ä³½³ ¾÷µ¥ÀÌÆ®¸¦ ¸ÕÀú ÇØÁØ´Ù.
+		// Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø´ï¿½.
 		UpdateCharDBCachingData( pPlayer );	
 
-		// µðºñ¿¡ ¹Ù¿îÆ¼ ´õÇØÁØ´Ù
+		// ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½
 		int nPrice = ( nCount * pQItemDesc->GetBountyValue() );
 		if (!GetDBMgr()->UpdateCharBP(pPlayer->GetCharInfo()->m_nCID, nPrice))
 		{
@@ -454,18 +470,18 @@ void MMatchServer::OnResponseSellQuestItem( const MUID& uidSender, const u32 nIt
 
 		itQItem->second->Decrease( nCount );
 
-		pPlayer->GetCharInfo()->m_nBP += nPrice;		// µÇÆÈ½Ã´Â 1/4¸¸ ¹ÞÀ»¼ö ÀÖÀ½.
+		pPlayer->GetCharInfo()->m_nBP += nPrice;		// ï¿½ï¿½ï¿½È½Ã´ï¿½ 1/4ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
 	}
 	else
 	{
-		// Á¸Á¦ÇÏÁö ¾Ê´Â ¾ÆÀÌÅÛÀ» ÆÈ·Á°í ÇÏ¿´À½.
-		mlog( "MMatchServer::OnResponseSellQuestItem - %dÀÇ °¡Áö°í ÀÖÁö ¾ÊÀº ¾ÆÀÌÅÛÀ» ÆÇ¸ÅÇÏ·ÁÇÔ. CharName:%s\n", nItemID, pPlayer->GetCharInfo()->m_szName );
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È·ï¿½ï¿½ï¿½ ï¿½Ï¿ï¿½ï¿½ï¿½.
+		mlog( "MMatchServer::OnResponseSellQuestItem - %dï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ï¿½Ï·ï¿½ï¿½ï¿½. CharName:%s\n", nItemID, pPlayer->GetCharInfo()->m_szName );
 		ASSERT( 0 );
 		return;
 	}
 
-	// ¾ÆÀÌÅÛ °Å·¡ Ä«¿îÆ® Áõ°¡. ³»ºÎ¿¡¼­ µðºñ ¾÷µ¥ÀÌÆ® °áÁ¤.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å·ï¿½ Ä«ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½.
 	pPlayer->GetCharInfo()->GetDBQuestCachingData().IncreaseShopTradeCount();
 
 	MCommand* pCmd = CreateCommand( MC_MATCH_RESPONSE_SELL_QUEST_ITEM, MUID(0, 0) );
@@ -478,7 +494,7 @@ void MMatchServer::OnResponseSellQuestItem( const MUID& uidSender, const u32 nIt
 	pCmd->AddParameter( new MCmdParamInt(pPlayer->GetCharInfo()->m_nBP) );
 	RouteToListener( pPlayer, pCmd );
 
-	// Äù½ºÆ® ¾ÆÀÌÅÛ ¸®½ºÆ®¸¦ ´Ù½Ã Àü¼ÛÇÔ.
+	// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	OnRequestCharQuestItemList( pPlayer->GetUID() );
 }
 
@@ -491,7 +507,7 @@ void MMatchServer::OnRequestDropSacrificeItemOnSlot( const MUID& uidSender, cons
 		MMatchObject* pPlayer = GetObject( uidSender );
 		if( !IsEnabledObject(pPlayer) )
 		{
-			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ºñÁ¤»óÀûÀÎ À¯Àú.\n" );
+			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return;
 		}
 
@@ -501,7 +517,7 @@ void MMatchServer::OnRequestDropSacrificeItemOnSlot( const MUID& uidSender, cons
 			MSTAGE_SETTING_NODE* pNode = pStage->GetStageSetting()->GetStageSetting();
 			if( 0 == pNode )
 			{
-				mlog( "MMatchServer::CharFinalize - ½ºÅ×ÀÌÁö ¼ÂÆÃ ³ëµå Ã£±â ½ÇÆÐ.\n" );
+				mlog( "MMatchServer::CharFinalize - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 				return;
 			}
 
@@ -527,7 +543,7 @@ void MMatchServer::OnRequestCallbackSacrificeItem( const MUID& uidSender, const 
 		MMatchObject* pPlayer = GetObject( uidSender );
 		if( !IsEnabledObject(pPlayer) )
 		{
-			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ºñÁ¤»óÀûÀÎ À¯Àú.\n" );
+			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return;
 		}
 
@@ -537,7 +553,7 @@ void MMatchServer::OnRequestCallbackSacrificeItem( const MUID& uidSender, const 
 			MSTAGE_SETTING_NODE* pNode = pStage->GetStageSetting()->GetStageSetting();
 			if( 0 == pNode )
 			{
-				mlog( "MMatchServer::CharFinalize - ½ºÅ×ÀÌÁö ¼ÂÆÃ ³ëµå Ã£±â ½ÇÆÐ.\n" );
+				mlog( "MMatchServer::CharFinalize - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 				return;
 			}
 
@@ -562,7 +578,7 @@ void MMatchServer::OnRequestQL( const MUID& uidSender )
 		MMatchObject* pPlayer = GetObject( uidSender );
 		if( !IsEnabledObject(pPlayer) )
 		{
-			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ºñÁ¤»óÀûÀÎ À¯Àú.\n" );
+			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return;
 		}
 
@@ -572,11 +588,11 @@ void MMatchServer::OnRequestQL( const MUID& uidSender )
 			MSTAGE_SETTING_NODE* pNode = pStage->GetStageSetting()->GetStageSetting();
 			if( 0 == pNode )
 			{
-				mlog( "MMatchServer::CharFinalize - ½ºÅ×ÀÌÁö ¼ÂÆÃ ³ëµå Ã£±â ½ÇÆÐ.\n" );
+				mlog( "MMatchServer::CharFinalize - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 				return;
 			}
 
-			if( MGetGameTypeMgr()->IsQuestDerived(pNode->nGameType) )
+			if( MGetGameTypeMgr()->IsQuestDerivedEX(pNode->nGameType) )
 			{
 				MMatchRuleBaseQuest* pRuleQuest = reinterpret_cast< MMatchRuleBaseQuest* >( pStage->GetRule() );
 				if( 0 == pRuleQuest )
@@ -598,7 +614,7 @@ void MMatchServer::OnRequestSacrificeSlotInfo( const MUID& uidSender )
 		MMatchObject* pPlayer = GetObject( uidSender );
 		if( !IsEnabledObject(pPlayer) )
 		{
-			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ºñÁ¤»óÀûÀÎ À¯Àú.\n" );
+			mlog( "MMatchServer::OnRequestDropSacrificeItemOnSlot - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return;
 		}
 
@@ -608,7 +624,7 @@ void MMatchServer::OnRequestSacrificeSlotInfo( const MUID& uidSender )
 			MSTAGE_SETTING_NODE* pNode = pStage->GetStageSetting()->GetStageSetting();
 			if( 0 == pNode )
 			{
-				mlog( "MMatchServer::CharFinalize - ½ºÅ×ÀÌÁö ¼ÂÆÃ ³ëµå Ã£±â ½ÇÆÐ.\n" );
+				mlog( "MMatchServer::CharFinalize - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 				return;
 			}
 
@@ -643,7 +659,7 @@ void MMatchServer::OnRequestMonsterBibleInfo( const MUID& uidSender )
 		MMatchObject* pPlayer = GetObject( uidSender );
 		if( !IsEnabledObject(pPlayer) )
 		{
-			mlog( "MMatchServer::OnRequestMonsterBibleInfo - ºñÁ¤»óÀûÀÎ À¯Àú.\n" );
+			mlog( "MMatchServer::OnRequestMonsterBibleInfo - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return;
 		}
 
@@ -662,24 +678,24 @@ void MMatchServer::OnResponseMonsterBibleInfo( const MUID& uidSender )
 	if( 0 == pCharInfo )
 		return;
 
-	// µðºñ¿¡¼­ ÄÉ¸¯ÅÍ Äù½ºÆ® °ü·ÃÁ¤º¸¸¦ °¡Àú¿ÍÀÖ´ÂÁö °Ë»ç¸¦ ÇÔ.
+	// ï¿½ï¿½ñ¿¡¼ï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë»ç¸¦ ï¿½ï¿½.
 	if( !pCharInfo->m_QuestItemList.IsDoneDbAccess() )
 	{
-		mlog( "MMatchServer::OnResponseMonsterBibleInfo - µðºñ·Îµå ÀÌÀü¿¡ ¹ß»ýÇÔ.\n" );
+		mlog( "MMatchServer::OnResponseMonsterBibleInfo - ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½.\n" );
 		return;
 	}	
 
 	void* pMonBibleInfoBlob = MMakeBlobArray( MONSTER_BIBLE_SIZE, 1 );
 	if( 0 == pMonBibleInfoBlob )
 	{
-		mlog( "MMatchServer::OnResponseMonsterBibleInfo - Blob»ý¼º ½ÇÆÐ.\n" );
+		mlog( "MMatchServer::OnResponseMonsterBibleInfo - Blobï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 		return;
 	}
 
 	MQuestMonsterBible* pMonBible = reinterpret_cast< MQuestMonsterBible * >( MGetBlobArrayElement(pMonBibleInfoBlob, 0) );
 	if( 0 == pMonBible )
 	{
-		mlog( "MMatchServer::OnResponseMonsterBibleInfo - Çüº¯È¯ ½ÇÆÐ.\n" );
+		mlog( "MMatchServer::OnResponseMonsterBibleInfo - ï¿½ï¿½ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½.\n" );
 		return;
 	}
 
@@ -689,7 +705,7 @@ void MMatchServer::OnResponseMonsterBibleInfo( const MUID& uidSender )
 	MCommand* pCmd = CreateCommand( MC_MATCH_RESPONSE_MONSTER_BIBLE_INFO, MUID(0, 0) );
 	if( 0 == pCmd )
 	{
-		mlog( "MMatchServer::OnResponseMonsterBibleInfo - Ä¿¸Çµå »ý¼º ½ÇÆÐ.\n" );
+		mlog( "MMatchServer::OnResponseMonsterBibleInfo - Ä¿ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 		return;
 	}
 

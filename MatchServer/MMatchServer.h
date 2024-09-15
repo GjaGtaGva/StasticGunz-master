@@ -566,6 +566,9 @@ protected:
 		int nCommand,
 		const char* pszAnnounce);
 
+	/// Exploration
+	void OnExplorationRequestNPCSpawn(const MUID& uidPlayer, int nNPCType, MVector& pos);
+
 	// Quest
 	void OnRequestNPCDead(const MUID& uidSender, const MUID& uidKiller, MUID& uidNPC, MVector& pos);
 	void OnQuestRequestDead(const MUID& uidVictim);

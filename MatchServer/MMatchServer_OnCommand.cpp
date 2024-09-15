@@ -1352,6 +1352,19 @@ _STATUS_CMD_START;
 				OnQuestRequestDead(uidVictim);
 			}
 			break;
+		case MC_EXPLORATION_REQUEST_NPC_SPAWN:
+			{
+				int nNPCType;
+				MVector pos;
+
+				pCommand->GetParameter(&nNPCType, 0, MPT_INT);
+				pCommand->GetParameter(&pos, 1, MPT_VECTOR);
+
+				MUID uidPlayer = pCommand->GetSenderUID();
+
+				OnExplorationRequestNPCSpawn(uidPlayer, nNPCType, pos);
+			}
+			break;
 		case MC_QUEST_TEST_REQUEST_NPC_SPAWN:
 			{
 				int nNPCType, nNPCCount;

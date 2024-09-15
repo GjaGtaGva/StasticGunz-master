@@ -11,10 +11,11 @@
 #include "ZRuleDuel.h"
 #include "ZRuleSkillmap.h"
 #include "ZRuleGunGame.h"
+#include "ZRuleExploration.h"
 
 ZRule::ZRule(ZMatch* pMatch)
 {
-	m_pMatch = pMatch;				// 초기화 =_=
+	m_pMatch = pMatch;
 }
 
 ZRule::~ZRule()
@@ -98,9 +99,13 @@ ZRule* ZRule::CreateRule(ZMatch* pMatch, MMATCH_GAMETYPE nGameType)
 			return (new ZRuleGunGame(pMatch));
 		}
 		break;
+	case MMATCH_GAMETYPE_EXPLORATION:
+		{
+			return (new ZRuleExploration(pMatch));
+		}
+		break;
 	default:
 		{
-			// 게임 타입이 없습니다.
 			_ASSERT(0);
 		}
 	}

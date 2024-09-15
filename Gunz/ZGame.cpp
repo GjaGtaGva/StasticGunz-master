@@ -751,7 +751,10 @@ void ZGame::CheckMyCharDead(float fElapsed)
 		}
 		else
 		{
-			if(!m_pMyCharacter->IsWintered()){ 
+			/// STASTIC 2000: get wintered
+			if (m_pMyCharacter->GotStastic(2000, MMCIP_FINGERL)) {
+				/// do nothing
+			} else { 
 				uidAttacker = m_pMyCharacter->GetLastThrower();
 
 				ZObject *pAttacker = ZGetObjectManager()->GetObject(uidAttacker);
@@ -2832,12 +2835,14 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 			else {
 				OnHitObject();
 
-				/// STASTIC 2010: Leap - tp to hit position
+				/// STASTIC 2010: Leap - tp to hit position (hit body)
 				if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2010)) {
+					
 					rvector landPos = pickinfo.bpi.PickPos;
-					ZGetGame()->m_pMyCharacter->SetPosition(landPos);
-					ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
-					ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+					ZCharacter* pOwnerChar = (ZCharacter*)pOwner;
+					pOwnerChar->SetPosition(landPos);
+					pOwnerChar->SetAccel(rvector(0.f, 0.f, 0.f));
+					pOwnerChar->SetVelocity(rvector(0.f, 0.f, 0.f));
 				}
 			}
 
@@ -2852,13 +2857,31 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 			ret.BulletMarkNormal = Normalized(pickinfo.bpi.pInfo->plane.normal());
 			ret.BulletMark = true;
 
-			/// STASTIC 2010: Leap - tp to hit position
+			/// STASTIC 2010: Leap - tp to hit position (hit ground)
 			if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2010)) {
 				rvector landPos = pickinfo.bpi.PickPos;
-				ZGetGame()->m_pMyCharacter->SetPosition(landPos);
-				ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
-				ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+				ZCharacter* pOwnerChar = (ZCharacter*)pOwner;
+				pOwnerChar->SetPosition(landPos);
+				pOwnerChar->SetAccel(rvector(0.f, 0.f, 0.f));
+				pOwnerChar->SetVelocity(rvector(0.f, 0.f, 0.f));
 			}
+			
+			/// STASTIC 20001: Spawn npc - EL is the NPC id in MQUEST_NPC enum
+			if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(20001)) {
+				ZChatOutput("I summon thee!");
+				rvector landPos = pickinfo.bpi.PickPos;
+
+				MQUEST_NPC npc = NPC_GOBLIN;
+
+				int el = pOwner->GetItems()->GetSelectedWeapon()->GetDesc()->m_nEffectLevel;
+				if (el) {
+					/// TODO need to check if npc id is valid. For now just trust.
+					npc = MQUEST_NPC(el);
+				}
+
+				ZPostExplorationNPCSpawn(npc, landPos);
+			}
+
 		}
 		else {
 			assert(false);
@@ -2870,12 +2893,13 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 		ret.HitPos = SrcPos + dir * 10000.f;
 		ret.TargetType = ZTT_NOTHING;
 
-		/// STASTIC 2010: Leap - tp to hit position - or by some distance at looking direction
+		/// STASTIC 2010: Leap - tp to hit position (hit air)
 		if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2010)) {
 			rvector landPos = SrcPos + dir * 3000.f;
-			ZGetGame()->m_pMyCharacter->SetPosition(landPos);
-			ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
-			ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+			ZCharacter* pOwnerChar = (ZCharacter*)pOwner;
+			pOwnerChar->SetPosition(landPos);
+			pOwnerChar->SetAccel(rvector(0.f, 0.f, 0.f));
+			pOwnerChar->SetVelocity(rvector(0.f, 0.f, 0.f));
 		}
 	}
 
@@ -2888,9 +2912,10 @@ ShotInfo ZGame::DoOneShot(ZObject* pOwner, v3 SrcPos, v3 DestPos, float ShotTime
 			offset *= m_nEffectLevel;
 		}
 		rvector landPos = SrcPos + dir * offset;
-		ZGetGame()->m_pMyCharacter->SetPosition(landPos);
-		ZGetGame()->m_pMyCharacter->SetAccel(rvector(0.f, 0.f, 0.f));
-		ZGetGame()->m_pMyCharacter->SetVelocity(rvector(0.f, 0.f, 0.f));
+		ZCharacter* pOwnerChar = (ZCharacter*)pOwner;
+		pOwnerChar->SetPosition(landPos);
+		pOwnerChar->SetAccel(rvector(0.f, 0.f, 0.f));
+		pOwnerChar->SetVelocity(rvector(0.f, 0.f, 0.f));
 	}
 
 
@@ -3663,6 +3688,7 @@ void ZGame::OnPeerDash(MCommand* pCommand)
 	int sel_type;
 
 	pos = rvector(Roundf(ppdi->posx),Roundf(ppdi->posy),Roundf(ppdi->posz));
+	/// Gva test
 	dir = 1.f/32000.f * rvector(ppdi->dirx,ppdi->diry,ppdi->dirz);
 	sel_type = (int)ppdi->seltype;
 
@@ -5087,10 +5113,12 @@ void ZGame::OnLocalOptainSpecialWorldItem(MCommand* pCommand)
 	{
 	case WORLDITEM_PORTAL_ID:
 		{
-			if (ZGetGameClient()->GetMatchStageSetting()->GetGameType() != MMATCH_GAMETYPE_QUEST) break;
-
-			char nCurrSectorIndex = ZGetQuest()->GetGameInfo()->GetCurrSectorIndex();
-			ZPostQuestRequestMovetoPortal(nCurrSectorIndex);
+			if (ZGetGameClient()->GetMatchStageSetting()->GetGameType() == MMATCH_GAMETYPE_QUEST 
+			|| ZGetGameClient()->GetMatchStageSetting()->GetGameType() == MMATCH_GAMETYPE_EXPLORATION
+			){
+				char nCurrSectorIndex = ZGetQuest()->GetGameInfo()->GetCurrSectorIndex();
+				ZPostQuestRequestMovetoPortal(nCurrSectorIndex);
+			}
 		}
 		break;
 	};

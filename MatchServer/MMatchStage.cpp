@@ -17,6 +17,7 @@
 #include "MMatchRuleDuel.h"
 #include "MMatchRuleSkillmap.h"
 #include "MMatchRuleGunGame.h"
+#include "MMatchRuleExploration.h"
 #include "MErrorTable.h"
 
 MMatchStage::MMatchStage() : MovingWeaponMgr(*this), m_WorldItemManager(this)
@@ -143,7 +144,7 @@ MMatchObjectMap::iterator MMatchStage::RemoveObject(const MUID& uid)
 
 	MMatchObject* pObj = MMatchServer::GetInstance()->GetObject(uid);
 	if (pObj) {
-		// ¾îµå¹Î À¯Àú °ü¸®
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (IsAdminGrade(pObj->GetAccountInfo()->m_nUGrade))
 		{
 			m_nAdminObjectCount--;
@@ -415,6 +416,12 @@ MMatchRule* MMatchStage::CreateRule(MMATCH_GAMETYPE nGameType)
 			return (new MMatchRuleGunGame(this));
 		}
 		break;
+	case MMATCH_GAMETYPE_EXPLORATION:
+		{
+			return (new MMatchRuleExploration(this));
+		}
+		break;
+	/// TODO rule Challenge
 	default:
 		{
 			_ASSERT(0);
@@ -458,7 +465,7 @@ MMatchTeam MMatchStage::GetRecommandedTeam()
 			return MMT_BLUE;
 	}
 	
-	if (GTMgr.IsQuestDerived(GameType))
+	if (GTMgr.IsQuestDerivedEX(GameType))
 	{
 		// ZActor::GetTeamID returns MMT_BLUE, so we return MMT_RED so that the players are on a
 		// different team and friendly/enemy fire works correctly.
@@ -506,14 +513,14 @@ bool _GetUserGradeIDName(MMatchUserGradeID gid, char* sp_name, int maxlen)
 	if(gid == MMUG_DEVELOPER) 
 	{ 
 		if(sp_name) {
-			strcpy_safe(sp_name, maxlen, "°³¹ßÀÚ");
+			strcpy_safe(sp_name, maxlen, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		}
 		return true; 
 	}
 	else if(gid == MMUG_ADMIN) {
 		
 		if(sp_name) { 
-			strcpy_safe(sp_name, maxlen, "¿î¿µÀÚ");
+			strcpy_safe(sp_name, maxlen, "ï¿½î¿µï¿½ï¿½");
 		}
 		return true; 
 	}
@@ -572,7 +579,7 @@ bool MMatchStage::StartGame()
 		MCommand* pCmdNotReady = MMatchServer::GetInstance()->CreateCommand( MC_GAME_START_FAIL, MUID(0, 0) );
 		if( 0 == pCmdNotReady )
 		{
-			mlog( "MMatchStage::StartGame - Ä¿¸Çµå »ý¼º ½ÇÆÐ.\n" );
+			mlog( "MMatchStage::StartGame - Ä¿ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			bResult = false;
 		}
 		pCmdNotReady->AddParameter( new MCmdParamInt(ALL_PLAYER_NOT_READY) );
@@ -601,16 +608,16 @@ bool MMatchStage::StartGame()
 		MSTAGE_SETTING_NODE* pNode = GetStageSetting()->GetStageSetting();
 		if( 0 == pNode )
 		{
-			mlog( "MMatchServer::CharFinalize - ½ºÅ×ÀÌÁö ¼ÂÆÃ ³ëµå Ã£±â ½ÇÆÐ.\n" );
+			mlog( "MMatchServer::CharFinalize - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 			return false;
 		}
 
-		if( MGetGameTypeMgr()->IsQuestDerived(pNode->nGameType) )
+		if( MGetGameTypeMgr()->IsQuestDerivedEX(pNode->nGameType) )
 		{
 			MMatchRuleBaseQuest* pRuleQuest = reinterpret_cast< MMatchRuleBaseQuest* >( GetRule() );
 			if( 0 == pRuleQuest )
 			{
-				mlog( "MMatchStage::StartGame - Quest rule·Î Æ÷ÀÎÅÍ Çüº¯È¯ ½ÇÆÐ.\n" );
+				mlog( "MMatchStage::StartGame - Quest ruleï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½.\n" );
 				return false;
 			}
 
@@ -633,7 +640,7 @@ bool MMatchStage::StartGame()
 
 
 				#ifdef _DEBUG
-					mlog( "MMatchServer::OnStageStart - ½½·Ô Á¶°Ç °Ë»ç¿¡¼­ ½ÇÆÐÇÏ¿© °ÔÀÓÀ» ½ÃÀÛÇÒ¼ö ¾øÀ½.\n" );
+					mlog( "MMatchServer::OnStageStart - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ç¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ ï¿½ï¿½ï¿½ï¿½.\n" );
 				#endif
 
 				return false;
