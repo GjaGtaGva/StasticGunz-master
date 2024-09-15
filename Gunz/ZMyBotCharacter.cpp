@@ -21,7 +21,10 @@ void RequestCreateBot()
 		return;
 	}
 
-	if (ZGetGameClient()->GetMatchStageSetting()->GetGameType() != MMATCH_GAMETYPE_TRAINING)
+	if (
+		ZGetGameClient()->GetMatchStageSetting()->GetGameType() != MMATCH_GAMETYPE_TRAINING &&
+		ZGetGameClient()->GetMatchStageSetting()->GetGameType() != MMATCH_GAMETYPE_EXPLORATION
+	)
 	{
 		ZChatOutput("Must be in a training room to create bot");
 		return;

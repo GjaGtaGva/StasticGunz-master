@@ -149,19 +149,6 @@ public:
 
 	ZMyCharacter();
 
-	/// Gva whether I'm wintered. 
-	bool IsWintered()
-	{
-		MMatchItemDesc *leftFinger = m_Items.GetDesc(MMCIP_FINGERL);
-		if (leftFinger) {
-			/// STASTIC 2000: get wintered
-			return leftFinger->GotSTASTIC(2000);
-		}
-		return false;
-	}
-		
-	bool GotStastic(int stId);
-
 	void InitSpawn();
 
 	void ProcessInput(float fDelta);

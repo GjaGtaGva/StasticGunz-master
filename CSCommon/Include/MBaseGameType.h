@@ -25,12 +25,16 @@ enum MMATCH_GAMETYPE : i32
 	MMATCH_GAMETYPE_SKILLMAP = 11,
 	MMATCH_GAMETYPE_GUNGAME = 12,
 
+	/// Challenge quest placeholder - not complete
+	MMATCH_GAMETYPE_QUEST_CHALLENGE = 13,
+	MMATCH_GAMETYPE_EXPLORATION		= 14,
+
 	MMATCH_GAMETYPE_MAX,
 
 	MMATCH_GAMETYPE_ALL = 100,
 };
 
-const MMATCH_GAMETYPE MMATCH_GAMETYPE_DEFAULT = MMATCH_GAMETYPE_DEATHMATCH_SOLO;
+const MMATCH_GAMETYPE MMATCH_GAMETYPE_DEFAULT = MMATCH_GAMETYPE_TRAINING;
 
 
 struct MMatchGameTypeInfo
@@ -65,6 +69,8 @@ public:
 	inline bool IsWaitForRoundEnd(MMATCH_GAMETYPE nGameType);
 	inline bool IsQuestOnly(MMATCH_GAMETYPE nGameType);
 	inline bool IsQuestDerived(MMATCH_GAMETYPE nGameType);
+	inline bool IsQuestDerivedEX(MMATCH_GAMETYPE nGameType);
+	inline bool IsExplorationDerived(MMATCH_GAMETYPE nGameType);
 	inline bool IsWorldItemSpawnEnable(MMATCH_GAMETYPE nGameType);
 };
 
@@ -113,6 +119,30 @@ inline bool MBaseGameTypeCatalogue::IsQuestDerived(MMATCH_GAMETYPE nGameType)
 		return true;
 	}
 #endif
+	return false;
+}
+
+/// Quest or Exploration
+inline bool MBaseGameTypeCatalogue::IsQuestDerivedEX(MMATCH_GAMETYPE nGameType)
+{
+#ifdef _QUEST
+	if ((nGameType == MMATCH_GAMETYPE_SURVIVAL)
+		|| (nGameType == MMATCH_GAMETYPE_QUEST)
+		||(nGameType == MMATCH_GAMETYPE_EXPLORATION) 
+		)
+	{
+		return true;
+	}
+#endif
+	return false;
+}
+
+inline bool MBaseGameTypeCatalogue::IsExplorationDerived(MMATCH_GAMETYPE nGameType)
+{
+	if ((nGameType == MMATCH_GAMETYPE_EXPLORATION))
+	{
+		return true;
+	}
 	return false;
 }
 

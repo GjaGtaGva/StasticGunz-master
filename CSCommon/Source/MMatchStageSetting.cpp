@@ -70,6 +70,11 @@ bool MMatchStageSetting::IsQuestDrived()
 	return MGetGameTypeMgr()->IsQuestDerived(m_StageSetting.nGameType);
 }
 
+bool MMatchStageSetting::IsQuestDrivedEX()
+{
+	return MGetGameTypeMgr()->IsQuestDerivedEX(m_StageSetting.nGameType);
+}
+
 void MMatchStageSetting::UpdateStageSetting(MSTAGE_SETTING_NODE* pSetting)
 {
 	m_StageSetting = *pSetting;

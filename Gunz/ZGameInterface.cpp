@@ -1922,6 +1922,8 @@ bool ZGameInterface::OnCreate(ZLoadingProgress *pLoadingProgress)
 	ZGetGameTypeManager()->SetGameTypeStr(MMATCH_GAMETYPE_DEATHMATCH_TEAM2, ZMsg(MSG_MT_DEATHMATCH_TEAM2));
 	ZGetGameTypeManager()->SetGameTypeStr(MMATCH_GAMETYPE_DUEL, ZMsg(MSG_MT_DUEL));
 	ZGetGameTypeManager()->SetGameTypeStr(MMATCH_GAMETYPE_SKILLMAP, "Skillmap");
+	ZGetGameTypeManager()->SetGameTypeStr(MMATCH_GAMETYPE_QUEST_CHALLENGE, "Challenge");
+	ZGetGameTypeManager()->SetGameTypeStr(MMATCH_GAMETYPE_EXPLORATION, "Exploration");
 
 #ifndef _DEBUG
 	MWidget* pWidget = m_IDLResource.FindWidget("MonsterBookCaller");
@@ -4989,6 +4991,7 @@ void ZGameInterface::RequestQuickJoin()
 	quick_join_param.nMapEnum = 0xFFFFFFFF;
 
 	quick_join_param.nModeEnum = 0;
+	SetBitSet(quick_join_param.nModeEnum, MMATCH_GAMETYPE_EXPLORATION);
 	SetBitSet(quick_join_param.nModeEnum, MMATCH_GAMETYPE_DEATHMATCH_SOLO);
 	SetBitSet(quick_join_param.nModeEnum, MMATCH_GAMETYPE_DEATHMATCH_TEAM);
 	SetBitSet(quick_join_param.nModeEnum, MMATCH_GAMETYPE_ASSASSINATE);

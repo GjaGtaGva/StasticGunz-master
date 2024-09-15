@@ -862,7 +862,7 @@ void ZScreenEffectManager::UpdateEffects()
 			m_eraseQueue.push_back(i);
 	}
 
-	if (!ZGetGameTypeManager()->IsQuestDerived(ZGetGameClient()->GetMatchStageSetting()->GetGameType())) return;
+	if (!ZGetGameTypeManager()->IsQuestDerivedEX(ZGetGameClient()->GetMatchStageSetting()->GetGameType())) return;
 
 	if (m_pBossHPPanel)
 	{
@@ -1234,7 +1234,7 @@ void ZScreenEffectManager::DestroyQuestRes()
 
 void ZScreenEffectManager::DrawQuestEffects()
 {
-	if (!ZGetGameTypeManager()->IsQuestDerived(ZGetGameClient()->GetMatchStageSetting()->GetGameType())) return;
+	if (!ZGetGameTypeManager()->IsQuestDerivedEX(ZGetGameClient()->GetMatchStageSetting()->GetGameType())) return;
 
 	if (m_pBossHPPanel)
 	{

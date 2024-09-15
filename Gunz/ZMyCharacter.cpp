@@ -113,15 +113,6 @@ void ZMyCharacter::OnDraw()
 	ZCharacter::OnDraw();
 }
 
-bool ZMyCharacter::GotStastic(int stId)
-{
-	ZItem* pSelectedItem = GetItems()->GetSelectedWeapon();
-	if (pSelectedItem == NULL)
-		return false;
-
-	return pSelectedItem->GotSTASTIC(stId);
-}
-
 void ZMyCharacter::ProcessInput(float fDelta)
 {
 	if (ZApplication::GetGame()->GetMatch()->GetRoundState() == MMATCH_ROUNDSTATE_PREPARE) return;
@@ -364,7 +355,19 @@ void ZMyCharacter::ProcessInput(float fDelta)
 				newVelocity *= 1.1f;
 
 				newVelocity += PickedNormal*JUMP2_WALL_VELOCITY;
-				newVelocity.z = JUMP2_VELOCITY;
+
+				/// STASTIC 5001 - Superjump (walljump velocity). Its ratio effect is a little reduced.
+				if(GotStastic(5001, MMCIP_FEET)){
+					MMatchItemDesc *boots = m_Items.GetDesc(MMCIP_FEET);
+					if(boots->m_nEffectLevel > 100){
+						newVelocity.z = JUMP2_VELOCITY * (1+(boots->m_nEffectLevel-100)*0.0064);
+					}else{
+						newVelocity.z = JUMP2_VELOCITY * (boots->m_nEffectLevel/100);
+					}
+				}else{
+					newVelocity.z = JUMP2_VELOCITY;
+				}
+				
 				SetVelocity(newVelocity);
 
 				m_fJump2Time = g_pGame->GetTime();
@@ -434,7 +437,14 @@ void ZMyCharacter::ProcessInput(float fDelta)
 					rvector vel = rvector(GetVelocity().x, GetVelocity().y, 0);
 					float fVel = Magnitude(vel);
 
-					rvector newVelocity = vel*0.5f + m_Accel*fVel*.45f + rvector(0, 0, JUMP_VELOCITY);
+					float jumpVelocity = JUMP_VELOCITY;
+
+					/// STASTIC 5001 - Superjump - modify jump velocity by EL/100
+					if(GotStastic(5001, MMCIP_FEET)){
+						MMatchItemDesc *boots = m_Items.GetDesc(MMCIP_FEET);
+						jumpVelocity = JUMP_VELOCITY * (boots->m_nEffectLevel/100);
+					}
+					rvector newVelocity = vel*0.5f + m_Accel*fVel*.45f + rvector(0, 0, jumpVelocity);
 					SetVelocity(newVelocity);
 					m_bLand = false;
 
@@ -2176,7 +2186,12 @@ void ZMyCharacter::OnTumble(int nDir)
 		(GetItems()->GetSelectedWeapon()->IsEmpty() == false) &&
 		GetItems()->GetSelectedWeapon()->GetDesc()->m_nType == MMIT_MELEE)
 	{
-		fSpeed = SWORD_DASH;
+		/// STASTIC 2035 - long dash. Extends dash distance by EL divided by 10. Effect level MUST be defined
+		if(GotStastic(2035)){
+			fSpeed = SWORD_DASH * (GetItems()->GetSelectedWeapon()->GetDesc()->m_nEffectLevel/10);
+		}else{
+			fSpeed = SWORD_DASH;
+		}
 
 		rvector vPos = GetPosition();
 		rvector vDir = RealSpace2::RCameraDirection;

@@ -2,18 +2,18 @@
 #include "MBaseGameType.h"
 #include "MMatchMap.h"
 
-#define MMATCH_GAMETYPE_DEATHMATCH_SOLO_STR		"Death Match(°³ÀÎ)"
-#define MMATCH_GAMETYPE_DEATHMATCH_TEAM_STR		"Death Match(´ÜÃ¼)"
-#define MMATCH_GAMETYPE_GLADIATOR_SOLO_STR		"Gladiator(°³ÀÎ)"
-#define MMATCH_GAMETYPE_GLADIATOR_TEAM_STR		"Gladiator(´ÜÃ¼)"
-#define MMATCH_GAMETYPE_ASSASSINATE_STR			"¾Ï»ìÀü"
-#define MMATCH_GAMETYPE_TRAINING_STR			"Æ®·¹ÀÌ´×"
-#define MMATCH_GAMETYPE_CLASSIC_SOLO_STR		"Å¬·¡½Ä(°³ÀÎ)"
-#define MMATCH_GAMETYPE_CLASSIC_TEAM_STR		"Å¬·¡½Ä(´ÜÃ¼)"
-#define MMATCH_GAMETYPE_SURVIVAL_STR			"¼­¹ÙÀÌ¹ú"
-#define MMATCH_GAMETYPE_QUEST_STR				"Äù½ºÆ®"
-#define MMATCH_GAMETYPE_BERSERKER_STR			"¹ö¼­Ä¿"
-#define MMATCH_GAMETYPE_DEATHMATCH_TEAM2_STR	"µ¥½º¸ÅÄ¡(´ÜÃ¼ ¹«ÇÑ)"
+#define MMATCH_GAMETYPE_DEATHMATCH_SOLO_STR		"Death Match(ï¿½ï¿½ï¿½ï¿½)"
+#define MMATCH_GAMETYPE_DEATHMATCH_TEAM_STR		"Death Match(ï¿½ï¿½Ã¼)"
+#define MMATCH_GAMETYPE_GLADIATOR_SOLO_STR		"Gladiator(ï¿½ï¿½ï¿½ï¿½)"
+#define MMATCH_GAMETYPE_GLADIATOR_TEAM_STR		"Gladiator(ï¿½ï¿½Ã¼)"
+#define MMATCH_GAMETYPE_ASSASSINATE_STR			"ï¿½Ï»ï¿½ï¿½ï¿½"
+#define MMATCH_GAMETYPE_TRAINING_STR			"Æ®ï¿½ï¿½ï¿½Ì´ï¿½"
+#define MMATCH_GAMETYPE_CLASSIC_SOLO_STR		"Å¬ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)"
+#define MMATCH_GAMETYPE_CLASSIC_TEAM_STR		"Å¬ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½Ã¼)"
+#define MMATCH_GAMETYPE_SURVIVAL_STR			"ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½"
+#define MMATCH_GAMETYPE_QUEST_STR				"ï¿½ï¿½ï¿½ï¿½Æ®"
+#define MMATCH_GAMETYPE_BERSERKER_STR			"ï¿½ï¿½ï¿½ï¿½Ä¿"
+#define MMATCH_GAMETYPE_DEATHMATCH_TEAM2_STR	"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡(ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½)"
 #define MMATCH_GAMETYPE_DUEL_STR		"Duel"
 
 void MMatchGameTypeInfo::Set(const MMATCH_GAMETYPE a_nGameTypeID, const char* a_szGameTypeStr, const float a_fGameExpRatio,
@@ -44,7 +44,7 @@ MBaseGameTypeCatalogue::MBaseGameTypeCatalogue()
 #define _InitGameType(index, id, szGameTypeStr, fGameExpRatio, fTeamMyExpRatio, fTeamBonusExpRatio)		\
 m_GameTypeInfo[index].Set(id, szGameTypeStr, fGameExpRatio, fTeamMyExpRatio, fTeamBonusExpRatio);
 
-// index,		id,									°ÔÀÓÅ¸ÀÔÀÌ¸§,	°æÇèÄ¡¹èºÐ ºñÀ², ÆÀÀü °³ÀÎ °æÇèÄ¡ ¹èºÐÀ², ÆÀÀü ÆÀ °æÇèÄ¡ ¹èºÐÀ²
+// index,		id,									ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½Ì¸ï¿½,	ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½
 _InitGameType(0, MMATCH_GAMETYPE_DEATHMATCH_SOLO,	MMATCH_GAMETYPE_DEATHMATCH_SOLO_STR, 1.0f,	1.0f,	0.0f);
 _InitGameType(1, MMATCH_GAMETYPE_DEATHMATCH_TEAM,	MMATCH_GAMETYPE_DEATHMATCH_TEAM_STR, 1.0f,	0.8f,	0.3f);
 _InitGameType(2, MMATCH_GAMETYPE_GLADIATOR_SOLO,	MMATCH_GAMETYPE_GLADIATOR_SOLO_STR,  0.5f,	1.0f,	0.0f);
@@ -67,6 +67,9 @@ _InitGameType(MMATCH_GAMETYPE_SKILLMAP, MMATCH_GAMETYPE_SKILLMAP, "Skillmap", 1.
 
 _InitGameType(MMATCH_GAMETYPE_GUNGAME, MMATCH_GAMETYPE_GUNGAME, "GunGame", 1.0f, 1.0f, 0.0f);
 
+_InitGameType(MMATCH_GAMETYPE_QUEST_CHALLENGE,	MMATCH_GAMETYPE_QUEST_CHALLENGE,		"Challenge",		0.0f,	0.0f,	0.0f);
+_InitGameType(MMATCH_GAMETYPE_EXPLORATION, MMATCH_GAMETYPE_EXPLORATION,	"Exploration",	0.5f,	0.5f,	0.5f);
+
 /*
 #ifdef _CLASSIC
 _InitGameType(MMATCH_GAMETYPE_CLASSIC_SOLO, MMATCH_GAMETYPE_CLASSIC_SOLO,
@@ -76,7 +79,7 @@ _InitGameType(MMATCH_GAMETYPE_CLASSIC_TEAM, MMATCH_GAMETYPE_CLASSIC_TEAM,
 #endif
 */
 
-	// ÀÌ °ÔÀÓÅ¸ÀÔ¿¡¼­ ÇÃ·¹ÀÌ °¡´ÉÇÑ ¸Ê - ÇöÀç´Â ¸ðµç ¸ÊÀÌ ´Ù °¡´É
+	// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¸ï¿½Ô¿ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < MMATCH_GAMETYPE_DUEL; i++)
 	{
 		m_GameTypeInfo[i].AddAllMap();

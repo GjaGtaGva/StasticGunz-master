@@ -900,6 +900,11 @@ inline void ZPostQuestGameKill()
 	ZPOSTCMD0(MC_MATCH_QUEST_REQUEST_DEAD);
 }
 
+inline void ZPostExplorationNPCSpawn(const int nNPCType, const rvector& vPos)
+{
+	ZPOSTCMD2(MC_EXPLORATION_REQUEST_NPC_SPAWN, MCmdParamInt(nNPCType), MCmdParamVector(vPos.x, vPos.y, vPos.z));
+}
+
 inline void ZPostQuestTestNPCSpawn(const int nNPCType, const int nNPCCount)
 {
 	ZPOSTCMD2(MC_QUEST_TEST_REQUEST_NPC_SPAWN, MCmdParamInt(nNPCType), MCmdParamInt(nNPCCount));

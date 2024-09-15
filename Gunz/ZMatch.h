@@ -60,6 +60,7 @@ public:
 	inline bool IsTeamPlay();
 	inline bool IsWaitForRoundEnd();
 	inline bool IsQuestDrived();
+	inline bool IsQuestDrivedEX();
 	inline MMATCH_ROUNDSTATE GetRoundState();
 	inline MMATCH_GAMETYPE GetMatchType();
 	inline bool GetTeamKillEnabled();
@@ -149,4 +150,8 @@ inline ZRule* ZMatch::GetRule()
 inline bool ZMatch::IsQuestDrived()
 {
 	return m_pStageSetting->IsQuestDrived();
+}
+inline bool ZMatch::IsQuestDrivedEX()
+{
+	return m_pStageSetting->IsQuestDrivedEX();
 }

@@ -787,6 +787,13 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 			CCF_ALL, 0, 0, true, "/checkgrade", "");
 
 
+	CmdManager.AddCommand(0, "playsound", [](const char *line, int argc, char ** const argv) {
+	
+		ZGetSoundEngine()->PlaySound(argv[1], ZGetGame()->m_pMyCharacter->GetPosition());
+	},
+			CCF_ALL, 1, 1, true, "/playsound <name>", "");
+
+
 	CmdManager.AddCommand(0, "faa", [](const char *line, int argc, char ** const argv) {
 
 		uint32_t hexNumber;
@@ -813,6 +820,7 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 	} else{
 		ZChatOutput("CheckDeveloperMode is false");
 	}
+	ZGetSoundEngine()->PlaySound("fx2/FEM02", ZGetGame()->m_pMyCharacter->GetPosition());
 
 	},
 		CCF_ALL, 0, 1, true, "/faa <color>", "");

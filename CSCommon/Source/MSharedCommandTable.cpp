@@ -965,6 +965,13 @@ void MAddSharedCommandTable(MCommandManager* CommandManager, MSharedCommandType:
 			P(MPT_UCHAR,	"nNpcType");
 			P(MPT_UCHAR,	"PositionIndex");
 
+		/// NPC spawn at exact coordinates instead of position index
+		C(MC_QUEST_NPC_SPAWN_POS,	"Quest.NPCSpawnPos", "Npc SpawnPos", MCDT_MACHINE2MACHINE);
+			P(MPT_UID,		"uidChar");
+			P(MPT_UID,		"nNpcUID");
+			P(MPT_UCHAR,	"nNpcType");
+			P(MPT_VECTOR,	"NpcPosition");
+
 		C(MC_QUEST_ENTRUST_NPC_CONTROL,		"Quest.Entrust.NPC.Control", "Entrust Npc Control", MCDT_MACHINE2MACHINE);
 			P(MPT_UID, "uidChar");
 			P(MPT_UID, "nNpcUID");
@@ -1059,6 +1066,11 @@ void MAddSharedCommandTable(MCommandManager* CommandManager, MSharedCommandType:
 		C(MC_QUEST_TEST_REQUEST_NPC_SPAWN,	"Quest.Test.RequestNPCSpawn", "NPC Spawn", MCDT_MACHINE2MACHINE);
 			P(MPT_INT,  "NPC Type");
 			P(MPT_INT,	"NPC Count");
+
+		C(MC_EXPLORATION_REQUEST_NPC_SPAWN,	"Exploration.RequestNPCSpawn", "Exploration NPC Spawn", MCDT_MACHINE2MACHINE);
+			P(MPT_INT,  "NPC Type");
+			P(MPT_VECTOR, "NpcPosition");
+
 		C(MC_QUEST_TEST_REQUEST_CLEAR_NPC,		"Quest.Test.ClearNPC", "Clear NPC", MCDT_MACHINE2MACHINE);
 		C(MC_QUEST_TEST_REQUEST_SECTOR_CLEAR,	"Quest.Test.SectorClear", "Sector Clear", MCDT_MACHINE2MACHINE);
 		C(MC_QUEST_TEST_REQUEST_FINISH,			"Quest.Test.Finish", "Finish Quest", MCDT_MACHINE2MACHINE);

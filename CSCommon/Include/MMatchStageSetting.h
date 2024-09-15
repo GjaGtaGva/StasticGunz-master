@@ -82,9 +82,9 @@ struct MSTAGE_SETTING_NODE {
 	{
 		uidStage = MUID{ 0, 0 };
 		memset(szStageName, 0, std::size(szStageName));
-		strcpy_safe(szMapName, "Mansion");
+		strcpy_safe(szMapName, "Mithlond");
 		nMapIndex = 0;
-		nGameType = MMATCH_GAMETYPE_DEATHMATCH_SOLO;
+		nGameType = MMATCH_GAMETYPE_DEFAULT;
 		nRoundMax = 50;
 		nLimitTime = 30;
 		nLimitLevel = 0;
@@ -171,6 +171,7 @@ public:
 	bool IsTeamPlay();
 	bool IsWaitforRoundEnd();
 	bool IsQuestDrived();
+	bool IsQuestDrivedEX();
 	bool IsTeamWinThePoint() const { return m_StageSetting.bTeamWinThePoint; }
 
 	MStageCharSettingList	m_CharSettingList;

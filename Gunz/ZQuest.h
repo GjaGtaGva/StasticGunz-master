@@ -57,6 +57,7 @@ public :
 #endif
 
 	bool OnNPCSpawn(MCommand* pCommand);
+	bool OnNPCSpawnPos(MCommand* pCommand);
 	bool OnNPCDead(MCommand* pCommand);
 	bool OnPeerNPCDead(MCommand* pCommand);
 	bool OnEntrustNPCControl(MCommand* pCommand);
@@ -85,7 +86,9 @@ public :
 
 	ZQuestMap			m_Map;
 	void LoadNPCMeshes();
+	void LoadNPCMeshesAll();
 	void LoadNPCSounds();
+	void LoadNPCSoundsAll();
 	void MoveToNextSector();
 	void UpdateNavMeshWeight(float fDelta);
 protected:

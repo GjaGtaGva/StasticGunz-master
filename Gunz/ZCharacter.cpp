@@ -287,7 +287,7 @@ m_bAdminHide(false)
 	m_nTimeErrorCount = 0;
 	m_fAccumulatedTimeError = 0;
 
-	if (ZGetGameTypeManager()->IsQuestDerived(ZGetGameClient()->GetMatchStageSetting()->GetGameType()))
+	if (ZGetGameTypeManager()->IsQuestDerivedEX(ZGetGameClient()->GetMatchStageSetting()->GetGameType()))
 		m_pModule_QuestStatus = AddModule<ZModule_QuestStatus>();
 	else
 		m_pModule_QuestStatus = nullptr;
@@ -1128,8 +1128,22 @@ void ZCharacter::UpdateVelocity(float fDelta)
 
 	float max_speed = MAX_SPEED * fRatio;
 
-	if(fSpeed>max_speed)
-		fSpeed=max_speed;
+	if(fSpeed>max_speed){
+		/// STASTIC 2001: Unlocked max speed. If EL not null, normal max_speed is multiplied by EL/10 (el=20 would mean double max speed)
+		MMatchItemDesc *rightFinger = m_Items.GetDesc(MMCIP_FINGERR);
+		if (rightFinger && rightFinger->GotSTASTIC(2001)){
+			int el = rightFinger->m_nEffectLevel;
+			if(el){
+				float eMaxSpeed = max_speed * (el/10);
+				if(fSpeed>eMaxSpeed){
+					fSpeed=eMaxSpeed;
+				}
+			}
+
+		} else{
+			fSpeed=max_speed;
+		}
+	}
 
 	bool bTumble= !IsDie() && (m_bTumble ||
 		(ZC_STATE_LOWER_TUMBLE_FORWARD<=m_AniState_Lower && m_AniState_Lower<=ZC_STATE_LOWER_TUMBLE_LEFT));
