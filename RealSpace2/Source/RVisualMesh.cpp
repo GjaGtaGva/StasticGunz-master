@@ -991,6 +991,9 @@ void RVisualMesh::DrawEnchant(RVisualMesh* pVWMesh,int mode,rmatrix& m)
 		else if (m_EnchantType == REnchantType_Starfire) {
 			DrawEnchantStarfire(pVWMesh, mode, m);
 		}
+		else if (m_EnchantType == REnchantType_Special) {
+			DrawEnchantSpecial(pVWMesh, mode, m);
+		}
 	//}
 	//if (m_EnchantType_2 != REnchantType_None) {
 		if (m_EnchantType_2 == REnchantType_Fire) {
@@ -1007,6 +1010,9 @@ void RVisualMesh::DrawEnchant(RVisualMesh* pVWMesh,int mode,rmatrix& m)
 		}
 		else if (m_EnchantType_2 == REnchantType_Starfire) {
 			DrawEnchantStarfire(pVWMesh, mode, m);
+		}
+		else if (m_EnchantType_2 == REnchantType_Special) {
+			DrawEnchantSpecial(pVWMesh, mode, m);
 		}
 		/*switch (m_EnchantType_2) {
 			case REnchantType_Fire:
@@ -1188,6 +1194,11 @@ void RVisualMesh::DrawEnchantPoison(RVisualMesh* pVWMesh,int mode,rmatrix& m)
 }
 
 void RVisualMesh::DrawEnchantStarfire(RVisualMesh* pVWMesh,int mode,rmatrix& m)
+{
+
+}
+
+void RVisualMesh::DrawEnchantSpecial(RVisualMesh* pVWMesh,int mode,rmatrix& m)
 {
 
 }
@@ -1375,6 +1386,11 @@ void RVisualMesh::GetEnChantColor(u32* color)
 		color[0] = 0x5f53479e;
 		color[1] = 0x1f53479e;
 	}
+	else if(type == REnchantType_Special) {
+		/// Add Special track color here
+		color[0] = 0x4fffffff;
+		color[1] = 0x0fffffff;
+	}
 	else {
 		/// Enchant colors override custom colors
 		if (CustomColor[0] || CustomColor[1])
@@ -1534,7 +1550,7 @@ void RVisualMesh::SetWorldMatrix(const rmatrix& mat) {
 void RVisualMesh::AddWeapon(RWeaponMotionType type, RMesh* pMesh, RAnimation* pAni)
 {
 	if((type < eq_weapon_etc)||(type > eq_weapon_end-1)) {
-		mlog("RVisualMesh::AddWeapon ´Ï°¡ RVisualMesh ¸¦ ±ú¸Ô´Â±¸³ª~~~\n");
+		mlog("RVisualMesh::AddWeapon ï¿½Ï°ï¿½ RVisualMesh ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Â±ï¿½ï¿½ï¿½~~~\n");
 	}
 
 	RemoveWeapon(type);

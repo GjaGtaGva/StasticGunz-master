@@ -73,6 +73,7 @@ ZCharacterObject::ZCharacterObject()
 	ADD_MODULE(PoisonDamage);
 	ADD_MODULE(LightningDamage);
 	ADD_MODULE(StarfireDamage);
+	ADD_MODULE(SpecialDamage);
 #undef ADD_MODULE
 }
 
@@ -102,6 +103,7 @@ void ZCharacterObject::UpdateEnchant()
 		else if (etype == ZC_ENCHANT_COLD)			retype = REnchantType_Cold;
 		else if (etype == ZC_ENCHANT_LIGHTNING)	retype = REnchantType_Lightning;
 		else if (etype == ZC_ENCHANT_POISON)		retype = REnchantType_Poison;
+		else if (etype == ZC_ENCHANT_SPECIAL)		retype = REnchantType_Special;
 		else if (etype == ZC_ENCHANT_STARFIRE)		retype = REnchantType_Starfire;
 		else									retype = REnchantType_None;
 
@@ -123,6 +125,8 @@ void ZCharacterObject::DrawEnchantSub(ZC_ENCHANT etype,rvector& pos, int nEFLeve
 		ZGetEffectManager()->AddTrackPoison( pos, nEFLevel);
 	else if(etype==ZC_ENCHANT_STARFIRE)
 		ZGetEffectManager()->AddTrackStarfire( pos, nEFLevel);
+	else if(etype==ZC_ENCHANT_SPECIAL)
+		ZGetEffectManager()->AddTrackSpecial( pos, nEFLevel);
 }
 
 void ZCharacterObject::EnChantMovingEffect(rvector* pOutPos,int cnt,ZC_ENCHANT etype,bool bDoubleWeapon, int nEFLevel)
@@ -296,6 +300,7 @@ ZC_ENCHANT	ZCharacterObject::GetEnchantType()
 			case MWT_ENCHANT_COLD : return ZC_ENCHANT_COLD;
 			case MWT_ENCHANT_LIGHTNING: return ZC_ENCHANT_LIGHTNING;
 			case MWT_ENCHANT_POISON: return ZC_ENCHANT_POISON;
+			case MWT_ENCHANT_SPECIAL: return ZC_ENCHANT_SPECIAL;
 			case MWT_ENCHANT_STARFIRE: return ZC_ENCHANT_STARFIRE;
 		}
 	}
@@ -315,6 +320,7 @@ ZC_ENCHANT	ZCharacterObject::GetEnchantType(MMatchCharItemParts part)
 			case MWT_ENCHANT_COLD : return ZC_ENCHANT_COLD;
 			case MWT_ENCHANT_LIGHTNING: return ZC_ENCHANT_LIGHTNING;
 			case MWT_ENCHANT_POISON: return ZC_ENCHANT_POISON;
+			case MWT_ENCHANT_SPECIAL: return ZC_ENCHANT_SPECIAL;
 			case MWT_ENCHANT_STARFIRE: return ZC_ENCHANT_STARFIRE;
 		}
 	}

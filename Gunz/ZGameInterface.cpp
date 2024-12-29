@@ -5254,6 +5254,22 @@ string GetItemSpecString(MMatchItemDesc* pItemDesc)
 			str += temp;
 			break;
 
+		case MWT_ENCHANT_SPECIAL:
+			sprintf_safe(temp, "<%s>\n", "Special");
+			str += temp;
+			sprintf_safe(temp, "Special and vary.");
+			str += temp;
+			sprintf_safe(temp, "%s : %d%s\n", ZMsg(MSG_WORD_RUNTIME), pItemDesc->m_nDelay / 1000, ZMsg(MSG_CHARINFO_SECOND));
+			str += temp;
+			if (pItemDesc->m_nDamage)
+			{
+				sprintf_safe(temp, "%s : %d dmg.\n", ZMsg(MSG_WORD_ATTACK), pItemDesc->m_nDamage);
+				str += temp;
+			}
+			sprintf_safe(temp, "Effect Level : %d\n", pItemDesc->m_nEffectLevel);
+			str += temp;
+			break;
+
 		case MWT_ENCHANT_STARFIRE:
 			sprintf_safe(temp, "<%s>\n", ZMsg(MSG_WORD_ATTRIBUTE_STARFIRE));
 			str += temp;

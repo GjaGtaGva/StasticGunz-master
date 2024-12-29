@@ -20,7 +20,7 @@
 
 #define READY_COUNT	5
 #define ZDELAY_AFTER_DYING		RESPAWN_DELAYTIME_AFTER_DYING
-#define ZDELAY_AFTER_DYING_MAX	20000	
+#define ZDELAY_AFTER_DYING_MAX	RESPAWN_DELAYTIME_AFTER_DYING //20000	
 
 ZMatch::ZMatch() : m_pStageSetting{ ZGetGameClient()->GetMatchStageSetting() } {}
 
@@ -321,7 +321,7 @@ void ZMatch::SetRoundState(MMATCH_ROUNDSTATE nRoundState, int nArg)
 
 #ifndef _PUBLISH
 	char szLog[128];
-	sprintf_safe(szLog, "RoundState:%d À¸·Î ¹Ù²ñ\n", m_nRoundState);
+	sprintf_safe(szLog, "RoundState:%d ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½\n", m_nRoundState);
 	OutputDebugString(szLog);
 #endif
 

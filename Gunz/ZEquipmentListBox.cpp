@@ -14,7 +14,7 @@
 #include "ZItemMenu.h"
 
 
-// ÆÄÀÏ ÀÌ¸§Àº ±×³É ÇÏµåÄÚµù..-_-;
+// ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½Ïµï¿½ï¿½Úµï¿½..-_-;
 MBitmap* GetItemIconBitmap(MMatchItemDesc* pItemDesc, bool bSmallIcon)
 {
 	if (pItemDesc == NULL) return NULL;
@@ -50,6 +50,8 @@ MBitmap* GetItemIconBitmap(MMatchItemDesc* pItemDesc, bool bSmallIcon)
 					strcpy_safe(szFileName, "slot_icon_en_lightning"); break;
 				case MWT_ENCHANT_POISON:
 					strcpy_safe(szFileName, "slot_icon_en_poison"); break;
+				case MWT_ENCHANT_SPECIAL:
+					strcpy_safe(szFileName, "slot_icon_en_special"); break;
 				case MWT_ENCHANT_STARFIRE:
 					strcpy_safe(szFileName, "slot_icon_en_starfire"); break;
 				default: _ASSERT(0);break;
@@ -211,9 +213,9 @@ ZEquipmentListBox::ZEquipmentListBox(const char* szName, MWidget* pParent, MList
 	m_bAbsoulteTabSpacing = true;
 
 	AddField("ICON", 32);
-	AddField("¾ÆÀÌÅÛ", 160);
-	AddField("·¹º§", 35);
-	AddField("°¡°Ý", 45);
+	AddField("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", 160);
+	AddField("ï¿½ï¿½ï¿½ï¿½", 35);
+	AddField("ï¿½ï¿½ï¿½ï¿½", 45);
 
 	m_bVisibleHeader = true;
 
@@ -346,7 +348,7 @@ public:
 					pButton->Show( false);
 			}
 
-			// Äù½ºÆ® ¾ÆÀÌÅÛ
+			// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			MQuestItemDesc* pQuestItemDesc = GetQuestItemDescMgr().FindQItemDesc( pListItem->GetItemID());
 			if ( pQuestItemDesc)
 			{
@@ -396,7 +398,7 @@ MListener* ZGetShopSaleItemListBoxListener(void)
 
 
 
-// frame À» ÅøÆÁÃ³·³ º¸ÀÌ°Ô ÇÏ±â À§ÇØ ÇÏµåÄÚµù µÇ¾îÀÖ´Âµ¥, ¹Ýº¹À» ÁÙÀÏ¼ö ÀÖ°Ú´Ù.
+// frame ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ïµï¿½ï¿½Úµï¿½ ï¿½Ç¾ï¿½ï¿½Ö´Âµï¿½, ï¿½Ýºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¼ï¿½ ï¿½Ö°Ú´ï¿½.
 class MCashShopItemListBoxListener : public MListener
 {
 public:
@@ -472,11 +474,11 @@ public:
 			{
 				int sel = pComboBox->GetSelIndex();
 
-				// »ç±â»óÅÂ¶ó¸é
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Â¶ï¿½ï¿½
 				ZGetShop()->m_ListFilter = sel;
 				ZGetShop()->Serialize();
 
-				// ÆÈ±â»óÅÂ¶ó¸é - ÆÈ±â´Â ´Ù º¸¿©ÁØ´Ù..
+				// ï¿½È±ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ - ï¿½È±ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½..
 				ZMyItemList* pil = ZGetMyInfo()->GetItemList();
 				pil->m_ListFilter = sel;
 				pil->Serialize();
@@ -547,10 +549,10 @@ public:
 			MMatchItemDesc* pItemDesc = MGetMatchItemDescMgr()->GetItemDesc(nItemID);
 
 #ifdef _QUEST_ITEM
-			// ¸¸¾à ÀÏ¹Ý¾ÆÀÌÅÛÀÌ ¾øÀ¸¸é Äù½ºÆ® ¾ÆÀÌÅÛ¿¡¼­ °Ë»öÀ» ÇÔ.
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¹Ý¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½.
 			if( 0 == pItemDesc )
 			{
-				// Äù½ºÆ® ¾ÆÀÌÅÛÀÏ °æ¿ì¸¦ Ã³¸®ÇØ ÁÖ°í ÇÔ¼ö¸¦ Á¾·áÇÔ.
+				// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¸¦ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 				MQuestItemDesc* pQuestItemDesc = GetQuestItemDescMgr().FindQItemDesc( nItemID );
 				if( 0 == pQuestItemDesc )
 					return false;
@@ -658,7 +660,7 @@ public:
 			if (pListItem != NULL) 
 				nItemID = ZGetMyInfo()->GetItemList()->GetItemID(pListItem->GetUID());
 
-			// ÀÏ¹Ý ¾ÆÀÌÅÛ...
+			// ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...
 			MButton* pButtonEquip = (MButton*)ZGetGameInterface()->GetIDLResource()->FindWidget( "Equip");
 			MButton* pButtonAccItemBtn = (MButton*)ZGetGameInterface()->GetIDLResource()->FindWidget( "SendAccountItemBtn");
 
@@ -688,7 +690,7 @@ public:
 				if ( pButtonEquip)
 					pButtonEquip->Enable( true);
 
-				// Ä³½¬ ¾ÆÀÌÅÛÀÏ °æ¿ì 'Áß¾ÓÀºÇà¿¡ º¸³»±â'¹öÆ° È°¼ºÈ­, ¾Æ´Ô ºñÈ°¼ºÈ­
+				// Ä³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 'ï¿½ß¾ï¿½ï¿½ï¿½ï¿½à¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'ï¿½ï¿½Æ° È°ï¿½ï¿½È­, ï¿½Æ´ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
 				if ( pButtonAccItemBtn)
 				{
 					if ( ZGetIsCashItem( nItemID))
@@ -698,7 +700,7 @@ public:
 				}
 			}
 
-			// Äù½ºÆ® ¾ÆÀÌÅÛ
+			// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			MQuestItemDesc* pQuestItemDesc = GetQuestItemDescMgr().FindQItemDesc( pListItem->GetItemID());
 			if ( pQuestItemDesc)
 			{
@@ -771,7 +773,7 @@ public:
 																pAccountItemNode);
 			}
 
-			// ¼ºº°ÀÌ ¸ÂÁö ¾ÊÀ¸¸é ¹öÆ°À» Disable ½ÃÅ²´Ù.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ Disable ï¿½ï¿½Å²ï¿½ï¿½.
 			MButton* pButton = (MButton*)ZGetGameInterface()->GetIDLResource()->FindWidget( "BringAccountItemBtn");
 			if ( pButton)
 			{

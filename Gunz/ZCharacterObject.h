@@ -81,6 +81,7 @@ protected:
 	ZModule_PoisonDamage	*m_pModule_PoisonDamage{};
 	ZModule_LightningDamage	*m_pModule_LightningDamage{};
 	ZModule_StarfireDamage	*m_pModule_StarfireDamage{};
+	ZModule_SpecialDamage	*m_pModule_SpecialDamage{};
 
 	bool m_bHero{};
 

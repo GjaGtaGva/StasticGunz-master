@@ -485,6 +485,16 @@ bool ZGameAction::OnEnchantDamage(MCommand* pCommand)
 					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.00068f * (float)pDesc->m_nDelay);
 					if (pMod) pMod->BeginSlow(0.0168f*(float)pDesc->m_nLimitSpeed, 0.00068f * (float)pDesc->m_nDelay);
 				}break;
+				case ZC_ENCHANT_SPECIAL: {
+					/// Add special on hit effect here
+
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enice_2d" : "we_enice", soundPos);
+					ZGetSoundEngine()->PlaySound(bObserverTarget ? "we_enlight_2d" : "we_enlight", soundPos);
+					ZModule_SpecialDamage *pMod = (ZModule_SpecialDamage*)pTarget->GetModule(ZMID_SPECIALDAMAGE);
+					/// TODO effect to implement: disable victim's gravity for some time
+					if (pMod) pMod->BeginDamage(pOwnerCharacter->GetUID(), bMyChar ? pDesc->m_nDamage : 0, 0.00068f * (float)pDesc->m_nDelay);
+					if (pMod) pMod->BeginSlow(0.0168f*(float)pDesc->m_nLimitSpeed, 0.00068f * (float)pDesc->m_nDelay);
+				}break;
 			};
 		}
 	}

@@ -603,6 +603,9 @@ void ZWeaponGrenade::Explosion()
 
 	rvector dir = -RealSpace2::RCameraDirection;
 	dir.z = 0.f;
+	
+	/// Faa Would add STASTIC effect here, but the item desc is long lost by now.
+
 	ZGetEffectManager()->AddGrenadeEffect(v, dir);
 
 	g_pGame->OnExplosionGrenade(m_uidOwner, v, m_fDamage, 400.f, .2f, 1.f, m_nTeamID);

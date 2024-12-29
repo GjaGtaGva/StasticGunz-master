@@ -263,7 +263,7 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 {
 	MMatchItemDesc* pNewDesc = new MMatchItemDesc;
 
-	// default °ª ÀÔ·Â
+	// default ï¿½ï¿½ ï¿½Ô·ï¿½
 	pNewDesc->m_bIsCashItem = false;
 	pNewDesc->m_nLimitSpeed = 100;
 	pNewDesc->m_nRange = DEFAULT_MELEE_WEAPON_RANGE;
@@ -307,7 +307,7 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 		}
 		else if (!_stricmp(szAttrName, MICTOK_SLOT))
 		{
-			// ½½·Ô Å¸ÀÔ
+			// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½
 			if (!_stricmp(szAttrValue, "none"))			pNewDesc->m_nSlot = MMIST_NONE;
 			else if (!_stricmp(szAttrValue, "melee"))	pNewDesc->m_nSlot = MMIST_MELEE;
 			else if (!_stricmp(szAttrValue, "range"))	pNewDesc->m_nSlot = MMIST_RANGE;
@@ -324,7 +324,7 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 		}
 		else if (!_stricmp(szAttrName, MICTOK_WEAPON))
 		{
-			// ¹«±â Å¸ÀÔ
+			// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½
 			if (strlen(szAttrValue) <= 0)					pNewDesc->m_nWeaponType = MWT_NONE;
 			else if (!_stricmp(szAttrValue, "dagger"))		pNewDesc->m_nWeaponType = MWT_DAGGER;
 			else if (!_stricmp(szAttrValue, "dualdagger"))	pNewDesc->m_nWeaponType = MWT_DUAL_DAGGER;
@@ -360,13 +360,14 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 			else if (!_stricmp(szAttrValue, "enchant_cold"))			pNewDesc->m_nWeaponType = MWT_ENCHANT_COLD;
 			else if (!_stricmp(szAttrValue, "enchant_lightning"))	pNewDesc->m_nWeaponType = MWT_ENCHANT_LIGHTNING;
 			else if (!_stricmp(szAttrValue, "enchant_poison"))		pNewDesc->m_nWeaponType = MWT_ENCHANT_POISON;
+			else if (!_stricmp(szAttrValue, "enchant_special"))		pNewDesc->m_nWeaponType = MWT_ENCHANT_SPECIAL;
 			else if (!_stricmp(szAttrValue, "enchant_starfire"))		pNewDesc->m_nWeaponType = MWT_ENCHANT_STARFIRE;
 
 			else _ASSERT(0);
 		}
 		else if (!_stricmp(szAttrName, MICTOK_EFFECT_LEVEL))
 		{
-			// ÀÌÆåÆ®·¹º§
+			// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½
 			pNewDesc->m_nEffectLevel = atoi(szAttrValue);
 		}
 		else if (!_stricmp(szAttrName, MICTOK_WEIGHT))
@@ -395,7 +396,7 @@ void MMatchItemDescMgr::ParseItem(MXmlElement& element)
 		else if (!_stricmp(szAttrName, MICTOK_EFFECT_ID))
 		{
 			//n = atoi(szAttrValue);
-			// ÀÌÆåÆ® Ã³¸® ÇØ¾ß ÇÔ
+			// ï¿½ï¿½ï¿½ï¿½Æ® Ã³ï¿½ï¿½ ï¿½Ø¾ï¿½ ï¿½ï¿½
 		}
 		else if (!_stricmp(szAttrName, MICTOK_DELAY))
 		{
@@ -925,35 +926,35 @@ bool IsWeaponCharItemParts(MMatchCharItemParts nParts)
 
 char* GetItemSlotTypeStr(MMatchItemSlotType nSlotType)
 {
-	static char st_SlotTypeStr[MMIST_END][32] = { "¾øÀ½",		// MMIST_NONE
-												"±ÙÁ¢¹«±â",		// MMIST_MELEE
-												"¿ø°Å¸®¹«±â",	// MMIST_RANGE
-												"¾ÆÀÌÅÛ",		// MMIST_CUSTOM
-												"¸Ó¸®",			// MMIST_HEAD
-												"°¡½¿",			// MMIST_CHEST
-												"¼Õ",			// MMIST_HANDS
-												"´Ù¸®",			// MMIST_LEGS
-												"¹ß",			// MMIST_FEET
-												"¼Õ°¡¶ô",		// MMIST_FINGER
-												"Æ¯º°"};		// MMIST_EXTRA
+	static char st_SlotTypeStr[MMIST_END][32] = { "ï¿½ï¿½ï¿½ï¿½",		// MMIST_NONE
+												"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",		// MMIST_MELEE
+												"ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½",	// MMIST_RANGE
+												"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",		// MMIST_CUSTOM
+												"ï¿½Ó¸ï¿½",			// MMIST_HEAD
+												"ï¿½ï¿½ï¿½ï¿½",			// MMIST_CHEST
+												"ï¿½ï¿½",			// MMIST_HANDS
+												"ï¿½Ù¸ï¿½",			// MMIST_LEGS
+												"ï¿½ï¿½",			// MMIST_FEET
+												"ï¿½Õ°ï¿½ï¿½ï¿½",		// MMIST_FINGER
+												"Æ¯ï¿½ï¿½"};		// MMIST_EXTRA
 
 	return st_SlotTypeStr[nSlotType];
 }
 
 char* GetCharItemPartsStr(MMatchCharItemParts nParts)
 {
-	static char st_CharItemPartsStr[MMCIP_END][32] = { "¸Ó¸®",	// MMCIP_HEAD
-														"°¡½¿",		// MMCIP_CHEST
-														"¼Õ",		// MMCIP_HANDS
-														"´Ù¸®",		// MMCIP_LEGS
-														"¹ß",		// MMCIP_FEET
-														"¿ÞÂÊ¼Õ°¡¶ô",	// MMCIP_FINGERL
-														"¿À¸¥ÂÊ¼Õ°¡¶ô", // MMCIP_FINGERR
-														"±ÙÁ¢¹«±â",		// MMCIP_MELEE
-														"ÁÖ¹«±â",		// MMCIP_PRIMARY
-														"º¸Á¶¹«±â",		// MMCIP_SECONDARY
-														"¾ÆÀÌÅÛ1",		// MMCIP_CUSTOM1
-														"¾ÆÀÌÅÛ2"		// MMCIP_CUSTOM2
+	static char st_CharItemPartsStr[MMCIP_END][32] = { "ï¿½Ó¸ï¿½",	// MMCIP_HEAD
+														"ï¿½ï¿½ï¿½ï¿½",		// MMCIP_CHEST
+														"ï¿½ï¿½",		// MMCIP_HANDS
+														"ï¿½Ù¸ï¿½",		// MMCIP_LEGS
+														"ï¿½ï¿½",		// MMCIP_FEET
+														"ï¿½ï¿½ï¿½Ê¼Õ°ï¿½ï¿½ï¿½",	// MMCIP_FINGERL
+														"ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Õ°ï¿½ï¿½ï¿½", // MMCIP_FINGERR
+														"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",		// MMCIP_MELEE
+														"ï¿½Ö¹ï¿½ï¿½ï¿½",		// MMCIP_PRIMARY
+														"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",		// MMCIP_SECONDARY
+														"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1",		// MMCIP_CUSTOM1
+														"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2"		// MMCIP_CUSTOM2
 														};
 
 	return st_CharItemPartsStr[nParts];
@@ -971,7 +972,7 @@ MMatchWeaponType GetWeaponType(MMatchMeleeItemType nMeleeItemType)
 	case MIT_DOUBLE_KATANA:	return MWT_DOUBLE_KATANA;
 	case MIT_SCISSOR:		return MWT_SCISSOR;
 	default:
-			// ¾ø´Â Å¸ÀÔ
+			// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½
 			_ASSERT(0);
 	}
 
@@ -1000,7 +1001,7 @@ MMatchWeaponType GetWeaponType(MMatchRangeItemType nRangeItemType)
 	case RIT_ROCKET:		return MWT_ROCKET;
 	case RIT_SNIFER:		return MWT_SNIFER;
 	default:
-			// ¾ø´Â Å¸ÀÔ
+			// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½
 			_ASSERT(0);
 	}
 
@@ -1021,12 +1022,13 @@ MMatchWeaponType GetWeaponType(MMatchCustomItemType nCustomItemType)
 	case MMCIT_ENCHANT_COLD:		return MWT_ENCHANT_COLD;
 	case MMCIT_ENCHANT_LIGHTNING:	return MWT_ENCHANT_LIGHTNING;
 	case MMCIT_ENCHANT_POISON:		return MWT_ENCHANT_POISON;
+	case MMCIT_ENCHANT_SPECIAL:		return MWT_ENCHANT_SPECIAL;
 	case MMCIT_ENCHANT_STARFIRE:	return MWT_ENCHANT_STARFIRE;
 	case MMCIT_FOOD:				return MWT_FOOD;
 
 	default:
 		{
-			// ¾ø´Â Å¸ÀÔ
+			// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½
 			_ASSERT(0);
 		}
 	}
@@ -1041,6 +1043,7 @@ bool IsEnchantItem(MMatchItemDesc* pItemDesc)
 			(pItemDesc->m_nWeaponType == MWT_ENCHANT_COLD) || 
 			(pItemDesc->m_nWeaponType == MWT_ENCHANT_LIGHTNING) || 
 			(pItemDesc->m_nWeaponType == MWT_ENCHANT_POISON) ||
+			(pItemDesc->m_nWeaponType == MWT_ENCHANT_SPECIAL) ||
 			(pItemDesc->m_nWeaponType == MWT_ENCHANT_STARFIRE) )
 			return true;
 	}

@@ -331,6 +331,7 @@ public:
 	void DrawEnchantLighting(RVisualMesh* pVWMesh, int mode, rmatrix& m);
 	void DrawEnchantPoison(RVisualMesh* pVWMesh, int mode, rmatrix& m);
 	void DrawEnchantStarfire(RVisualMesh* pVWMesh, int mode, rmatrix& m);
+	void DrawEnchantSpecial(RVisualMesh* pVWMesh, int mode, rmatrix& m);
 
 	int	 GetLastWeaponTrackPos(rvector* pOutVec);
 

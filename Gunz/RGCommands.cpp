@@ -13,6 +13,7 @@
 #include "MUtil.h"
 #include "HitRegistration.h"
 #include "ZPickInfo.h"
+#include "ZEffectManager.h"
 
 static rvector playerPoss;
 static rvector playerPoss2;
@@ -793,6 +794,63 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 	},
 			CCF_ALL, 1, 1, true, "/playsound <name>", "");
 
+	/// TEST: Adjust some variables on runtime to try different values without rebuilding
+	CmdManager.AddCommand(0, "var", [](const char *line, int argc, char ** const argv) {
+
+		int i, number;
+		sscanf(argv[1], "%i", &i);
+		sscanf(argv[2], "%i", &number);
+		if(i && number){
+			switch(i){
+				case 1:
+					ZGetEffectManager()->var1 = number;
+					break;
+				case 2:
+					ZGetEffectManager()->var2 = number;
+					break;
+				case 3:
+					ZGetEffectManager()->var3 = number;
+					break;
+				case 4:
+					ZGetEffectManager()->var4 = number;
+					break;
+				case 5:
+					ZGetEffectManager()->var5 = number;
+					break;
+				case 6:
+					ZGetEffectManager()->var6 = number;
+					break;
+				case 7:
+					ZGetEffectManager()->var7 = number;
+					break;
+				default:
+					ZChatOutputF("no var %i", i);
+					ZChatOutputF("vars: 1=%i, 2=%i, 3=%i, 4=%i, 5=%i, 6=%i, 7=%i", 
+						ZGetEffectManager()->var1,
+						ZGetEffectManager()->var2,
+						ZGetEffectManager()->var3,
+						ZGetEffectManager()->var4,
+						ZGetEffectManager()->var5,
+						ZGetEffectManager()->var6,
+						ZGetEffectManager()->var7
+					);
+					return;
+				ZChatOutputF("var %i set to %i", i, number);
+				
+			}
+		}else{
+			ZChatOutputF("vars: 1=%i, 2=%i, 3=%i, 4=%i, 5=%i, 6=%i, 7=%i", 
+				ZGetEffectManager()->var1,
+				ZGetEffectManager()->var2,
+				ZGetEffectManager()->var3,
+				ZGetEffectManager()->var4,
+				ZGetEffectManager()->var5,
+				ZGetEffectManager()->var6,
+				ZGetEffectManager()->var7
+			);
+		}
+	},
+		CCF_ALL, 0, 2, true, "/var <index> <value>", "");
 
 	CmdManager.AddCommand(0, "faa", [](const char *line, int argc, char ** const argv) {
 
@@ -801,29 +859,28 @@ void LoadRGCommands(ZChatCmdManager& CmdManager)
 		if(!hexNumber) sscanf("#FF4593A3", "%x", &hexNumber);
 		ZChatOutput(MCOLOR(hexNumber), "Stastic Faa 2019");
 
-#ifdef _QUEST
-		ZChatOutput("QUEST is derived");
-#endif
-#ifndef _QUEST
-		ZChatOutput("no quest defined");
-#endif
+		#ifdef _QUEST
+				ZChatOutput("QUEST is derived");
+		#endif
+		#ifndef _QUEST
+				ZChatOutput("no quest defined");
+		#endif
 
-#ifdef _PUBLISH
-		ZChatOutput("_PUBLISH is defined");
-#endif
-#ifndef _PUBLISH
-		ZChatOutput("no publish defined");
-#endif
+		#ifdef _PUBLISH
+				ZChatOutput("_PUBLISH is defined");
+		#endif
+		#ifndef _PUBLISH
+				ZChatOutput("no publish defined");
+		#endif
 
-	if(CheckDeveloperMode("Faa")){
-		ZChatOutput("CheckDeveloperMode is true");
-	} else{
-		ZChatOutput("CheckDeveloperMode is false");
-	}
-	ZGetSoundEngine()->PlaySound("fx2/FEM02", ZGetGame()->m_pMyCharacter->GetPosition());
+		if(CheckDeveloperMode("Faa")){
+			ZChatOutput("CheckDeveloperMode is true");
+		} else{
+			ZChatOutput("CheckDeveloperMode is false");
+		}
+		ZGetSoundEngine()->PlaySound("fx2/FEM02", ZGetGame()->m_pMyCharacter->GetPosition());
 
-	},
-		CCF_ALL, 0, 1, true, "/faa <color>", "");
+	},CCF_ALL, 0, 1, true, "/faa <color>", "");
 
 	CmdManager.AddCommand(0, "s", [](const char *line, int argc, char ** const argv) {
 		playerPoss = ZGetGame()->m_pMyCharacter->GetPosition();

@@ -239,7 +239,7 @@ protected:
 	RMesh*	m_pPinkSwordWaveEffect;
 	RMesh*	m_pGreenSwordWaveEffect;
 	RMesh*	m_pBlueSwordWaveEffect;
-	RMesh*	m_pSwordEnchantEffect[5];
+	RMesh*	m_pSwordEnchantEffect[6];
 	RMesh*	m_pMagicDamageEffect;
 	RMesh*	m_pMagicEffectWall[3];
 	RMesh*	m_pSwordUppercutEffect;
@@ -263,6 +263,7 @@ protected:
 	RMesh*	m_pSwordElec;
 	RMesh*	m_pSwordCold;
 	RMesh*	m_pSwordPoison;
+	RMesh*	m_pSwordSpecial;
 	RMesh*	m_pSwordStarfire;
 
 	RMesh* m_pChargingEffect;
@@ -301,7 +302,7 @@ protected:
 
 	ZEffectShadowList			m_ShadowList;
 
-#define BILLBOARDTEXANILIST_COUNT 5
+#define BILLBOARDTEXANILIST_COUNT 6 //5
 	ZEffectBillboardTexAniList	m_BillBoardTexAniList[BILLBOARDTEXANILIST_COUNT];
 
 	void Add(ZEffect* pNew);
@@ -376,6 +377,7 @@ public:
 	void AddTrackCold(const rvector& pos, int nEFLevel);
 	void AddTrackPoison(const rvector& pos, int nEFLevel);
 	void AddTrackStarfire(const rvector& pos, int nEFLevel);
+	void AddTrackSpecial(const rvector& pos, int nEFLevel);
 	void AddTrackMagic(const rvector& pos);
 	void AddTrackMiniMethor(const rvector& pos);
 	void AddTrackMethor(const rvector& pos);
@@ -386,6 +388,7 @@ public:
 	void AddEnchantCold2(ZObject* pObj);
 	void AddEnchantPoison2(ZObject* pObj);
 	void AddEnchantStarfire2(ZObject* pObj);
+	void AddEnchantSpecial2(ZObject* pObj);
 
 	void AddBloodEffect(const rvector& Target, const rvector& TargetNormal);
 	void AddSlashEffect(const rvector& Target, const rvector& TargetNormal,int nType);
@@ -415,16 +418,25 @@ public:
 
 	void AddShadowEffect(rmatrix& m,DWORD _color);
 
-	// ¿Â°ÔÀÓ³Ý Â¯ ¾ÆÀÌÄÜ
+	// ï¿½Â°ï¿½ï¿½Ó³ï¿½ Â¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void AddStarEffect(ZObject* pObj);
 
-	// ÀÏ¹ÝÀûÀÎ ÀÌÆåÆ®
+	// ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 	void Add(const char* szName,const rvector& pos, const rvector& dir,const MUID& uidOwner,int nLifeTime);
 	void AddSp(const char* szName,int nCnt,const rvector& pos, const rvector& dir,const MUID& uidOwner);
 	void AddPartsPosType(const char* szName,const MUID& uidOwner,RMeshPartsPosInfoType type,int nLifeTime);
+
+	/// For testing
+	int var1 = 7;
+	int var2 = 10;
+	int var3 = 1;
+	int var4 = 17;
+	int var5 = 5;
+	int var6 = 11;
+	int var7 = 7;
 };
 
-// ÀÌÆåÆ® µðÅ×ÀÏ ·¹º§..¿É¼Ç
+// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..ï¿½É¼ï¿½
 
 void SetEffectLevel(int level);
 int	 GetEffectLevel();

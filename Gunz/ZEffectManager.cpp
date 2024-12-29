@@ -392,8 +392,10 @@ bool ZEffectManager::Create(void)
 	m_pSwordEnchantEffect[1]	= m_pEffectMeshMgr->Get("ef_sworddam_ice");
 	m_pSwordEnchantEffect[2]	= m_pEffectMeshMgr->Get("ef_sworddam_flash");
 	m_pSwordEnchantEffect[3]	= m_pEffectMeshMgr->Get("ef_sworddam_poison");
-	/// TODO ef_sworddam_starfire - need elu file
-	m_pSwordEnchantEffect[4]	= m_pEffectMeshMgr->Get("ef_sworddam_flash");
+	/// Starfire on-hit animation
+	m_pSwordEnchantEffect[4]	= m_pEffectMeshMgr->Get("magicmissile_damage");
+	/// Add special massive added animation on victim
+	m_pSwordEnchantEffect[5]	= m_pEffectMeshMgr->Get("sword_uppercut_effect");
 
 	m_pMagicDamageEffect		= m_pEffectMeshMgr->Get("magicmissile_damage");
 
@@ -424,6 +426,8 @@ bool ZEffectManager::Create(void)
 	m_pSwordPoison		= m_pEffectMeshMgr->Get("ef_sword_poison");
 	/// TODO ef_sword_starfire - need elu faile
 	m_pSwordStarfire		= m_pEffectMeshMgr->Get("ef_sword_flash");
+	/// Add special glow effect
+	m_pSwordSpecial		    = m_pEffectMeshMgr->Get("magicmissile_damage");
 
 	m_pBulletOnWallEffect[0]	= m_pEffectMeshMgr->Get("ef_effect001.elu");
 	m_pBulletOnWallEffect[1]	= m_pEffectMeshMgr->Get("ef_effect002.elu");
@@ -484,6 +488,7 @@ bool ZEffectManager::Create(void)
 	m_BillBoardTexAniList[2].Create("SFX/gd_effect_019.bmp");
 	m_BillBoardTexAniList[3].Create("SFX/ef_magicmissile.bmp");
 	m_BillBoardTexAniList[4].Create("SFX/ef_methor_smoke.tga");
+	m_BillBoardTexAniList[5].Create("SFX/gd_effect_019_spcial");
 	/// Gva Future experiment - use ef_slow for enchant. Adjust BILLBOARDTEXANILIST_COUNT
 	// m_BillBoardTexAniList[5].Create("SFX/ef_slow.BMP");
 
@@ -494,6 +499,9 @@ bool ZEffectManager::Create(void)
 	m_BillBoardTexAniList[3].SetTile(2,2,0.375f,0.375f);
 	m_BillBoardTexAniList[3].m_bFixFrame = true;
 	m_BillBoardTexAniList[4].SetTile(4,4,0.25f,0.25f);
+	
+	m_BillBoardTexAniList[5].SetTile(4,4,0.25f,0.25f);
+	m_BillBoardTexAniList[5].m_bFixFrame = true;
 
 	rvector veczero = rvector(0.f,0.f,0.f);
 
@@ -506,6 +514,8 @@ bool ZEffectManager::Create(void)
 		veczero, veczero, NULL);
 	m_pWeaponEnchant[ZC_ENCHANT_POISON]		= new ZEffectWeaponEnchant( m_pSwordPoison,
 		veczero, veczero, NULL);
+	/// Ass special glow effect. NULL for none.
+	m_pWeaponEnchant[ZC_ENCHANT_SPECIAL]	= NULL; // new ZEffectWeaponEnchant( m_pSwordSpecial, veczero, veczero, NULL);
 	m_pWeaponEnchant[ZC_ENCHANT_STARFIRE]	= new ZEffectWeaponEnchant( m_pSwordStarfire,
 		veczero, veczero, NULL);
 
@@ -760,7 +770,7 @@ void ZEffectManager::Draw(u32 nTime,int mode,float height)
 
 			if(pEffect==NULL) {
 				int _size = (int)m_Effects[d].size();
-				mlog("¶ß¾Æ.. EffectManager NULL ¹®Á¦ ¹ß»ý ( %d list ¿ä¼Ò) : size : %d \n",d,_size);
+				mlog("ï¿½ß¾ï¿½.. EffectManager NULL ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ( %d list ï¿½ï¿½ï¿½) : size : %d \n",d,_size);
 				++node;
 			} else {
 				if(!pEffect->m_bWaterSkip) {
@@ -915,7 +925,7 @@ void ZEffectManager::Draw(u32 nTime)
 			if(pEffect==NULL) {
 
 				int _size = (int)m_Effects[d].size();
-				mlog("¶ß¾Æ.. EffectManager NULL ¹®Á¦ ¹ß»ý ( %d list ¿ä¼Ò) : size : %d \n",d,_size);
+				mlog("ï¿½ß¾ï¿½.. EffectManager NULL ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ( %d list ï¿½ï¿½ï¿½) : size : %d \n",d,_size);
 				++node;
 
 			} else {
@@ -1191,17 +1201,23 @@ void ZEffectManager::AddTrackFire(const rvector &pos, int nEFLevel)
 	m_BillBoardTexAniList[1].Add( pos, vel, 0, 0.f,fStartSize , fEndSize, fLife );
 }
 
+/// real STASTIC Gunz AddTrackCold
 void ZEffectManager::AddTrackCold(const rvector &pos, int nEFLevel)
 {
 	/// GVA modify the Ice shatter here !! 
+	/// Size of a particle will be a between 8 and 23 units large
 	int Add = rand() % 10;
 	float fStartSize = 8 + Add;
 	float fEndSize = 14 + Add;
+	/// fLife - Duration
 	float fLife = 1.0f + .2f * nEFLevel;
 
+	/// Picks one of 8 frames in the billboard
 	int frame = rand()%8;
+	/// Velocity X, Y, Z. Just negative Z means it will fall straight down
 	rvector vel = rvector(0,0,-25.f);
 
+	/// Pass the parameters to draw the particle
 	m_BillBoardTexAniList[2].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife );
 }
 
@@ -1217,6 +1233,7 @@ void ZEffectManager::AddTrackPoison(const rvector &pos, int nEFLevel)
 	int frame = rand()%4;
 
 	rvector vel = rvector(0,0,0);
+	// rvector vel = rvector(rand() % 15, rand() % 15, rand() % 2 == 1 ? 15.f : -15.f);
 
 	m_BillBoardTexAniList[2].Add( pos, vel,r_frame[frame],0.f, fStartSize , fEndSize, fLife );
 }
@@ -1235,11 +1252,36 @@ void ZEffectManager::AddTrackStarfire(const rvector &pos, int nEFLevel)
 			: special < 4*nEFLevel ? 
 				1.f : 0.618f;
 
-	int frame = rand()%8;
+	int frame = rand()%4;
 	rvector vel = rvector(rand() % 15, rand() % 15, rand() % 2 == 1 ? 15.f : -15.f);
 
 	/// Bandom ketvirta - Magic
 	m_BillBoardTexAniList[3].Add( pos, vel,frame, 0.f,fStartSize , fEndSize, fLife);
+}
+
+void ZEffectManager::AddTrackSpecial(const rvector &pos, int nEFLevel)
+{
+	// /// 1 in 10 particles will be tiny and short lived
+	bool big = var1 > 0 ? (rand() % var1) == 0 : (rand() % (-1*var1)) != 0;
+
+	float fStartSize = var5;
+	float fEndSize = big ? (10 + rand() % var4) : var3;//(4 + rand() % var3);
+
+	float maxSize = 10+var4-1;
+
+	float lifeMax = 0.1f * var6;
+
+	float fLife = big ? lifeMax * (fEndSize/maxSize) : (0.1f * var7);
+
+	int frame = rand()%8;
+	
+	rvector vel = rvector(
+		rand() % 14, 
+		rand() % 16, 
+		(rand() % 22) - 4
+	);
+	
+	m_BillBoardTexAniList[5].Add( pos, vel,frame, 0, fStartSize, fEndSize, fLife );
 }
 
 /// Gva test
@@ -1446,7 +1488,36 @@ void ZEffectManager::AddEnchantStarfire2(ZObject* pObj)
 	int nTex = rand() % 7;
 
 	m_BillBoardTexAniList[2].Add(pos,vel, nTex, 0 ,fStartSize, fEndSize, fLife );
-	/// End of STARFIRE
+}
+
+/// Add special on-hit bleed effect (the visual on massived victim)
+void ZEffectManager::AddEnchantSpecial2(ZObject* pObj)
+{
+	if(pObj==NULL) return;
+
+	float fSize = GetEnchantDamageObjectSIze( pObj );
+
+	float fStartSize = (10.f + EFRand) * fSize;
+	float fEndSize = (20.f + EFRand) * fSize;
+
+	float fLife = 1.0f;
+
+	rvector pos;
+	rvector vel = rvector(EFRand, EFRand, 15.45f);
+
+	static int partstype;
+
+	partstype = GetRandType(5,partstype,10);
+
+	rvector camera_dir = RCameraDirection * 20.f * fSize;
+
+	pos = pObj->m_pVMesh->GetBipTypePosition( g_EnchantEffectPartsPos[partstype] ) - camera_dir;
+
+	pos += GetRandVec(10);
+
+	int nTex = rand() % 7;
+
+	m_BillBoardTexAniList[5].Add(pos,vel, nTex, 0 ,fStartSize, fEndSize, fLife );
 }
 
 void ZEffectManager::AddShotgunEffect(const rvector &pos, const rvector &out, const rvector &dir,ZObject* pChar )
@@ -1795,6 +1866,7 @@ void ZEffectManager::AddSwordEnchantEffect(ZC_ENCHANT type, const rvector& Targe
 	else if( type ==  ZC_ENCHANT_LIGHTNING )	pMesh = m_pSwordEnchantEffect[2];
 	else if( type ==  ZC_ENCHANT_POISON )		pMesh = m_pSwordEnchantEffect[3];
 	else if( type ==  ZC_ENCHANT_STARFIRE )		pMesh = m_pSwordEnchantEffect[4];
+	else if( type ==  ZC_ENCHANT_SPECIAL )		pMesh = m_pSwordEnchantEffect[5];
 	else 
 		return;
 

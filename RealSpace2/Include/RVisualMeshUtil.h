@@ -26,6 +26,7 @@ enum REnchantType {
 	REnchantType_Lightning,
 	REnchantType_Poison,
 	REnchantType_Starfire,
+	REnchantType_Special,
 	REnchantType_End,
 };
 

@@ -72,6 +72,7 @@ bool ZSkillDesc::CheckResist(ZObject *pCurrent,float *pfDamage)
 		case ZSR_POISON		: nResist = pModule->GetPR();break;
 		case ZSR_COLD		: nResist = pModule->GetCR();break;
 		case ZSR_LIGHTNING	: nResist = pModule->GetLR();break;
+		/// Elemental effect resistance. Not creating new item desc type for SPECIAL
 		case ZSR_STARFIRE	: nResist = pModule->GetSR();break;
 		
 		case ZSR_NONE		:

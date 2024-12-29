@@ -124,3 +124,24 @@ struct ZModule_StarfireDamage : public ZModule_ElementalDamage<&ZEffectManager::
 		Active = true;
 	}
 };
+
+struct ZModule_SpecialDamage : public ZModule_ElementalDamage<&ZEffectManager::AddEnchantSpecial2, false> {
+	DECLARE_ID(ZMID_SPECIALDAMAGE)
+
+	void BeginSlow(float fMoveSpeed, float fDuration)
+	{
+		m_fBeginTime = ZGetGame()->GetTime();
+		m_fNextDamageTime = m_fBeginTime + DAMAGE_DELAY;
+		m_fNextEffectTime = m_fBeginTime;
+
+		m_fDuration = fDuration;
+
+		auto* pMovableModule = static_cast<ZModule_Movable*>(m_pContainer->GetModule(ZMID_MOVABLE));
+		assert(pMovableModule);
+
+		/// Add special effect here
+		pMovableModule->SetMoveSpeedRatio(fMoveSpeed == 0 ? 1.f : 1 / fMoveSpeed, fDuration);
+
+		Active = true;
+	}
+};

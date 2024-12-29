@@ -184,7 +184,11 @@ void ZCamera::Update(float fElapsed)
 		m_Position.z += fAddedZ;
 
 		// Lock the camera height if the player has fallen into the abyss
-		if (m_Position.z <= DIE_CRITICAL_LINE)
+		// STASTIC 2000: get wintered - prevent that ^
+		if (
+			m_Position.z <= DIE_CRITICAL_LINE &&
+			!pTargetCharacter->GotStastic(2000, MMCIP_FINGERL)
+		)
 		{
 			rvector campos = pTargetCharacter->GetCenterPos() - pTargetCharacter->GetDirection() * 20.0f;
 			m_Position.x = campos.x;

@@ -9,9 +9,10 @@
 #define ZMID_COLDDAMAGE			21
 #define ZMID_LIGHTNINGDAMAGE	22
 #define ZMID_POISONDAMAGE		23
-#define ZMID_SKILLS				24				///< ½ºÅ³ÀÇ »óÅÂ¸¦ ÀúÀå
+#define ZMID_SKILLS				24				///< ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 #define ZMID_STARFIREDAMAGE		25 
+#define ZMID_SPECIALDAMAGE		26 
 
-#define ZMID_QUESTSTATUS		31				///< ÇÃ·¹ÀÌ¾îÀÇ Äù½ºÆ® °ü·Ã »óÅÂ°ª
+#define ZMID_QUESTSTATUS		31				///< ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½
 
 #endif
