@@ -1,88 +1,54 @@
-# Table of Contents
+# STASTIC Gunz
 
-- [Refined Gunz](#refined-gunz)
-- [Usage](#usage)
-- [Building](#building)
-	- [Building shaders](#building-shaders)
-	- [Configuration](#configuration)
-- [Features](#features)
-	- [Gameplay](#gameplay)
-		- [Gladiator changes](#gladiator-changes)
-	- [New gamemodes](#new-gamemodes)
-	- [Replays](#replays)
-	- [Misc client stuff](#misc-client-stuff)
-	- [Server](#server)
-- [Credits](#credits)
+This is our test client+server souce code, based on Refined gunz: https://github.com/Asunaya/RefinedGunz
+If you're looking for a good source for your server, you will not find it here. However, there is some fun stuff in here.
 
-# Refined Gunz
-Refined Gunz is a modified version of Gunz the Duel, a game by MAIET Entertainment. It's based on the leaked Gunz 1.0 source from around 2007.
+# Fun stuff:
+Starfire element (enchant item) which requires no additional files on the client.
+Special element - another enchant element, meant for testing new enchants.
+Custom sword trail color defined in zitem.xml, e.g.: trail_color="#FF4593A3"
+Exploration game mode (MMatchRuleExploration) - a new game mode, which combines normal training/deadmatch with quest mechanics. TOTALLY INCOMPLETE.
+STASTIC items
 
-# Usage
-To start up a basic local server and play on that, download binaries from the [Releases](https://github.com/Asunaya/RefinedGunz/releases) page on here, run the server (MatchServer.exe) and then run the client (Gunz.exe). There is no additional configuration required.
+# STASTIC Items
+Special powers on items. 
+It is currently achieved by simply setting property "STASTIC" on the item inside zitem.xml, with its integer id. Some powers also use effect_level (existing property, typically used for enchant levels).
+The dream implementation would be that these powers be granted separetely, on any item, and ALWAYS time-limited. No idea how to achieve that.
 
-To connect to someone else's server instance, change the IP in config.xml to their IP or domain. (Make sure ports are open, etc.)
+Once an item has the power, inside the source are simple if/if-else checks on critical sports, whether a STASTIC power is active.
 
-Running the client requires DirectX 9 (or Vulkan support, although that is unfinished). There are no other external dependencies.
+Example: inside ZGame.cpp there is additional check at end of function ZGame::DoOneShot
+If the owner's selected weapon has got STASTIC power 2020, it will automatically trigger a reload action. 
+This is the autoreload power, which will automatically perform reload shot for noobs.
 
-Running the server with SQLite (the default) requires no external dependencies or configuration. Running it with MSSQL requires you to compile it with MSSQL support (pass `-DMSSQL=1` to cmake), set up ODBC and a matching MSSQL server instance, and set up database login info in server.ini.
+/// STASTIC 2020: Autoreload
+if (pOwner->GetItems()->GetSelectedWeapon()->GotSTASTIC(2020)) {
+	if ( !g_pGame->IsReplay())
+		ZGetGameInterface()->Reload();
+}
 
-Note that since Refined Gunz is based on Gunz 1.0, MSSQL database files, XMLs, etc. from Gunz 1.5 distributions may not work with it.
+Some of the powers and their ids:
 
-# Building
-Requisites:
+STASTIC 2000: get wintered - keeps the owner alive in the oblivion. Only checked on left finger ring slot
+STASTIC 2010: Leap - on gun shot, teleports the owner to the hit position 
+STASTIC 2020: Autoreload - automatically performs reloadshot
+STASTIC 2030: Flier - while holding the fire key, fly up. Strength controlled by effect_level
+STASTIC 5001: Superjump - modify jump velocity. Strength controlled by effect_level
+STASTIC 20001: Spawn npc - on gun shot, spawns a NPC at the hit position, NPC id defined by item's effect_level. Only works on Exploration game mode
 
-* CMake 3.7 or later. You can download the latest release from https://cmake.org/download/ under "Binary distributions." In the installer, select "Add CMake to the system PATH for all users." [Picture here](https://i.imgur.com/rQHLXX8.png).
-* Visual Studio 2017 with Windows XP support and ATL/MFC support. You can download the free Community edition at https://www.visualstudio.com/downloads/. In the installer, select the "Desktop development with C++," and on the right under "Summary," select "Windows XP support for C++" and "MFC and ATL support (x86 and x64)." [Picture here](https://i.imgur.com/BqXoiXu.png)).
+example usage on zitem.xml:
+ <ITEM id="102000" name="Winter Ring" STASTIC="2000" type="equip" res_sex="a" res_level="4" slot="finger" weight="1" bt_price="100000" hp="0" ap="0" maxwt="5" color="#FF4593A3" trail_color="#FF4593A3" desc="Wear this special ring on your left finger to get wintered." />
+ <ITEM id="102021" name="Flier Wings" mesh_name="eq_blade_wing" STASTIC="2030" effect_level="10" type="custom" res_sex="a" res_level="50" slot="custom" weapon="medkit" weight="1" bt_price="1000000" delay="50" damage="0" ctrl_ability="0" magazine="9999" reloadtime="2" slug_output="false" gadget_id="0" hp="0" ap="0" maxwt="0" sf="0" fr="0" cr="0" pr="0" lr="0" color="#FF4593A3" image_id="3" bullet_image_id="0" magazine_image_id="0" desc="Wings of flying - now in your pocket." snd_fire="we_grenade_fire" maxbullet="8000" />
 
-To build, enter the "msvcbuild" folder in the repository, and run "build.bat".
+# Exploration
+Vision: you run around like in normal deadmatch or training room. Then suddently a dragon spawns and if you kill before it kills you, you can get a STASTIC item reward. You could also bring your own adventures-in-a-box you got from some shady merchant erlier to spawn a special scenario.
 
-## Building shaders
-Shaders are already precompiled, but the Visual Studio solutions do not recompile them if you edit them. To recompile the shaders, run the relevant .bat file in the RealSpace2 folder.
+Current status: it works, but only as proof on concept and is a mess. At the start of the game a some npcs spawn at 0 coordinate (remnants of quest game mode). On death you don't respawn (you should). You can use STASTIC 20001 to spawn some NPCs.
+Unfortunatelly, the NPCs brains rely on .nav file for each map to know how to move around. For maps without it, will fallback to "quest/maps/Mansion_Hall1/Mansion_Hall1.RS.nav" instead of crashing, but then the NPCs are STUPID. For this to work, npc brains need to be totally reprogramed to see their surroundings without any nav file. Also need to make them die in oblivion and for them to avoid it. This is the biggest challenge.
 
-BuildHLSLShaders.bat builds the HLSL shaders for D3D9. It requires the fxc compiler which can be found in the DirectX 9 SDK. The path to it is hardcoded in the .bat; change the %fxc% variable if it doesn't match.
+Source code is at MMatchRuleExploration.cpp, MMatchRuleExploration.h. it's an altered copy of MMatchRuleQuest, and remains very messy. Most stuff copied is not necessary.
+Many places in the code check ZGameTypeManager.IsQuestDerived. This does not include Explodation, but there we added another check IsQuestDerivedEX for places where this needs to be considered as quest game mode.
 
-BuildGLSLShaders.bat builds the GLSL shaders for Vulkan. It requires the glslang compiler (glslangvalidator) which can be found in the Vulkan SDK.
+on SharedCommandTable there is a new api method MC_EXPLORATION_REQUEST_NPC_SPAWN, which is like MC_QUEST_NPC_SPAWN but instead of specifying the spawn sector id, you pass exact xyz coordinates
 
-## Configuration
-Features of the server can be configured in the file "CSCommon/config.h".
-
-# Features
-
-## Gameplay
-- 3 netcode modes:
- - Server-based -- (Unfinished) No direct connections are established, hit registration is done with lag compensation on the server. Only enabled if game_dir in server.xml points to a valid game directory that contains animation and map files
- - Peer to Peer Antilead -- Peer to peer, attacker does immediate hit registration
- - Peer to Peer Lead -- Peer to peer, target does immediate hit registration
-- Voice chat
-- Passwords hashed on the client with BLAKE2b and on the server with salted scrypt
-- Remade chat -- Resizable, movable, copyable text, unlimited history, transparent background
-- Basic info update rate per second increased from 10 to 33
-- Spectator mode
-- Portals
-- Commands -- See [the wiki list](https://github.com/Asunaya/RefinedGunz/wiki/Chat-commands)
-
-### Gladiator changes:
-- See [Gladiator changes](https://github.com/Asunaya/RefinedGunz/wiki/Gladiator-changes)
-
-## New gamemodes
-- Skillmap -- Skillmaps contain start and end zones, track your time, and teleport you back to the start zone when you fall. Will have a time record list in the future. Other players are partially transparent and cannot damage or push you.
-- Gun game -- A gamemode where your equipped weapons change every time you get a kill.
-
-## Replays
-- Runs multiple formats -- Have so far tested Official V4, V6, V7, V10 and V11; Freestyle Gunz V7 (both formats), V8, V9 and V10; and Dark Gunz V6. If you'd like another replay format to be supported, [make an issue](https://github.com/Asunaya/RefinedGunz/issues/new) with the replay file.
-- Seek bar to jump to different time locations
-- Data in the replay list -- Shows gametype, map name, stage name, player names, scores, etc.
-
-## Misc client stuff
-- Registration at the login screen
-- Supports fullscreen, borderless and windowed mode
-- Dynamic resource loading -- Clothes are loaded individually as they are required, not loaded all together when you start the game. This reduces load time and memory usage.
-- Supports Gunz 2/RS3 maps
-
-## Server
-- MatchServer supports SQLite in addition to MSSQL
-- MatchServer comprises the previous modules (MatchAgent, Locator) by default, although you can run them freestanding as well
-
-# Credits
-- grandao for http://forum.ragezone.com/f245/release-development-rsx-realspacex-1060866/
-- Jetman for gun game gamemode
+contact: GjaGta@Gmail.com
